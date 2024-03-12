@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -24,20 +26,23 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "post_content")
-    private String postContent;
+    @Column(name = "post_title")
+    private String title;
+    @Column(name = "post_content", columnDefinition = "TEXT")
+    @Lob
+    private String content;
     @Column(name = "post_excerpt")
-    private String postExcerpt;
+    private String excerpt;
     @Column(name = "post_author")
-    private String postAuthor;
+    private String author;
     @Column(name = "post_published_at")
-    private Date postPublishedAt;
-    @Column(name = "post_created_at")
-    @CreatedDate
-    private Date created_at;
+    private Date publishedAt;
+    @Column(name = "post_created_at", updatable = false)
+    @CreationTimestamp
+    private Date createdAt;
     @Column(name = "post_updated_at")
-    @LastModifiedDate
-    private Date updated_at;
+    @UpdateTimestamp
+    private Date updatedAt;
     @Column(name = "post_is_published")
     private boolean isPublished;
 
@@ -49,20 +54,20 @@ public class Post {
     )
     private Set<Tag> tags;
 
-    public Post(String postContent,
-                String postExcerpt,
-                String postAuthor,
-                Date postPublishedAt,
+    public Post(String content,
+                String excerpt,
+                String author,
+                Date publishedAt,
                 Date created_at,
                 Date updated_at,
                 boolean isPublished,
                 Set<Tag> tags) {
-        this.postContent = postContent;
-        this.postExcerpt = postExcerpt;
-        this.postAuthor = postAuthor;
-        this.postPublishedAt = postPublishedAt;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.content = content;
+        this.excerpt = excerpt;
+        this.author = author;
+        this.publishedAt = publishedAt;
+        this.createdAt = created_at;
+        this.updatedAt = updated_at;
         this.isPublished = isPublished;
         this.tags = tags;
     }

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -22,10 +24,10 @@ public class PostTag {
 
     @EmbeddedId
     private PostTagId postTagId;
-    @Column(name = "created_at")
-    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
     private Date createdAt;
-    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAT;
 
