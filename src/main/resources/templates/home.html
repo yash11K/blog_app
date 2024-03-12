@@ -20,15 +20,15 @@
         </div>
         <div>
             <label for="title">Title:</label><br>
-            <input type="text" id="title" name="title" th:field="*{postContent}" required ><br>
+            <input type="text" id="title" name="title" th:field="*{title}" required ><br>
         </div>
         <div>
             <label for="content">Content:</label><br>
-            <textarea id="content" name="content" rows="5" cols="40" th:content="*{postContent}" required></textarea><br>
+            <textarea id="content" name="content" rows="5" cols="40" th:content="*{content}" required></textarea><br>
         </div>
         <div>
             <label for="author">Author:</label><br>
-            <input type="text" id="author" name="author" required th:content="*{postAuthor}"><br>
+            <input type="text" id="author" name="author" required th:content="*{author}"><br>
         </div>
         <div>
             <input type="submit" value="Submit">
