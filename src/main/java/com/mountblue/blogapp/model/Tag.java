@@ -23,12 +23,14 @@ public class Tag {
     private Date createdAt;
     @Column(name = "tag_updated_at")
     private Date updatedAt;
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags",
+                cascade = {CascadeType.ALL})
     private List<Post> posts;
 
     public Tag(String name, Date createdAt) {
         this.name = name;
         this.createdAt = createdAt;
+        this.updatedAt=createdAt;
     }
 
     @Override

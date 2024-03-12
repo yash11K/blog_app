@@ -33,14 +33,22 @@ public class Post {
     @Column(name = "post_is_published")
     private boolean isPublished;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tags;
-    public Post(String postContent, String postExcerpt, String postAuthor, Date postPublishedAt, Date created_at, Date updated_at, boolean isPublished, Set<Tag> tags) {
+
+    public Post(String postContent,
+                String postExcerpt,
+                String postAuthor,
+                Date postPublishedAt,
+                Date created_at,
+                Date updated_at,
+                boolean isPublished,
+                Set<Tag> tags) {
         this.postContent = postContent;
         this.postExcerpt = postExcerpt;
         this.postAuthor = postAuthor;
@@ -48,6 +56,6 @@ public class Post {
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.isPublished = isPublished;
+        this.tags = tags;
     }
-
 }
