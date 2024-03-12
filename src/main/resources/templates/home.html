@@ -11,33 +11,28 @@
 <body>
 <h1>Create a New Blog Post</h1>
 <h3>Choose the appropriate Topics for the blog</h3>
-<form th:object="${tagAllot}">
-    <div th:each="tagTopic:${tagTopics}" class="topics">
-
-        <label for="checkboxId">
-            <input type="checkbox" id="checkboxId" th:name="${tagTopic}" th:value="${tagTopic}" th:field="*{name}">
-            <span th:text="${tagTopic}"></span>
-        </label>
-    </div>
-    <input type="submit" name="Save Topics">
-</form>
-
-<form action="/submit" method="post">
-    <div>
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title" required><br>
-    </div>
-    <div>
-        <label for="content">Content:</label><br>
-        <textarea id="content" name="content" rows="5" cols="40" required></textarea><br>
-    </div>
-    <div>
-        <label for="author">Author:</label><br>
-        <input type="text" id="author" name="author" required><br>
-    </div>
-    <div>
-        <input type="submit" value="Submit">
-    </div>
-</form>
+    <form th:action="@{/home/blog-publish}" method="post" th:object="${newPost}">
+        <div th:each="tagTopic:${tagTopics}" class="topics">
+            <label for="checkboxId">
+                <input type="checkbox" id="checkboxId" th:value="${tagTopic}" name="newPostTags">
+                <span th:text="${tagTopic}"></span>
+            </label>
+        </div>
+        <div>
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title" th:field="*{postContent}" required ><br>
+        </div>
+        <div>
+            <label for="content">Content:</label><br>
+            <textarea id="content" name="content" rows="5" cols="40" th:content="*{postContent}" required></textarea><br>
+        </div>
+        <div>
+            <label for="author">Author:</label><br>
+            <input type="text" id="author" name="author" required th:content="*{postAuthor}"><br>
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
 </body>
 </html>
