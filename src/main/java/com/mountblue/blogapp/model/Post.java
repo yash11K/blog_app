@@ -4,19 +4,25 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 import java.util.Set;
 
+
+@Entity(name = "Post")
+@Table(name = "posts")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "Post")
-@Table(name = "posts")
+@ToString
 public class Post {
+
+    @Column(name = "post_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
     private int id;
     @Column(name = "post_content")
     private String postContent;
@@ -27,8 +33,10 @@ public class Post {
     @Column(name = "post_published_at")
     private Date postPublishedAt;
     @Column(name = "post_created_at")
+    @CreatedDate
     private Date created_at;
     @Column(name = "post_updated_at")
+    @LastModifiedDate
     private Date updated_at;
     @Column(name = "post_is_published")
     private boolean isPublished;

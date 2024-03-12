@@ -8,13 +8,15 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
+
+@Entity(name = "tag")
+@Table(name = "tags")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "tag")
-@Table(name = "tags")
 public class Tag {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
     private int id;
     @Column(name = "tag_name")
