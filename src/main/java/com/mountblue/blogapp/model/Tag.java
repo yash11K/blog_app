@@ -3,6 +3,7 @@ package com.mountblue.blogapp.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "tag")
 @Table(name = "tags")
@@ -16,6 +17,8 @@ public class Tag {
     private Date createdAt;
     @Column(name = "tag_updated_at")
     private Date updatedAt;
+    @ManyToMany(mappedBy = "tags")
+    private List<Post> posts;
 
     public Tag(){
 
