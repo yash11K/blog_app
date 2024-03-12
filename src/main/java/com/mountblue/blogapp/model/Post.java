@@ -1,10 +1,16 @@
 package com.mountblue.blogapp.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity(name = "Post")
 @Table(name = "posts")
 public class Post {
@@ -34,71 +40,6 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tags;
-
-    public String getPostContent() {
-        return postContent;
-    }
-
-    public void setPostContent(String postContent) {
-        this.postContent = postContent;
-    }
-
-    public String getPostExcerpt() {
-        return postExcerpt;
-    }
-
-    public void setPostExcerpt(String postExcerpt) {
-        this.postExcerpt = postExcerpt;
-    }
-
-    public String getPostAuthor() {
-        return postAuthor;
-    }
-
-    public void setPostAuthor(String postAuthor) {
-        this.postAuthor = postAuthor;
-    }
-
-    public Date getPostPublishedAt() {
-        return postPublishedAt;
-    }
-
-    public void setPostPublishedAt(Date postPublishedAt) {
-        this.postPublishedAt = postPublishedAt;
-    }
-
-    public Date getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
-    }
-
-    public Date getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public boolean isPublished() {
-        return isPublished;
-    }
-
-    public void setPublished(boolean published) {
-        isPublished = published;
-    }
-
-//    public Set<Tag> getTags() {
-//        return tags;
-//    }
-//
-//    public void setTags(Set<Tag> tags) {
-//        this.tags = tags;
-//    }
-
     public Post(String postContent, String postExcerpt, String postAuthor, Date postPublishedAt, Date created_at, Date updated_at, boolean isPublished, Set<Tag> tags) {
         this.postContent = postContent;
         this.postExcerpt = postExcerpt;
@@ -109,6 +50,4 @@ public class Post {
         this.isPublished = isPublished;
     }
 
-    public Post() {
-    }
 }

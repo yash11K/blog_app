@@ -1,10 +1,16 @@
 package com.mountblue.blogapp.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity(name = "tag")
 @Table(name = "tags")
 public class Tag {
@@ -20,9 +26,6 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private List<Post> posts;
 
-    public Tag(){
-
-    }
     public Tag(String name, Date createdAt) {
         this.name = name;
         this.createdAt = createdAt;
@@ -36,37 +39,5 @@ public class Tag {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
