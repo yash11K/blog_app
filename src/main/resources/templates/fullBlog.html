@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title}">Blog</title>
+    <link rel="stylesheet" href="/fullBlog.css">
+</head>
+    <body>
+        <header>Write Wise</header>
+        <h2 th:text="${post.title}"></h2>
+        <p th:text="${post.author}"></p>
+        <p th:text="${post.publishedAt}"></p>
+        <div th:each="postTag:${postTags}">
+            <span th:text="${postTag.name}"></span>
+        </div>
+        <p th:text="${post.content} + ' ,'"></p>
+    </body>
+</html>

@@ -1,0 +1,49 @@
+/* home.css */
+
+/* Header style */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #333; /* Dark grey background */
+    color: #fff; /* White text color */
+    padding: 20px 0; /* Add padding top and bottom */
+    margin: 0; /* Remove default margin */
+}
+
+/* Blog post content styles */
+body {
+    margin-top: 60px; /* Add top margin to body to push content below fixed header */
+    font-family: Arial, sans-serif; /* Use Arial font for text */
+    color: #333; /* Blackish text color */
+    background-color: #f0f0f0; /* Light grey background */
+    padding: 20px; /* Add padding to body */
+}
+
+h2 {
+    text-align: center; /* Center align the title */
+}
+
+p {
+    margin-bottom: 10px; /* Add bottom margin to paragraphs */
+}
+
+/* Tag styles */
+div {
+    margin-top: 10px; /* Add top margin to tag div */
+}
+
+span {
+    display: inline-block; /* Make tag spans inline-block for spacing */
+    background-color: #ddd; /* Light grey background for tags */
+    color: #333; /* Dark grey text color for tags */
+    padding: 5px 10px; /* Add padding to tags */
+    margin-right: 5px; /* Add right margin to tags for spacing */
+    border-radius: 5px; /* Add border radius to tags */
+}
+
+span:last-child {
+    margin-right: 0; /* Remove right margin from last tag */
+}
