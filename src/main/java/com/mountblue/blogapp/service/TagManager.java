@@ -5,11 +5,13 @@ import com.mountblue.blogapp.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class TagManager {
-    private final TagService tagService;
+public class TagManager implements TagService{
+    private final TagDao tagService;
     @Autowired
-    public TagManager(TagService tagService) {
+    public TagManager(TagDao tagService) {
         this.tagService = tagService;
     }
     public void saveTag(Tag tag){
@@ -18,5 +20,9 @@ public class TagManager {
 
     public Tag findTagByName(String name){
         return tagService.findByName(name);
+    }
+    @Override
+    public List<Tag> findAllTags() {
+        return tagService.findAll();
     }
 }

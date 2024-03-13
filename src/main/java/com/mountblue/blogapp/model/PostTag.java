@@ -38,9 +38,5 @@ public class PostTag {
         private int postId;
         @Column(name = "tag_id")
         private int tagId;
-        public PostTagId(int post_id, int tag_id) {
-            this.postId = post_id;
-            this.tagId = tag_id;
-        }
     }
 }
