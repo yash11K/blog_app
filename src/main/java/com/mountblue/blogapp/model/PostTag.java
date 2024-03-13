@@ -23,7 +23,7 @@ public class PostTag {
     @EmbeddedId
     private PostTagId postTagId;
     @Column(name = "created_at", updatable = false)
-    @CreationTimestamp
+    @CreationTimestamp//fordev
     private Date createdAt;
     @UpdateTimestamp
     @Column(name = "updated_at")

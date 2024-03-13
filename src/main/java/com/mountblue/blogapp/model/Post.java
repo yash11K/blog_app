@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
 import java.util.Set;
@@ -26,12 +27,12 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "post_title")
-    @Min(value = 3, message = "should be more than 3 characters")
-    @Max(value = 124, message = "Should be less than 125 characters")
+//    @Min(value = 3, message = "should be more than 3 characters")
+//    @Max(value = 124, message = "Should be less than 125 characters")
     private String title;
     @Column(name = "post_content", columnDefinition = "TEXT")
     @Lob
-    @Min(value = 30, message = "Should Be more than 30 characters")
+//    @Min(value = 30, message = "Should Be more than 30 characters")
     private String content;
     @Column(name = "post_excerpt")
     private String excerpt;

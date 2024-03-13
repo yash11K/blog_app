@@ -26,7 +26,7 @@ public class Tag {
     @CreationTimestamp
     private Date createdAt;
     @Column(name = "tag_updated_at")
-    @UpdateTimestamp
+    @UpdateTimestamp //fordev
     private Date updatedAt;
     @ManyToMany(mappedBy = "tags",
                 cascade = {CascadeType.ALL})

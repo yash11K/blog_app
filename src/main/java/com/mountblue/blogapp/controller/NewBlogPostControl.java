@@ -5,20 +5,22 @@ import com.mountblue.blogapp.model.Tag;
 import com.mountblue.blogapp.service.PostService;
 import com.mountblue.blogapp.service.PostTagService;
 import com.mountblue.blogapp.service.TagService;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/home")
 public class NewBlogPostControl extends AbstractBlogControl{
-    @Value("${Tag.Topics}")
-    private Set<String> TagTopics;
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder){
+        StringTrimmerEditor stringTrimmer = new StringTrimmerEditor(true);
+        webDataBinder.registerCustomEditor(String.class, stringTrimmer);
+    }
 
     public NewBlogPostControl(PostService postService, TagService tagService, PostTagService postTagService) {
         super(postService, tagService, postTagService);
@@ -26,27 +28,38 @@ public class NewBlogPostControl extends AbstractBlogControl{
 
     @GetMapping("/blog-new")
     public String showHome(Model model){
-        Tag tags= tagService.findTagByName("Art");
-        System.out.println(tags.getPosts().toString());
-        model.addAttribute("tagTopics",TagTopics);
+        String tags = "";
+        model.addAttribute("tags", tags);
         model.addAttribute("newPost", new Post());
         model.addAttribute("isTagMade", false);
-        return "home";
+        return "newBlogPost";
     }
 
     @PostMapping("/blog-publish")
-    public String publishBlog(@ModelAttribute("newPost") Post newPost, @RequestParam(value = "newPostTags")List<String> newPostTagNames){
+    public String publishBlog(@ModelAttribute("newPost") Post newPost, @RequestParam(value = "newPostTagNames")String newPostTagNamesStr){
         Set<Tag> newPostTags = new HashSet<>();
+        List<String> newPostTagNames = Arrays.stream(newPostTagNamesStr.split(",")).toList();
         for(String newPostTagName: newPostTagNames){
+            newPostTagName = newPostTagName.trim();
+            Boolean tagExists = tagService.tagExistsByName(newPostTagName);
+            if(!tagExists){
+                Tag newPostTag = new Tag();
+                newPostTag.setName(newPostTagName);
+                tagService.saveTag(newPostTag);
+            }
             Tag newPostTag = tagService.findTagByName(newPostTagName);
             newPostTag.getPosts().add(newPost);
             newPostTags.add(newPostTag);
         }
-        System.out.println();
         newPost.setTags(newPostTags);
         newPost.setPublished(true);
-        newPost.setExcerpt(newPost.getContent().substring(0,5) + ". . .");
+        newPost.setExcerpt(createExcerpt(newPost.getContent()));
         postService.savePost(newPost);
         return "redirect:/home/blog-new";
+    }
+
+    String createExcerpt(String content){
+        int excerptLength = 30;
+        return content.substring(0,excerptLength) + "....";
     }
 }
