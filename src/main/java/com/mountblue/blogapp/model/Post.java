@@ -3,10 +3,8 @@ package com.mountblue.blogapp.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.validation.annotation.Validated;
@@ -36,8 +34,8 @@ public class Post {
     private String content;
     @Column(name = "post_excerpt")
     private String excerpt;
-    @Column(name = "post_author")
-    private String author;
+    @Column(name = "post_author_id", columnDefinition = "INTEGER DEFAULT 29")
+    private Integer author;
     @Column(name = "post_published_at")
     @CreationTimestamp //fordev
     private Date publishedAt;
@@ -58,21 +56,4 @@ public class Post {
     )
     private Set<Tag> tags;
 
-    public Post(String content,
-                String excerpt,
-                String author,
-                Date publishedAt,
-                Date created_at,
-                Date updated_at,
-                boolean isPublished,
-                Set<Tag> tags) {
-        this.content = content;
-        this.excerpt = excerpt;
-        this.author = author;
-        this.publishedAt = publishedAt;
-        this.createdAt = created_at;
-        this.updatedAt = updated_at;
-        this.isPublished = isPublished;
-        this.tags = tags;
-    }
 }
