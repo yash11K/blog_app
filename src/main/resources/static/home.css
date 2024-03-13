@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Light grey background */
+    color: #333; /* Blackish text color */
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 100px;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #333; /* Dark grey background */
+    color: #fff; /* White text color */
+    padding: 20px 0; /* Add padding top and bottom */
+    margin: 0; /* Remove default margin */
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+a {
+    text-decoration: none; /* Remove default underline */
+    color: inherit; /* Inherit text color */
+    width: calc(33.33% - 20px); /* Each blog takes up 1/3 of the width with a bit of space between */
+    margin: 10px;
+    display: block; /* Make anchor tag fill entire container */
+}
+
+div {
+    background-color: #fff; /* White background */
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px;
+    box-sizing: border-box;
+    height: 100%; /* Ensure div fills anchor tag */
+}
+
+h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+@media screen and (max-width: 768px) {
+    a {
+        width: calc(50% - 20px); /* Two blogs per row on smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    a {
+        width: calc(100% - 20px); /* One blog per row on mobile devices */
+    }
+}
