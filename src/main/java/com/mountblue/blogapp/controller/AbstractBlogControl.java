@@ -6,7 +6,6 @@ import com.mountblue.blogapp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
 public abstract class AbstractBlogControl {
     final PostService postService;
     final TagService tagService;

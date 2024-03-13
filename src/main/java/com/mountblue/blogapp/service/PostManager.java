@@ -30,4 +30,13 @@ public class PostManager implements PostService{
         Optional<Post> isPost= postService.findById(postId);
         return isPost.orElseGet(Post::new);
     }
+
+    @Override
+    public void deletePostById(int postId) {
+        postService.deleteById(postId);
+    }
+    static String createExcerpt(String content){
+        int excerptLength = 30;
+        return content.substring(0,excerptLength) + "....";
+    }
 }

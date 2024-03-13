@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface PostDao extends JpaRepository<Post, Integer> {
     List<Post> getPostByIsPublished(boolean isPublished);
+    void deleteById(Integer postId);
 }

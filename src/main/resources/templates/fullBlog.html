@@ -16,6 +16,20 @@
         <div th:each="postTag:${postTags}">
             <span th:text="${postTag.name}"></span>
         </div>
-        <p th:text="${post.content} + ' ,'"></p>
+        <p th:text="${post.content}"></p>
+        <form th:action="@{/home/update}">
+            <input type="hidden" th:value="${post.id}" name="postId">
+            <input type="submit" value="Update">
+        </form>
+        <form th:action="@{/home/archive}">
+            <input type="hidden" th:value="${post.id}" name="postId">
+            <input type="submit" value="Archive">
+        </form>
+        <form th:action="@{/home/delete}">
+            <input type="hidden" th:value="${post.id}" name="postId">
+            <input type="submit" value="Delete">
+        </form>
+
+
     </body>
 </html>
