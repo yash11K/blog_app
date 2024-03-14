@@ -2,9 +2,7 @@ package com.mountblue.blogapp.controller;
 
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
-import com.mountblue.blogapp.service.PostService;
-import com.mountblue.blogapp.service.PostTagService;
-import com.mountblue.blogapp.service.TagService;
+import com.mountblue.blogapp.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +16,12 @@ import static com.mountblue.blogapp.service.PostService.createExcerpt;
 @Controller
 @RequestMapping("/home")
 public class BlogOperationController extends AbstractBlogControl{
-    public BlogOperationController(PostService postService, TagService tagService, PostTagService postTagService) {
-        super(postService, tagService, postTagService);
+    public BlogOperationController(PostService postService,
+                                   TagService tagService,
+                                   PostTagService postTagService,
+                                   CommentService commentService,
+                                   UserService userService) {
+        super(postService, tagService, postTagService, commentService, userService);
     }
 
     @GetMapping("/update")
@@ -37,6 +39,7 @@ public class BlogOperationController extends AbstractBlogControl{
 
     @PostMapping("/submit-updates")
     String submitPostUpdates(@ModelAttribute(name = "updatePost")Post updatedPost, @RequestParam("tagsStr")String tagsStr){
+        updatedPost.setAuthor(userService.findUserByName("yash"));
         postTagService.deletePostTagRelationByPostId(updatedPost.getId());
         tagService.saveTagSetFromTagString(tagsStr, updatedPost);
         updatedPost.setExcerpt(createExcerpt(updatedPost.getContent()));

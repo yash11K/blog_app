@@ -11,7 +11,7 @@
     <body>
         <header>Write Wise</header>
         <h2 th:text="${post.title}"></h2>
-        <p th:text="${post.author}"></p>
+        <p th:text="${post.author.name}"></p>
         <p th:text="${post.publishedAt}"></p>
         <div th:each="postTag:${postTags}">
             <span th:text="${postTag.name}"></span>
@@ -29,7 +29,5 @@
             <input type="hidden" th:value="${post.id}" name="postId">
             <input type="submit" value="Delete">
         </form>
-
-
     </body>
 </html>

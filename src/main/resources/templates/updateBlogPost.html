@@ -26,8 +26,8 @@
         <textarea id="content" name="content" rows="5" cols="40" th:text="*{content}" th:field="*{content}" required></textarea><br>
     </div>
         <input type= "hidden" th:value="*{id}" name="postId">
+        <input type="hidden" name="postAuthor" th:value="${testUser}">
         <input type="submit" value="update">
-
 </form>
 </body>
 </html>
