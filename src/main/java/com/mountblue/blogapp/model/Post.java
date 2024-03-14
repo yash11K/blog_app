@@ -2,10 +2,12 @@ package com.mountblue.blogapp.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Post")
@@ -30,8 +32,6 @@ public class Post {
     private String content;
     @Column(name = "post_excerpt")
     private String excerpt;
-    @Column(name = "post_author_id")
-    private Integer authorId;
     @Column(name = "post_published_at")
     @CreationTimestamp //fordev
     private Date publishedAt;
@@ -52,4 +52,10 @@ public class Post {
     )
     private Set<Tag> tags;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id", referencedColumnName = "user_id", updatable = false)
+    private User author;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    Set<Comment> comments;
 }
