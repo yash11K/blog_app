@@ -1,12 +1,15 @@
 package com.mountblue.blogapp.service;
 
 import com.mountblue.blogapp.dao.TagDao;
+import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TagManager implements TagService{
@@ -31,5 +34,28 @@ public class TagManager implements TagService{
     @Override
     public Boolean tagExistsByName(String name) {
         return tagService.existsByName(name);
+    }
+
+    @Override
+    public void saveTagSetFromTagString(String tagsStr, Post post) {
+        int postId = post.getId();
+        Set<Tag> postTags = new HashSet<>();
+        List<String> tagStr = Arrays.stream(tagsStr.split(",")).toList();
+        for (String PostTagName : tagStr) {
+            PostTagName = PostTagName.trim();
+            PostTagName = PostTagName.toUpperCase();
+            Boolean tagExists = tagExistsByName(PostTagName);
+            if (!tagExists) {
+                Tag newPostTag = new Tag();
+                Set<Post> emptyPost = new HashSet<>();
+                newPostTag.setName(PostTagName);
+                newPostTag.setPosts(emptyPost);
+                saveTag(newPostTag);
+            }
+            Tag tag = findTagByName(PostTagName);
+            tag.getPosts().add(post);
+            postTags.add(tag);
+        }
+        post.setTags(postTags);
     }
 }

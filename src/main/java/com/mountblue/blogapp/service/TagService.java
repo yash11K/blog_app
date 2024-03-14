@@ -1,5 +1,6 @@
 package com.mountblue.blogapp.service;
 
+import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +13,5 @@ public interface TagService{
     Tag findTagByName(String name);
     List<Tag> findAllTags();
     Boolean tagExistsByName(String name);
+    void saveTagSetFromTagString(String tagsStr, Post post);
 }
