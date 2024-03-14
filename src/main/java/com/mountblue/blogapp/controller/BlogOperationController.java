@@ -40,7 +40,6 @@ public class BlogOperationController extends AbstractBlogControl{
         postTagService.deletePostTagRelationByPostId(updatedPost.getId());
         tagService.saveTagSetFromTagString(tagsStr, updatedPost);
         updatedPost.setExcerpt(createExcerpt(updatedPost.getContent()));
-        updatedPost.setAuthorId(29);
         updatedPost.setUpdatedAt(new Date());
         updatedPost.setPublished(true);
         postService.savePost(updatedPost);

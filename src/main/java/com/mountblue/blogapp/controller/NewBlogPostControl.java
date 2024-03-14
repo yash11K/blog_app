@@ -32,7 +32,6 @@ public class NewBlogPostControl extends AbstractBlogControl{
     @PostMapping("/blog-publish")
     public String publishBlog(@ModelAttribute("newPost") Post newPost, @RequestParam(value = "newPostTagNames")String newPostTagNamesStr){
         tagService.saveTagSetFromTagString(newPostTagNamesStr, newPost);
-        newPost.setAuthorId(29); //Hardcoded for dev
         newPost.setPublished(true);
         newPost.setExcerpt(createExcerpt(newPost.getContent()));
         postService.savePost(newPost);
