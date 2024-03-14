@@ -1,5 +1,6 @@
 package com.mountblue.blogapp.controller;
 
+import com.mountblue.blogapp.model.Comment;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
 import com.mountblue.blogapp.service.*;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/home")
 public class FullBlogController extends AbstractBlogControl{
     public FullBlogController(PostService postService,
                               TagService tagService,
@@ -26,9 +26,13 @@ public class FullBlogController extends AbstractBlogControl{
     @GetMapping("/blog")
     public String showFullBlog(@RequestParam("postId") Integer postId, Model model){
         Post post = postService.getPostById(postId);
+        List<Comment> postedComments = commentService.getAllComments();
         Set<Tag> tags = post.getTags();
+        Comment comment = new Comment();
         model.addAttribute("post", post);
+        model.addAttribute("postedComments", postedComments);
         model.addAttribute("postTags", tags);
+        model.addAttribute("comments", comment);
         return "fullBlog";
     }
 }

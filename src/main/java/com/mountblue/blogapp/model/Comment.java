@@ -1,10 +1,19 @@
 package com.mountblue.blogapp.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@Table(name = "comment")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -15,6 +24,8 @@ public class Comment {
     private Date created_at;
     @Column(name = "comment_updated_at")
     private Date updated_at;
+    @Column(name = "comment_content", columnDefinition = "TEXT")
+    private String comment;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "comment_author_id", referencedColumnName = "user_id", updatable = false)

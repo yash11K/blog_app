@@ -47,3 +47,7 @@ span {
 span:last-child {
     margin-right: 0; /* Remove right margin from last tag */
 }
+
+.comment-author{
+    display: inline-block;
+}

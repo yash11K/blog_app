@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>Write Wise</header>
-    <a th:each="publishedPost:${publishedPosts}" th:href="@{/home/blog(postId=${publishedPost.id})}">
+    <a th:each="publishedPost:${publishedPosts}" th:href="@{/blog(postId=${publishedPost.id})}">
         <div>
             <h2 th:text="${publishedPost.title}"></h2>
             <h4 th:text="'Author: '+${publishedPost.author.name}"></h4>
