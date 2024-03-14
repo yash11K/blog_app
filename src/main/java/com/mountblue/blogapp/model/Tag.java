@@ -29,7 +29,7 @@ public class Tag {
     @UpdateTimestamp //fordev
     private Date updatedAt;
     @ManyToMany(mappedBy = "tags",
-                cascade = {CascadeType.ALL})
+            cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     private Set<Post> posts;
 
     public Tag(String name) {

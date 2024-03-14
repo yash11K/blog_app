@@ -14,13 +14,16 @@
 <h1>Update Blog Post</h1>
 <form th:action="@{/home/submit-updates}" method="post" th:object="${updatePost}">
     <input type="hidden" th:field="*{id}">
+    <label>Tags:
+        <input type="text" th:value="${tagsStr}" name="tagsStr">
+    </label>
     <div>
         <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title" th:value="*{title}" required><br>
+        <input type="text" id="title" name="title" th:value="*{title}" th:field="*{title}" required><br>
     </div>
     <div>
         <label for="content">Content:</label><br>
-        <textarea id="content" name="content" rows="5" cols="40" th:text="*{content}" required></textarea><br>
+        <textarea id="content" name="content" rows="5" cols="40" th:text="*{content}" th:field="*{content}" required></textarea><br>
     </div>
         <input type= "hidden" th:value="*{id}" name="postId">
         <input type="submit" value="update">
