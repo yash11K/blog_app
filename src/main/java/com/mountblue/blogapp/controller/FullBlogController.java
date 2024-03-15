@@ -7,7 +7,6 @@ import com.mountblue.blogapp.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -25,8 +24,8 @@ public class FullBlogController extends AbstractBlogControl{
 
     @GetMapping("/blog")
     public String showFullBlog(@RequestParam("postId") Integer postId, Model model){
-        Post post = postService.getPostById(postId);
-        List<Comment> postedComments = commentService.getAllComments();
+        Post post = postService.findPostById(postId);boolean toUpdateComment = false;
+        List<Comment> postedComments = commentService.findAllCommentsOfPost(post);
         Set<Tag> tags = post.getTags();
         Comment comment = new Comment();
         model.addAttribute("post", post);
