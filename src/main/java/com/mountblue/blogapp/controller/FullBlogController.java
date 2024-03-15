@@ -24,14 +24,8 @@ public class FullBlogController extends AbstractBlogControl{
 
     @GetMapping("/blog")
     public String showFullBlog(@RequestParam("postId") Integer postId, Model model){
-        Post post = postService.findPostById(postId);boolean toUpdateComment = false;
-        List<Comment> postedComments = commentService.findAllCommentsOfPost(post);
-        Set<Tag> tags = post.getTags();
-        Comment comment = new Comment();
-        model.addAttribute("post", post);
-        model.addAttribute("postedComments", postedComments);
-        model.addAttribute("postTags", tags);
-        model.addAttribute("comments", comment);
+        Post post = postService.findPostById(postId);
+        addFullBlogDetailsToModel(model, post, commentService.findAllCommentsOfPost(post));
         return "fullBlog";
     }
 }

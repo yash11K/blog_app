@@ -27,11 +27,11 @@ public class Comment {
     @Column(name = "comment_content", columnDefinition = "TEXT")
     private String comment;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "comment_author_id", referencedColumnName = "user_id", updatable = false)
     private User author;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "comment_post_id", referencedColumnName = "post_id", updatable = false)
     private Post post;
 }
