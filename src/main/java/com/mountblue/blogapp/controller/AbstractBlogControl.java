@@ -3,12 +3,8 @@ package com.mountblue.blogapp.controller;
 import com.mountblue.blogapp.model.Comment;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
-import com.mountblue.blogapp.model.User;
 import com.mountblue.blogapp.service.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -31,8 +27,8 @@ public abstract class AbstractBlogControl {
         this.commentService = commentService;
         this.userService = userService;
     }
-    @NotNull
-    static void addFullBlogDetailsToModel(Model model, Post post, List<Comment> allCommentsOfPost) {
+
+    static void addModelAttributeOfFullBlog(Model model, Post post, List<Comment> allCommentsOfPost) {
         Set<Tag> tags = post.getTags();
         Comment comment = new Comment();
         model.addAttribute("post", post);

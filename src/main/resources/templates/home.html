@@ -9,16 +9,37 @@
     <link rel="stylesheet" href="/home.css">
 </head>
 <body>
-    <header>Write Wise</header>
-    <a th:each="publishedPost:${publishedPosts}" th:href="@{/blog(postId=${publishedPost.id})}">
-        <div>
-            <h2 th:text="${publishedPost.title}"></h2>
-            <h4 th:text="'Author: '+${publishedPost.author.name}"></h4>
-            <p th:text="${publishedPost.createdAt}"></p>
-            <p th:text="${publishedPost.excerpt}"></p>
-            <br>
-        </div>
-    </a>
+
+    <div class="header">
+        <header>Write Wise</header>
+        <form th:action="@{/search}">
+            <label>Search:
+                <input type="text" name="query">
+                <input type="submit">
+            </label>
+        </form>
+    </div>
+    <form th:action="@{/orderBy}" class="sort-by">
+        <label for="navbar-orderBy-button"> Order By: </label>
+        <select name="orderBy" id="navbar-orderBy-button" onchange="this.form.submit()" th:value="${sortType}">
+            <option value="dateDesc" th:selected="${sortType == 'dateDesc'}">published (Newest First)</option>
+            <option value="dateAsc" th:selected="${sortType == 'dateAsc'}">published (Oldest First)</option>
+            <option value="nameAsc" th:selected="${sortType == 'nameAsc'}">Name (A~Z)</option>
+            <option value="nameDesc" th:selected="${sortType == 'nameDesc'}">Name (Z~A)</option>
+        </select>
+    </form>
+    <div class="blogpost-container">
+        <a th:each="publishedPost:${publishedPosts}" th:href="@{/blog(postId=${publishedPost.id})}">
+            <div class = blogPosts>
+                <h2 th:text="${publishedPost.title}" class="postTitle"></h2>
+                <h4 th:text="'Author: '+${publishedPost.author.name}"></h4>
+                <p th:text="${publishedPost.createdAt}"></p>
+                <p th:text="${publishedPost.excerpt}"></p>
+                <br>
+            </div>
+        </a>
+    </div>
+
 
 </body>
 </html>

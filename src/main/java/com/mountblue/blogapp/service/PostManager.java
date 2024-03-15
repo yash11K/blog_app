@@ -1,14 +1,12 @@
 package com.mountblue.blogapp.service;
 
 import com.mountblue.blogapp.dao.PostDao;
-import com.mountblue.blogapp.model.Comment;
 import com.mountblue.blogapp.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class PostManager implements PostService{
@@ -42,8 +40,37 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public void deleteCommentRelation(Comment comment, Post post){
-        Set<Comment> comments = post.getComments();
-        comments.remove(comment);
+    public List<Post> findOrderedPostByPublished(boolean isPublished, boolean order) {
+        if(order){
+            return postService.findPostByIsPublishedOrderByPublishedAtAsc(isPublished);
+        }
+        else return postService.findPostByIsPublishedOrderByPublishedAtDesc(isPublished);
+    }
+
+    @Override
+    public List<Post> findOrderedPostByName(boolean order) {
+        if(order){
+            return postService.findPostByIsPublishedOrderByTitleAsc(true);
+        }
+        else return postService.findPostByIsPublishedOrderByTitleDesc(true);
+    }
+
+    @Override
+    public List<Post> getPostsBySortType(String sortType, boolean isPublished){
+        return switch (sortType) {
+            default -> findOrderedPostByPublished(isPublished,false);
+            case "dateAsc" -> {
+                yield findOrderedPostByPublished(isPublished,true);
+            }
+            case "dateDesc" -> {
+                yield findOrderedPostByPublished(isPublished,false);
+            }
+            case "nameAsc" -> {
+                yield findOrderedPostByName(true);
+            }
+            case "nameDesc" -> {
+                yield findOrderedPostByName(false);
+            }
+        };
     }
 }

@@ -1,11 +1,11 @@
 package com.mountblue.blogapp.service;
 
-import com.mountblue.blogapp.model.Comment;
 import com.mountblue.blogapp.model.Post;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public interface PostService{
@@ -18,5 +18,10 @@ public interface PostService{
         int excerptLength = 30;
         return content.substring(0,excerptLength) + "....";
     }
-    void deleteCommentRelation(Comment comment, Post post);
+
+    List<Post> findOrderedPostByPublished(boolean isPublished, boolean order);
+
+    List<Post> findOrderedPostByName(boolean order);
+
+    List<Post> getPostsBySortType(String sortType, boolean isPublished);
 }
