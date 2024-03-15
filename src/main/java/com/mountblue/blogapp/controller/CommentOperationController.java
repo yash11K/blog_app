@@ -36,6 +36,7 @@ public class CommentOperationController extends AbstractBlogControl{
     @GetMapping("/blog/deleteComment")
     public String deleteComment(@RequestParam("commentIdToDelete")Integer commentId){
         int postId = commentService.getPostIdFromCommentId(commentId);
+        commentService.deleteComment(commentService.findCommentById(commentId).get());
         String redirectURI = "/blog?postId=" + Integer.toString(postId);
         return "redirect:" + redirectURI;
     }
@@ -47,7 +48,7 @@ public class CommentOperationController extends AbstractBlogControl{
         Optional<Comment> maybeComment = commentService.findCommentById(commentId);
         maybeComment.ifPresent(comment -> model.addAttribute("commentIdToUpdate", commentId));
         Post post = postService.findPostById(postId);
-        addFullBlogDetailsToModel(model, post, commentService.findAllCommentsOfPost(post));
+        addModelAttributeOfFullBlog(model, post, commentService.findAllCommentsOfPost(post));
         return "fullBlog";
     }
 
@@ -58,10 +59,10 @@ public class CommentOperationController extends AbstractBlogControl{
         if(maybeCommentToUpdate.isPresent()){
             Comment commentToUpdate = maybeCommentToUpdate.get();
             commentToUpdate.setComment(updatedComment);
+            commentToUpdate.setUpdated_at(new Date());
             commentService.saveComment(commentToUpdate);
         }
         String redirectURI = "/blog?postId=" + Integer.toString(postId);
         return "redirect:" + redirectURI;
     }
-
 }

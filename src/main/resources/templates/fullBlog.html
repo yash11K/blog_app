@@ -12,7 +12,7 @@
         <header>Write Wise</header>
         <h2 th:text="${post.title}"></h2>
         <p th:text="${post.author.name}"></p>
-        <p th:text="${post.publishedAt}"></p>
+        <p th:text="${post.createdAt}"></p>
         <div th:each="postTag:${postTags}">
             <span th:text="${postTag.name}"></span>
         </div>
@@ -58,6 +58,8 @@
                             <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
                             <input type="submit" value="update">
                         </form>
+                    </td>
+                    <td th:text="'posted at : ' + ${postedComment.updated_at}">
                     </td>
                 </tr>
             </table>

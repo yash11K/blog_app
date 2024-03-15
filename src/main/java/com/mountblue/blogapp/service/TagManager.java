@@ -37,6 +37,11 @@ public class TagManager implements TagService{
     }
 
     @Override
+    public List<Tag> findTagByNamePattern(String tagPattern){
+        return tagService.findTagByNameContains(tagPattern);
+    }
+
+    @Override
     public void findTagSetFromTagString(String tagsStr, Post post) {
         int postId = post.getId();
         Set<Tag> postTags = new HashSet<>();

@@ -9,8 +9,15 @@ import java.util.List;
 @Service
 public interface TagService{
     void saveTag(Tag tag);
+
     Tag findTagByName(String name);
+
     List<Tag> findAllTags();
+
     Boolean tagExistsByName(String name);
+
+    List<Tag> findTagByNamePattern(String tagPatter);
+
     void findTagSetFromTagString(String tagsStr, Post post);
+
 }
