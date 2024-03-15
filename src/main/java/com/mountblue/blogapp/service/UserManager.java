@@ -18,4 +18,9 @@ public class UserManager implements UserService{
     public User findUserByName(String userName) {
         return userService.findByName(userName);
     }
+
+    @Override
+    public User findUserById(int id) {
+        return userService.findById(id);
+    }
 }

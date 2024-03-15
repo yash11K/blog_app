@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.mountblue.blogapp.service.PostService.createExcerpt;
@@ -26,7 +25,7 @@ public class BlogOperationController extends AbstractBlogControl{
 
     @GetMapping("/update")
     String showUpdatePostPage(@RequestParam("postId")Integer updatePostId, Model model){
-        Post updatePost = postService.getPostById(updatePostId);
+        Post updatePost = postService.findPostById(updatePostId);
         Set<Tag> tags = updatePost.getTags();
         StringBuilder tagsStr= new StringBuilder();
         model.addAttribute("updatePost",updatePost);
@@ -41,7 +40,7 @@ public class BlogOperationController extends AbstractBlogControl{
     String submitPostUpdates(@ModelAttribute(name = "updatePost")Post updatedPost, @RequestParam("tagsStr")String tagsStr){
         updatedPost.setAuthor(userService.findUserByName("yash"));
         postTagService.deletePostTagRelationByPostId(updatedPost.getId());
-        tagService.saveTagSetFromTagString(tagsStr, updatedPost);
+        tagService.findTagSetFromTagString(tagsStr, updatedPost);
         updatedPost.setExcerpt(createExcerpt(updatedPost.getContent()));
         updatedPost.setUpdatedAt(new Date());
         updatedPost.setPublished(true);

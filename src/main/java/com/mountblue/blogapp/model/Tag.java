@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 @Table(name = "tags")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class Tag {
     @Id

@@ -37,7 +37,7 @@ public class TagManager implements TagService{
     }
 
     @Override
-    public void saveTagSetFromTagString(String tagsStr, Post post) {
+    public void findTagSetFromTagString(String tagsStr, Post post) {
         int postId = post.getId();
         Set<Tag> postTags = new HashSet<>();
         List<String> tagStr = Arrays.stream(tagsStr.split(",")).toList();
