@@ -66,6 +66,11 @@ public class PostManager implements PostService{
     }
 
     @Override
+    public List<Post> findPostByContentPattern(String contentPattern) {
+        return postService.findPostsByContentContaining(contentPattern);
+    }
+
+    @Override
     public List<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished){
         return switch (sortType) {
             default -> findOrderedCustomPostsByPublished(postIds, isPublished, false);

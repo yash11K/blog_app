@@ -23,6 +23,16 @@ public class SearchOperationController extends AbstractBlogControl{
                 filterService);
     }
 
+    @GetMapping("/orderBy")
+    public String showHomePageWithOrderedPost(@RequestParam("orderBy")String orderBy, @RequestParam(value = "rawQuery", required = false)String rawQuery, RedirectAttributes redirectAttributes){
+        if(rawQuery!=null) {
+            redirectAttributes.addAttribute("rawQuery",rawQuery);
+        }
+        redirectAttributes.addAttribute("orderBy",orderBy);
+
+        return "redirect:/home";
+    }
+
     @GetMapping("/search")
     public String processSearchQuery(@RequestParam("query")String rawQuery, RedirectAttributes redirectAttributes){
         redirectAttributes.addAttribute("rawQuery",rawQuery);

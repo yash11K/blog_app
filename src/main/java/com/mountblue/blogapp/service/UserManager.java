@@ -4,6 +4,9 @@ import com.mountblue.blogapp.dao.UserDao;
 import com.mountblue.blogapp.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserManager implements UserService{
     private final UserDao userService;
@@ -22,5 +25,23 @@ public class UserManager implements UserService{
     @Override
     public User findUserById(int id) {
         return userService.findById(id);
+    }
+
+    @Override
+    public int findUserIdByName(String name) {
+        User user = findUserByName(name);
+        return user.getId();
+    }
+
+    public List<User> findUserList(List<Integer> ids){
+        List<User> users = new ArrayList<>();
+        for(int id : ids){
+            users.add(findUserById(id));
+        }
+        return users;
+    }
+
+    public List<User> findUsersLike(String userPattern){
+        return userService.findUserByNameLike(userPattern);
     }
 }

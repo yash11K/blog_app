@@ -20,4 +20,5 @@ public interface TagService{
 
     void findTagSetFromTagString(String tagsStr, Post post);
 
+    List<Tag> findTagByTagNames(List<String> tagNames);
 }

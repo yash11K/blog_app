@@ -35,12 +35,19 @@ public class SearchManager implements SearchService{
             query = query.trim();
             List<Post> matchingPosts = postService.findPostsByTitleContainingIgnoreCase(query);
             List<Tag> matchingTags  = tagService.findTagByNameContains(query);
+            List<User> matchingUsers =  userService.findUserByNameLike(query);
+
+            matchingPosts.addAll(postService.findPostsByContentContaining(query));
             for(Tag matchingTag: matchingTags){
                 Set<Post> postsEachTag = matchingTag.getPosts();
                 queryMatchingPosts.addAll(postsEachTag);
             }
             for(Post matchingPost : matchingPosts){
                 queryMatchingPosts.addAll(matchingPosts);
+            }
+            for(User matchingUser : matchingUsers){
+                Set<Post> postsEachUser = matchingUser.getPosts();
+                queryMatchingPosts.addAll(postsEachUser);
             }
         }
         List<Integer> postIdsQueryPosts = new ArrayList<>();
