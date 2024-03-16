@@ -40,36 +40,46 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public List<Post> findOrderedPostByPublished(boolean isPublished, boolean order) {
+    public List<Post> findOrderedCustomPostsByPublished(List<Integer> postIds,boolean isPublished,boolean order) {
         if(order){
-            return postService.findPostByIsPublishedOrderByPublishedAtAsc(isPublished);
+            return postService.findPostByIdInAndIsPublishedOrderByPublishedAtAsc(postIds ,isPublished);
         }
-        else return postService.findPostByIsPublishedOrderByPublishedAtDesc(isPublished);
+        else return postService.findPostByIdInAndIsPublishedOrderByPublishedAtDesc(postIds ,isPublished);
     }
 
     @Override
-    public List<Post> findOrderedPostByName(boolean order) {
+    public List<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order) {
         if(order){
-            return postService.findPostByIsPublishedOrderByTitleAsc(true);
+            return postService.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished);
         }
-        else return postService.findPostByIsPublishedOrderByTitleDesc(true);
+        else return postService.findPostByIdInAndIsPublishedOrderByTitleDesc(postIds, isPublished);
     }
 
     @Override
-    public List<Post> getPostsBySortType(String sortType, boolean isPublished){
+    public List<Integer> findIdByPublished(boolean isPublished) {
+        return postService.findAllIdsByIsPublished(true);
+    }
+
+    @Override
+    public List<Post> findPostByTitlePattern(String titlePattern) {
+        return postService.findPostsByTitleContainingIgnoreCase(titlePattern);
+    }
+
+    @Override
+    public List<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished){
         return switch (sortType) {
-            default -> findOrderedPostByPublished(isPublished,false);
+            default -> findOrderedCustomPostsByPublished(postIds, isPublished, false);
             case "dateAsc" -> {
-                yield findOrderedPostByPublished(isPublished,true);
+                yield findOrderedCustomPostsByPublished(postIds, isPublished, true);
             }
             case "dateDesc" -> {
-                yield findOrderedPostByPublished(isPublished,false);
+                yield findOrderedCustomPostsByPublished(postIds, isPublished, false);
             }
             case "nameAsc" -> {
-                yield findOrderedPostByName(true);
+                yield findOrderedCustomPostsByTitle(postIds, isPublished, true);
             }
             case "nameDesc" -> {
-                yield findOrderedPostByName(false);
+                yield findOrderedCustomPostsByTitle(postIds, isPublished, false);
             }
         };
     }

@@ -17,8 +17,9 @@ public class CommentOperationController extends AbstractBlogControl{
                                       TagService tagService,
                                       PostTagService postTagService,
                                       CommentService commentService,
-                                      UserService userService) {
-        super(postService, tagService, postTagService, commentService, userService);
+                                      UserService userService,
+                                      SearchService searchService) {
+        super(postService, tagService, postTagService, commentService, userService, searchService);
     }
 
     @PostMapping("/blog/newComment")

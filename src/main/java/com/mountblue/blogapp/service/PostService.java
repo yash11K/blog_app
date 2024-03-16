@@ -5,7 +5,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public interface PostService{
@@ -15,13 +14,19 @@ public interface PostService{
     @Transactional
     void deletePostById(int postId);
     static String createExcerpt(String content){
-        int excerptLength = 30;
+        int excerptLength = 50;
         return content.substring(0,excerptLength) + "....";
     }
 
-    List<Post> findOrderedPostByPublished(boolean isPublished, boolean order);
+    public List<Post> findOrderedCustomPostsByPublished(List<Integer> postIds,boolean isPublished,boolean order);
 
-    List<Post> findOrderedPostByName(boolean order);
+    public List<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order);
 
-    List<Post> getPostsBySortType(String sortType, boolean isPublished);
+    List<Integer> findIdByPublished(boolean isPublished);
+
+    List<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished);
+
+    public List<Post> findPostByTitlePattern(String titlePattern);
+
+
 }
