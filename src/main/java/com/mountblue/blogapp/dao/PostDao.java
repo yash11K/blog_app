@@ -1,6 +1,7 @@
 package com.mountblue.blogapp.dao;
 
 import com.mountblue.blogapp.model.Post;
+import com.mountblue.blogapp.model.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,9 +16,14 @@ public interface PostDao extends JpaRepository<Post, Integer> {
     void deleteById(int postId);
 
     @Query(value = "SELECT post_id FROM posts WHERE post_is_published = :isPublished", nativeQuery = true)
-    List<Integer> findAllIdsByIsPublished(@Param("isPublished")boolean post_is_published);
+    List<Integer> findAllIdsByIsPublished(@Param("isPublished")boolean isPublished);
+
+    @Query(value = "SELECT author_id FROM  posts WHERE post_is_published = :isPublished", nativeQuery = true)
+    List<String> findAllPostsByPublished(@Param("isPublished")boolean isPublished);
 
     List<Post> findPostsByTitleContainingIgnoreCase(String titlePattern);
+
+    List<Post> findPostsByContentContaining(String contentPattern);
 
     List<Post> findPostByIdInAndIsPublishedOrderByPublishedAtAsc(List<Integer> ids,boolean isPublished);
 
@@ -26,4 +32,6 @@ public interface PostDao extends JpaRepository<Post, Integer> {
     List<Post> findPostByIdInAndIsPublishedOrderByTitleDesc(List<Integer> ids, boolean isPublished);
 
     List<Post> findPostByIdInAndIsPublishedOrderByTitleAsc(List<Integer> ids, boolean isPublished);
+
+    List<Post> findPostsByTagsIn(List<Tag> tags);
 }

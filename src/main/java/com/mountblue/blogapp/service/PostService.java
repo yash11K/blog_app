@@ -28,5 +28,6 @@ public interface PostService{
 
     public List<Post> findPostByTitlePattern(String titlePattern);
 
+    public List<Post> findPostByContentPattern(String contentPattern);
 
 }

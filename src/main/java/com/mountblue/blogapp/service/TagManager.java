@@ -42,6 +42,16 @@ public class TagManager implements TagService{
     }
 
     @Override
+    public List<Tag> findALlTags() {
+        return tagService.findAll();
+    }
+
+    @Override
+    public List<Tag> findTagByTagNames(List<String> tagNames) {
+        return tagService.findTagByNameIn(tagNames);
+    }
+
+    @Override
     public void findTagSetFromTagString(String tagsStr, Post post) {
         int postId = post.getId();
         Set<Tag> postTags = new HashSet<>();

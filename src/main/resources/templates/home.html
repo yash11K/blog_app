@@ -11,7 +11,7 @@
 <body>
 
     <div class="header">
-        <header>Write Wise</header>
+        <header><a th:href="@{/home}">Write Wise</a></header>
         <form th:action="@{/search}">
             <label>Search:
                 <input type="text" name="query">
@@ -19,30 +19,40 @@
             </label>
         </form>
     </div>
-    <form th:action="@{/orderBy}" class="sort-by">
-        <div th:if="query!=null">
-            <input type="hidden" th:value="${query}" name="rawQuery">
+    <form th:action="@{/filter}">
+        <p>Filters: </p>
+        <div th:each="tag:${allTags}" class="filters">
+            <input type="checkbox" th:value="${tag.name}" name="tagsQuery" th:checked="${tagsQueryCollection.contains(tag.name)}">
+            <label th:for="${tag.name}" th:text="${tag.name}"></label>
         </div>
-        <label for="navbar-orderBy-button"> Order By: </label>
-        <select name="orderBy" id="navbar-orderBy-button" onchange="this.form.submit()" th:value="${sortType}">
-            <option value="dateDesc" th:selected="${sortType == 'dateDesc'}">published (Newest First)</option>
-            <option value="dateAsc" th:selected="${sortType == 'dateAsc'}">published (Oldest First)</option>
-            <option value="nameAsc" th:selected="${sortType == 'nameAsc'}">Name (A~Z)</option>
-            <option value="nameDesc" th:selected="${sortType == 'nameDesc'}">Name (Z~A)</option>
-        </select>
+        <input type="submit" name="submit-tag-filter">
     </form>
-    <div class="blogpost-container">
-        <a th:each="publishedPost:${publishedPosts}" th:href="@{/blog(postId=${publishedPost.id})}">
-            <div class = blogPosts>
-                <h2 th:text="${publishedPost.title}" class="postTitle"></h2>
-                <h4 th:text="'Author: '+${publishedPost.author.name}"></h4>
-                <p th:text="${publishedPost.createdAt}"></p>
-                <p th:text="${publishedPost.excerpt}" class="post-excerpt"></p>
-                <br>
+
+    <div class="pageContents">
+        <form th:action="@{/orderBy}" class="sort-by">
+            <div th:if="query!=null">
+                <input type="hidden" th:value="${query}" name="rawQuery">
             </div>
-        </a>
+            <label for="navbar-orderBy-button"> Order By: </label>
+            <select name="orderBy" id="navbar-orderBy-button" onchange="this.form.submit()" th:value="${sortType}">
+                <option value="dateDesc" th:selected="${sortType == 'dateDesc'}">published (Newest First)</option>
+                <option value="dateAsc" th:selected="${sortType == 'dateAsc'}">published (Oldest First)</option>
+                <option value="nameAsc" th:selected="${sortType == 'nameAsc'}">Name (A~Z)</option>
+                <option value="nameDesc" th:selected="${sortType == 'nameDesc'}">Name (Z~A)</option>
+            </select>
+        </form>
+        <div class="blogpost-container">
+            <a th:each="publishedPost:${publishedPosts}" th:href="@{/blog(postId=${publishedPost.id})}">
+                <div class = blogPosts>
+                    <h2 th:text="${publishedPost.title}" class="postTitle"></h2>
+                    <h4 th:text="'Author: '+${publishedPost.author.name}"></h4>
+                    <p th:text="${publishedPost.createdAt}"></p>
+                    <p th:text="${publishedPost.excerpt}" class="post-excerpt"></p>
+                    <br>
+                </div>
+            </a>
+        </div>
+
     </div>
-
-
 </body>
 </html>

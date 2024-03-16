@@ -39,4 +39,11 @@ public class SearchOperationController extends AbstractBlogControl{
         redirectAttributes.addAttribute("orderBy", "dateDesc");
         return "redirect:/home";
     }
+
+    @GetMapping("/filter")
+    public String processFilterQuery(@RequestParam("tagsQuery")String tagsQuery, RedirectAttributes redirectAttributes){
+        redirectAttributes.addAttribute("orderBy", "dateDesc");
+        redirectAttributes.addAttribute("tagsQuery", tagsQuery);
+        return "redirect:/home";
+    }
 }

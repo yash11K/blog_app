@@ -8,6 +8,8 @@ import java.util.List;
 
 @Service
 public interface TagService{
+
+    List<Tag> findALlTags();
     void saveTag(Tag tag);
 
     Tag findTagByName(String name);
