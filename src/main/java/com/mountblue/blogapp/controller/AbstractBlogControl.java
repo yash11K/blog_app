@@ -19,15 +19,23 @@ public abstract class AbstractBlogControl {
     final CommentService commentService;
     final UserService userService;
     final SearchService searchService;
+    final FilterService filterService;
 
     @Autowired
-    public AbstractBlogControl(PostService postService, TagService tagService, PostTagService postTagService, CommentService commentService, UserService userService, SearchService searchService) {
+    public AbstractBlogControl(PostService postService,
+                               TagService tagService,
+                               PostTagService postTagService,
+                               CommentService commentService,
+                               UserService userService,
+                               SearchService searchService,
+                               FilterService filterService) {
         this.postService = postService;
         this.tagService = tagService;
         this.postTagService = postTagService;
         this.commentService = commentService;
         this.userService = userService;
         this.searchService = searchService;
+        this.filterService = filterService;
     }
 
     static void addModelAttributeOfFullBlog(Model model, Post post, List<Comment> allCommentsOfPost) {

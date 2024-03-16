@@ -2,8 +2,10 @@ package com.mountblue.blogapp.service;
 
 import com.mountblue.blogapp.dao.PostDao;
 import com.mountblue.blogapp.dao.TagDao;
+import com.mountblue.blogapp.dao.UserDao;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
+import com.mountblue.blogapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,13 @@ import java.util.Set;
 public class SearchManager implements SearchService{
     private final TagDao tagService;
     private final PostDao postService;
+    private final UserDao userService;
 
     @Autowired
-    public SearchManager(TagDao tagService, PostDao postService) {
+    public SearchManager(TagDao tagService, PostDao postService, UserDao userService) {
         this.tagService = tagService;
         this.postService = postService;
+        this.userService = userService;
     }
 
     @Override

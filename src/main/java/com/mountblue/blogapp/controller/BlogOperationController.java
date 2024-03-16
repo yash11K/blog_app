@@ -20,8 +20,15 @@ public class BlogOperationController extends AbstractBlogControl{
                                    PostTagService postTagService,
                                    CommentService commentService,
                                    UserService userService,
-                                   SearchService searchService) {
-        super(postService, tagService, postTagService, commentService, userService, searchService);
+                                   SearchService searchService,
+                                   FilterService filterService) {
+        super(postService,
+                tagService,
+                postTagService,
+                commentService,
+                userService,
+                searchService,
+                filterService);
     }
 
     @GetMapping("/update")
