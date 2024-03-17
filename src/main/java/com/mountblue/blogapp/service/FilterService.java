@@ -10,4 +10,5 @@ import java.util.List;
 public interface FilterService {
     List<Integer> findPostIdByTagNames(String tagNames);
     List<Integer> findPostIdByAuthorNames(List<String> authorNames);
+    List<Integer> findPostIdByStartEndDate(String startDate, String endDate) throws ParseException;
 }

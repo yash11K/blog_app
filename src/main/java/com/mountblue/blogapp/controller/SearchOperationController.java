@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
+
 @Controller
 public class SearchOperationController extends AbstractBlogControl{
     public SearchOperationController(PostService postService,
@@ -24,9 +26,23 @@ public class SearchOperationController extends AbstractBlogControl{
     }
 
     @GetMapping("/orderBy")
-    public String showHomePageWithOrderedPost(@RequestParam("orderBy")String orderBy, @RequestParam(value = "rawQuery", required = false)String rawQuery, RedirectAttributes redirectAttributes){
-        if(rawQuery!=null) {
+    public String showHomePageWithOrderedPost(@RequestParam("orderBy")String orderBy,
+                                              @RequestParam(value = "rawQuery", required = false)String rawQuery,
+                                              @RequestParam(value = "tagQuery", required = false)String tagQuery,
+                                              @RequestParam(value = "startDate", required = false)String startDate,
+                                              @RequestParam(value = "endDate", required = false)String endDate,
+                                              RedirectAttributes redirectAttributes){
+        if(rawQuery!=null && !rawQuery.isEmpty()){
             redirectAttributes.addAttribute("rawQuery",rawQuery);
+        }
+        if(tagQuery !=null && !tagQuery.isEmpty()){
+            redirectAttributes.addAttribute("tagQuery", tagQuery);
+        }
+        if(startDate!=null && !startDate.isEmpty()){
+            redirectAttributes.addAttribute("from", startDate);
+        }
+        if(endDate!=null && !endDate.isEmpty()){
+            redirectAttributes.addAttribute("to", endDate);
         }
         redirectAttributes.addAttribute("orderBy",orderBy);
 
@@ -34,16 +50,30 @@ public class SearchOperationController extends AbstractBlogControl{
     }
 
     @GetMapping("/search")
-    public String processSearchQuery(@RequestParam("query")String rawQuery, RedirectAttributes redirectAttributes){
+    public String processSearchQuery(@RequestParam("query")String rawQuery,
+                                     RedirectAttributes redirectAttributes){
         redirectAttributes.addAttribute("rawQuery",rawQuery);
         redirectAttributes.addAttribute("orderBy", "dateDesc");
         return "redirect:/home";
     }
 
     @GetMapping("/filter")
-    public String processFilterQuery(@RequestParam("tagsQuery")String tagsQuery, RedirectAttributes redirectAttributes){
+    public String processFilterQuery(@RequestParam(value = "tagQuery", required = false)String tagQuery,
+                                     @RequestParam(value = "startDate", required = false)String startDate,
+                                     @RequestParam(value = "endDate", required = false)String endDate,
+                                     RedirectAttributes redirectAttributes){
+
+        if(startDate!=null && !startDate.isEmpty()){
+            redirectAttributes.addAttribute("from", startDate);
+        }
+        if(endDate!=null && !endDate.isEmpty()){
+            redirectAttributes.addAttribute("to", endDate);
+        }
+
+        if(tagQuery != null && !tagQuery.isEmpty()){
+            redirectAttributes.addAttribute("tagQuery", tagQuery);
+        }
         redirectAttributes.addAttribute("orderBy", "dateDesc");
-        redirectAttributes.addAttribute("tagsQuery", tagsQuery);
         return "redirect:/home";
     }
 }

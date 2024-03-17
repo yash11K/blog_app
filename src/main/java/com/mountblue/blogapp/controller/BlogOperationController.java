@@ -3,6 +3,7 @@ package com.mountblue.blogapp.controller;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
 import com.mountblue.blogapp.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import static com.mountblue.blogapp.service.PostService.createExcerpt;
 @Controller
 @RequestMapping("/home")
 public class BlogOperationController extends AbstractBlogControl{
+    @Autowired
     public BlogOperationController(PostService postService,
                                    TagService tagService,
                                    PostTagService postTagService,
@@ -45,8 +47,8 @@ public class BlogOperationController extends AbstractBlogControl{
     }
 
     @PostMapping("/submit-updates")
-    String submitPostUpdates(@ModelAttribute(name = "updatePost")Post updatedPost, @RequestParam("tagsStr")String tagsStr){
-        updatedPost.setAuthor(userService.findUserByName("yash"));
+    String submitPostUpdates(@ModelAttribute(name = "updatePost")Post updatedPost,
+                             @RequestParam("tagsStr")String tagsStr){
         postTagService.deletePostTagRelationByPostId(updatedPost.getId());
         tagService.findTagSetFromTagString(tagsStr, updatedPost);
         updatedPost.setExcerpt(createExcerpt(updatedPost.getContent()));

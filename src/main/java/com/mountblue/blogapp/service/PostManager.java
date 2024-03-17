@@ -5,6 +5,10 @@ import com.mountblue.blogapp.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +39,8 @@ public class PostManager implements PostService{
         postService.deleteById(postId);
     }
     static String createExcerpt(String content){
-        int excerptLength = 30;
-        return content.substring(0,excerptLength) + "....";
+        int excerptLength = 80;
+        return content.substring(0,excerptLength) + "...";
     }
 
     @Override
@@ -73,7 +77,7 @@ public class PostManager implements PostService{
     @Override
     public List<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished){
         return switch (sortType) {
-            default -> findOrderedCustomPostsByPublished(postIds, isPublished, false);
+            default -> findOrderedCustomPostsByPublished(postIds, isPublished, false) ;
             case "dateAsc" -> {
                 yield findOrderedCustomPostsByPublished(postIds, isPublished, true);
             }
@@ -87,5 +91,12 @@ public class PostManager implements PostService{
                 yield findOrderedCustomPostsByTitle(postIds, isPublished, false);
             }
         };
+    }
+
+    @Override
+    public Date setDateToday() throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date today = new Date();
+        return  formatter.parse(formatter.format(today));
     }
 }

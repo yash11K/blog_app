@@ -49,4 +49,13 @@ public class FilterManager  implements FilterService{
         return postIds;
     }
 
+    @Override
+    public List<Integer> findPostIdByStartEndDate(String startDate, String endDate) throws ParseException {
+        DateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+        Date from = stringToDate.parse(startDate);
+        Date end = stringToDate.parse(endDate);
+        List<Integer> postIdsBetween =  postService.findPostIdsByPublishedAtBetween(from, end);
+        System.out.println(postIdsBetween);
+        return postIdsBetween;
+    }
 }
