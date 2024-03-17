@@ -14,9 +14,9 @@
 <h1>Create a New Blog Post</h1>
 <h3>Choose the appropriate Topics for the blog</h3>
     <form th:action="@{/home/blog-publish}" method="post" th:object="${newPost}">
-            <label> Tags: ( `,` seperated values)
-                <input type="text" id="tags" name="newPostTagNames">
-            </label>
+        <label> Tags: ( `,` seperated values)
+            <input type="text" id="tags" name="newPostTagNames">
+        </label>
         <div>
             <label for="title">Title:</label><br>
             <input type="text" id="title" name="title" th:field="*{title}" required ><br>
@@ -26,7 +26,8 @@
             <textarea id="content" name="content" rows="5" cols="40" th:content="*{content}" required></textarea><br>
         </div>
         <div>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Publish" name="blogAction">
+            <input type="submit" value="SaveAsDraft" name="blogAction">
         </div>
     </form>
 </body>
