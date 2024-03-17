@@ -14,7 +14,7 @@
         <header><a th:href="@{/home}">Write Wise</a></header>
         <form th:action="@{/search}" class="search-form">
             <label>Search:
-                <input type="text" name="query" th:value="${query}">
+                <input type="text" name="rawQuery" th:value="${rawQuery}">
                 <input type="submit">
             </label>
         </form>
@@ -23,6 +23,7 @@
         <aside class="sidebar">
             <p>Filters: </p>
             <form th:action="@{/filter}">
+                <input type="hidden" th:value="${rawQuery}" name="rawQuery">
                 <input type="submit" value="apply filter" class="filters-submit-button">
                 <br>
                 <div class="filter-sidebar">
@@ -63,8 +64,8 @@
         </aside>
         <section class="blogpost-container">
             <form th:action="@{/orderBy}" class="sort-by">
-                <div th:if="query!=null">
-                    <input type="hidden" th:value="${query}" name="rawQuery">
+                <div th:if="rawQuery!=null">
+                    <input type="hidden" th:value="${rawQuery}" name="rawQuery">
                 </div>
                 <div th:if="tagQuery!=null">
                     <input type="hidden" th:value="${tagQuery}" name="tagQuery">

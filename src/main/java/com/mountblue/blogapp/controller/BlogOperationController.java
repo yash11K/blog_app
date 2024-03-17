@@ -53,6 +53,7 @@ public class BlogOperationController extends AbstractBlogControl{
         tagService.findTagSetFromTagString(tagsStr, updatedPost);
         updatedPost.setExcerpt(createExcerpt(updatedPost.getContent()));
         updatedPost.setUpdatedAt(new Date());
+        updatedPost.setPublishedAt(new Date());
         updatedPost.setPublished(true);
         postService.savePost(updatedPost);
         return "redirect:/home";

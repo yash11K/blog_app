@@ -5,11 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Date;
-
 @Controller
-public class SearchOperationController extends AbstractBlogControl{
-    public SearchOperationController(PostService postService,
+public class FilterOperationController extends AbstractBlogControl{
+    public FilterOperationController(PostService postService,
                                      TagService tagService,
                                      PostTagService postTagService,
                                      CommentService commentService,
@@ -50,7 +48,7 @@ public class SearchOperationController extends AbstractBlogControl{
     }
 
     @GetMapping("/search")
-    public String processSearchQuery(@RequestParam("query")String rawQuery,
+    public String processSearchQuery(@RequestParam("rawQuery")String rawQuery,
                                      RedirectAttributes redirectAttributes){
         redirectAttributes.addAttribute("rawQuery",rawQuery);
         redirectAttributes.addAttribute("orderBy", "dateDesc");
@@ -61,6 +59,7 @@ public class SearchOperationController extends AbstractBlogControl{
     public String processFilterQuery(@RequestParam(value = "tagQuery", required = false)String tagQuery,
                                      @RequestParam(value = "startDate", required = false)String startDate,
                                      @RequestParam(value = "endDate", required = false)String endDate,
+                                     @RequestParam(value = "rawQuery", required = false)String rawQuery,
                                      RedirectAttributes redirectAttributes){
 
         if(startDate!=null && !startDate.isEmpty()){

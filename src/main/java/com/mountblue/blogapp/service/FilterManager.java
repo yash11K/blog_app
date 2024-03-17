@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,9 +40,9 @@ public class FilterManager  implements FilterService{
     }
 
     @Override
-    public List<Integer> findPostIdByAuthorNames(List<String> authorNames) {
+    public List<Integer> findPostIdByAuthorNames(String authorNames) {
         List<Integer> postIds = new ArrayList<>();
-        List<User> users = userService.findUserByNameIn(authorNames);
+        List<User> users = userService.findUserByNameIn(List.of(authorNames.split(",")));
         List<Post> posts = postService.findPostsByAuthorIn(users);
         for(Post post : posts){
             postIds.add(post.getId());
