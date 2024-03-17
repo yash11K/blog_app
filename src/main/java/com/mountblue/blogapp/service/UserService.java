@@ -14,4 +14,8 @@ public interface UserService {
     int findUserIdByName(String name);
 
     List<User> findUsersLike(String userPattern);
+
+    List<User> findUsersByNames(List<String> userNames);
+
+    List<User> findAllUsers();
 }

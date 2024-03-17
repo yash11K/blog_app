@@ -44,4 +44,19 @@ public class UserManager implements UserService{
     public List<User> findUsersLike(String userPattern){
         return userService.findUserByNameLike(userPattern);
     }
+
+    @Override
+    public List<User> findUsersByNames(List<String> userNames) {
+        List<User> users = new ArrayList<>();
+        for(String userName : userNames){
+            User user = findUserByName(userName);
+            users.add(user);
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> findAllUsers(){
+        return userService.findAll();
+    }
 }
