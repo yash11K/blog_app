@@ -24,17 +24,12 @@ public class Tag {
     private int id;
     @Column(name = "tag_name", unique = true)
     private String name;
-    @Column(name = "tag_created_at", updatable = false)
+    @Column(name = "tag_created_at", columnDefinition = "DATE" ,updatable = false)
     @CreationTimestamp
     private Date createdAt;
-    @Column(name = "tag_updated_at")
-    @UpdateTimestamp //fordev
+    @Column(name = "tag_updated_at",columnDefinition = "DATE")
     private Date updatedAt;
     @ManyToMany(mappedBy = "tags",
             cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     private Set<Post> posts;
-
-    public Tag(String name) {
-        this.name = name;
-    }
 }

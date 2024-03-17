@@ -29,4 +29,16 @@ public class FilterManager  implements FilterService{
         }
         return postIds;
     }
+
+    @Override
+    public List<Integer> findPostIdByAuthorNames(List<String> authorNames) {
+        List<Integer> postIds = new ArrayList<>();
+        List<User> users = userService.findUserByNameIn(authorNames);
+        List<Post> posts = postService.findPostsByAuthorIn(users);
+        for(Post post : posts){
+            postIds.add(post.getId());
+        }
+        return postIds;
+    }
+
 }

@@ -20,9 +20,9 @@ public class Comment {
     private int id;
     @Column(name = "comment_author_name")
     private String authorName;
-    @Column(name = "comment_created_at")
+    @Column(name = "comment_created_at",columnDefinition = "DATE",updatable = false)
     private Date created_at;
-    @Column(name = "comment_updated_at")
+    @Column(name = "comment_updated_at", columnDefinition = "DATE")
     private Date updated_at;
     @Column(name = "comment_content", columnDefinition = "TEXT")
     private String comment;

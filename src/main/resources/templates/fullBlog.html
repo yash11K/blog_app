@@ -10,33 +10,37 @@
 </head>
     <body>
         <header>Write Wise</header>
-        <h2 th:text="${post.title}"></h2>
-        <p th:text="${post.author.name}"></p>
-        <p th:text="${post.createdAt}"></p>
-        <div th:each="postTag:${postTags}">
-            <span th:text="${postTag.name}"></span>
+        <div class="blog-container">
+            <h2 th:text="${post.title}" class="blog-author"></h2>
+            <p th:text="${post.author.name}" class="blog-author"></p>
+            <p th:text="${post.createdAt}" class="blog-timestamp"></p>
+            <div th:each="postTag:${postTags}" class="blog-tags-container">
+                <span th:text="${postTag.name}" class="blog-tag"></span>
+            </div>
+            <p th:text="${post.content}" class="blog-content"></p>
+            <div class="blog-actions">
+                <form th:action="@{/home/update}">
+                    <input type="hidden" th:value="${post.id}" name="postId">
+                    <input type="submit" value="Update" class="action-button">
+                </form>
+                <form th:action="@{/home/archive}">
+                    <input type="hidden" th:value="${post.id}" name="postId">
+                    <input type="submit" value="Archive" class="action-button">
+                </form>
+                <form th:action="@{/home/delete}">
+                    <input type="hidden" th:value="${post.id}" name="postId">
+                    <input type="submit" value="Delete" class="action-button">
+                </form>
+            </div>
         </div>
-        <p th:text="${post.content}"></p>
-        <form th:action="@{/home/update}">
-            <input type="hidden" th:value="${post.id}" name="postId">
-            <input type="submit" value="Update">
-        </form>
-        <form th:action="@{/home/archive}">
-            <input type="hidden" th:value="${post.id}" name="postId">
-            <input type="submit" value="Archive">
-        </form>
-        <form th:action="@{/home/delete}">
-            <input type="hidden" th:value="${post.id}" name="postId">
-            <input type="submit" value="Delete">
-        </form>
         <br><br>
-        <div th:each="postedComment:${postedComments}" class="comment">
-            <table>
+        <div class="comment">
+            <table class="comment-table" th:each="postedComment:${postedComments}">
                 <tr>
-                    <td>
+                    <td class="comment-author">
                         <span th:text="${postedComment.author.name}" class="comment-author"></span>
                     </td>
-                    <td th:if="${commentIdToUpdate==postedComment.id}">
+                    <td th:if="${commentIdToUpdate==postedComment.id}" class="comment-comment">
                         <form method="post" th:action="@{/blog/updateCommentSubmit}">
                             <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
                             <input type="text" th:value="${postedComment.comment}" name="updatedComment">
@@ -44,16 +48,16 @@
                         </form>
                     </td>
 
-                    <td th:unless="${commentIdToUpdate==postedComment.id}">
+                    <td th:unless="${commentIdToUpdate==postedComment.id}" class="comment-comment">
                         <p th:text="${postedComment.comment}"></p>
                     </td>
-                    <td>
+                    <td class="comment-action">
                         <form th:action="@{/blog/deleteComment}">
                             <input type="hidden" name="commentIdToDelete" th:value="${postedComment.id}">
                             <input type="submit" value="delete" name="deleteComment">
                         </form>
                     </td>
-                    <td th:unless="${commentIdToUpdate==postedComment.id}">
+                    <td th:unless="${commentIdToUpdate==postedComment.id}" class="comment-action">
                         <form th:action="@{/blog/updateComment}">
                             <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
                             <input type="submit" value="update">
@@ -64,12 +68,12 @@
                 </tr>
             </table>
             <br>
+            <form th:object="${comments}" th:action="@{/blog/newComment(postId=${post.id})}" method="post" class="new-comment">
+                <label>Comment:
+                    <input type="text" th:field="*{comment}" placeholder="post a comment">
+                    <input type="submit" value="comment">
+                </label>
+            </form>
         </div>
-        <form th:object="${comments}" th:action="@{/blog/newComment(postId=${post.id})}" method="post" class="new-comment">
-            <label>Comment:
-                <input type="text" th:field="*{comment}" placeholder="post a comment">
-                <input type="submit" value="comment">
-            </label>
-        </form>
     </body>
 </html>

@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -32,14 +33,14 @@ public class Post {
     private String content;
     @Column(name = "post_excerpt")
     private String excerpt;
-    @Column(name = "post_published_at")
-    @CreationTimestamp //fordev
+    @Column(name = "post_published_at", columnDefinition = "DATE")
+    @DateTimeFormat(pattern = "dd-mm-yyyy")
     private Date publishedAt;
-    @Column(name = "post_created_at", updatable = false)
-    @CreationTimestamp //fordev
+    @Column(name = "post_created_at", columnDefinition = "DATE", updatable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date createdAt;
-    @Column(name = "post_updated_at")
-    @UpdateTimestamp
+    @Column(name = "post_updated_at", columnDefinition = "DATE")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date updatedAt;
     @Column(name = "post_is_published")
     private boolean isPublished;

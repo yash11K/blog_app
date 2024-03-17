@@ -1,53 +1,130 @@
-/* home.css */
+/* No need to repeat general styles, they are likely defined elsewhere */
 
-/* Header style */
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    background-color: #333; /* Dark grey background */
-    color: #fff; /* White text color */
-    padding: 20px 0; /* Add padding top and bottom */
-    margin: 0; /* Remove default margin */
-}
-
-/* Blog post content styles */
+/* Header styles */
 body {
-    margin-top: 60px; /* Add top margin to body to push content below fixed header */
-    font-family: Arial, sans-serif; /* Use Arial font for text */
-    color: #333; /* Blackish text color */
-    background-color: #f0f0f0; /* Light grey background */
-    padding: 20px; /* Add padding to body */
+    margin: 0 100px;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
-h2 {
-    text-align: center; /* Center align the title */
+header {
+    background-color: #333; /* Dark grey header background */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
 }
 
-p {
-    margin-bottom: 10px; /* Add bottom margin to paragraphs */
+.blog-container {
+    max-width: 1400px;
+    margin: 100px auto 30px;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light grey background */
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-/* Tag styles */
-div {
-    margin-top: 10px; /* Add top margin to tag div */
+.blog-author {
+    font-size: 1.5rem;
+    margin: 0 0 10px;
 }
 
-span {
-    display: inline-block; /* Make tag spans inline-block for spacing */
-    background-color: #ddd; /* Light grey background for tags */
-    color: #333; /* Dark grey text color for tags */
-    padding: 5px 10px; /* Add padding to tags */
-    margin-right: 5px; /* Add right margin to tags for spacing */
-    border-radius: 5px; /* Add border radius to tags */
+.blog-timestamp {
+    color: #888;
+    margin-bottom: 10px;
 }
 
-span:last-child {
-    margin-right: 0; /* Remove right margin from last tag */
+.blog-tags-container {
+    margin-bottom: 10px;
 }
 
-.comment-author{
+.blog-tag {
     display: inline-block;
+    background-color: #007bff; /* Blue tag background */
+    color: white;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 3px;
+}
+
+.blog-content {
+    line-height: 1.6;
+}
+
+.blog-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+/* Blog actions styles */
+.blog-actions {
+    display: flex;
+    justify-content: flex-end; /* Move buttons to the right */
+    margin-top: 1rem; /* Add some space after the post content */
+}
+
+.blog-actions form { /* Style action forms */
+    margin-right: 0.5rem;
+}
+
+/* Fixed width for blog actions to prevent resizing issues */
+.blog-actions {
+    width: fit-content; /* Adjust width as needed */
+}
+
+/* Comments styles */
+.comment {
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1400px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 0.3rem 1rem; /* Reduced padding for less height */
+}
+
+.comment-author {
+    font-weight: bold;
+}
+
+.comment-table { /* Style comment table */
+    width: 100%; /* Stretch the table to full width */
+}
+
+.comment-comment { /* Style comment text area */
+    width: 100%; /* Stretch comment text area to full width */
+}
+
+.comment-comment form { /* Style forms within comments */
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.comment-action { /* Style action forms within comments */
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+/* New comment form styles */
+.new-comment {
+    margin-top: 1rem; /* Add some space above the new comment form */
+}
+
+/* Links */
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+.postTitle:hover {
+    text-decoration: underline;
+}
+
+/* Style blog posts to appear in a single line */
+.blogPosts {
+    display: flex; /* Change display to flex for single line layout */
+    flex-wrap: wrap; /* Allow posts to wrap if they overflow the container */
+}
+
+.blogPosts .blog-container { /* Add margin for spacing between posts */
+    margin-right: 1rem;
+    margin-bottom: 1rem; /* Add some space at the bottom for better visibility */
 }

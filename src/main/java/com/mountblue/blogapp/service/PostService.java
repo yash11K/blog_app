@@ -4,6 +4,8 @@ import com.mountblue.blogapp.model.Post;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,4 +32,5 @@ public interface PostService{
 
     public List<Post> findPostByContentPattern(String contentPattern);
 
+    Date setDateToday() throws ParseException;
 }
