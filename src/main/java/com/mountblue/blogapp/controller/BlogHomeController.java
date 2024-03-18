@@ -1,6 +1,7 @@
 package com.mountblue.blogapp.controller;
 
 import com.mountblue.blogapp.model.Post;
+import com.mountblue.blogapp.model.Tag;
 import com.mountblue.blogapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,9 +42,9 @@ public class BlogHomeController extends AbstractBlogControl{
                                RedirectAttributes redirectAttributes) throws ParseException {
         boolean processRawQuery = false;
         boolean processTagQuery = false;
+        boolean processDateQuery = false;
         List<Post> publishedPosts;
         List<Integer> postIdsQueryPosts = new ArrayList<>();
-        List<String> tagQueryCollection = new ArrayList<>();
         Set<Integer> postIdsCollector = new HashSet<>();
         if (orderBy==null){
             redirectAttributes.addAttribute("orderBy", "dateDesc");
@@ -56,40 +57,38 @@ public class BlogHomeController extends AbstractBlogControl{
         endDate = (endDate!=null && !endDate.isEmpty()? endDate : null);
 
         if (rawQuery != null) {
-            System.out.println("search");
             processRawQuery = postIdsCollector.addAll(searchService.processSearchQuery(rawQuery));
             model.addAttribute("rawQuery", rawQuery);
         }
         if(tagQuery !=null){
-            System.out.println("tag Query");
             model.addAttribute("tagQuery", tagQuery);
             if(processRawQuery){
-                List<Integer> tagQueryResults = filterService.findPostIdByTagNames(tagQuery);
-                for(int postId : tagQueryResults){
-                    if(!postIdsCollector.contains(postId)){
-                        postIdsCollector.remove(postId);
-                    }
-                }
-            }
-            else {
+                Set<Integer> tagQueryResults = filterService.findPostIdByTagNames(tagQuery);
+                postIdsCollector.retainAll(tagQueryResults);
+            } else {
                 processTagQuery = postIdsCollector.addAll(filterService.findPostIdByTagNames(tagQuery));
             }
         }
-//        if(startDate!=null || endDate!=null){
-//            System.out.println("date");
-//            postIdsQueryPosts = filterService.findPostIdByStartEndDate(startDate, endDate);
-//            publishedPosts = postService.findPostsBySortType(orderBy, postIdsQueryPosts, true);
-//        }
-        if(!processRawQuery && !processTagQuery){
-            System.out.println("else");
+        if(startDate!=null || endDate!=null){
+            model.addAttribute("from", startDate);
+            model.addAttribute("to", endDate);
+            if(processRawQuery || processTagQuery){
+                List<Integer> dateQueryResults = filterService.findPostIdByStartEndDate(startDate, endDate);
+                postIdsCollector.retainAll(dateQueryResults);
+            }
+            else {
+                processDateQuery = postIdsCollector.addAll(filterService.findPostIdByStartEndDate(startDate, endDate));
+            }
+        }
+        if(!processRawQuery && !processTagQuery && !processDateQuery){
             boolean b = postIdsCollector.addAll(postService.findIdByPublished(true));
         }
         boolean b = postIdsQueryPosts.addAll(postIdsCollector);
+        List<Tag> relativeTags = filterService.findTagsByPostIds(postIdsQueryPosts);
         publishedPosts = postService.findPostsBySortType(orderBy, postIdsQueryPosts, true);
         model.addAttribute("publishedPosts", publishedPosts);
-        model.addAttribute("tagQueryCollection", tagQueryCollection);
         model.addAttribute("allUsers", userService.findAllUsers());
-        model.addAttribute("allTags", tagService.findALlTags());
+        model.addAttribute("allTags", relativeTags);
         model.addAttribute("sortType", orderBy);
         return "home";
     }

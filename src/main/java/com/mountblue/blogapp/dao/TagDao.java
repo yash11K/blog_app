@@ -18,4 +18,6 @@ public interface TagDao extends JpaRepository<Tag, Integer> {
     List<Tag> findTagByNameContains(String tagPatter);
 
     List<Tag> findTagByNameIn(List<String> tagNames);
+
+    List<Tag> findTagByIdIn(List<Integer> tagIds);
 }

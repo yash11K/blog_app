@@ -83,7 +83,7 @@
                     <div class = blogPosts>
                         <h2 th:text="${publishedPost.title}" class="post-title"></h2>
                         <h4 th:text="'Author: '+${publishedPost.author.name}" class="post-author"></h4>
-                        <p th:text="${publishedPost.publishedAt.toGMTString()}" class="post-createdat"></p>
+                        <p th:text="${publishedPost.publishedAt.toLocaleString()}" class="post-createdat"></p>
                         <p th:text="${publishedPost.excerpt}" class="post-excerpt"></p>
                         <br>
                     </div>
