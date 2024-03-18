@@ -30,18 +30,10 @@ public class FilterOperationController extends AbstractBlogControl{
                                               @RequestParam(value = "startDate", required = false)String startDate,
                                               @RequestParam(value = "endDate", required = false)String endDate,
                                               RedirectAttributes redirectAttributes){
-        if(rawQuery!=null && !rawQuery.isEmpty()){
-            redirectAttributes.addAttribute("rawQuery",rawQuery);
-        }
-        if(tagQuery !=null && !tagQuery.isEmpty()){
-            redirectAttributes.addAttribute("tagQuery", tagQuery);
-        }
-        if(startDate!=null && !startDate.isEmpty()){
-            redirectAttributes.addAttribute("from", startDate);
-        }
-        if(endDate!=null && !endDate.isEmpty()){
-            redirectAttributes.addAttribute("to", endDate);
-        }
+        addRedirectAttribute("rawQuery", rawQuery, redirectAttributes);
+        addRedirectAttribute("from", startDate, redirectAttributes);
+        addRedirectAttribute("to", endDate, redirectAttributes);
+        addRedirectAttribute("tagQuery", tagQuery, redirectAttributes);
         redirectAttributes.addAttribute("orderBy",orderBy);
 
         return "redirect:/home";
@@ -62,16 +54,10 @@ public class FilterOperationController extends AbstractBlogControl{
                                      @RequestParam(value = "rawQuery", required = false)String rawQuery,
                                      RedirectAttributes redirectAttributes){
 
-        if(startDate!=null && !startDate.isEmpty()){
-            redirectAttributes.addAttribute("from", startDate);
-        }
-        if(endDate!=null && !endDate.isEmpty()){
-            redirectAttributes.addAttribute("to", endDate);
-        }
-
-        if(tagQuery != null && !tagQuery.isEmpty()){
-            redirectAttributes.addAttribute("tagQuery", tagQuery);
-        }
+        addRedirectAttribute("rawQuery", rawQuery, redirectAttributes);
+        addRedirectAttribute("from", startDate, redirectAttributes);
+        addRedirectAttribute("to", endDate, redirectAttributes);
+        addRedirectAttribute("tagQuery", tagQuery, redirectAttributes);
         redirectAttributes.addAttribute("orderBy", "dateDesc");
         return "redirect:/home";
     }
