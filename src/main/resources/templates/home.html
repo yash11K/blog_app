@@ -23,15 +23,7 @@
         <aside class="sidebar">
             <p>Filters: </p>
             <form th:action="@{/filter}">
-                <div th:if="rawQuery!=null">
-                    <input type="hidden" th:value="${rawQuery}" name="rawQuery">
-                </div>
-                <div th:if="from!=null">
-                    <input type="hidden" th:value="${from}" name="startDate">
-                </div>
-                <div th:if="to!=null">
-                    <input type="hidden" th:value="${to}" name="endDate">
-                </div>
+                <input type="hidden" th:value="${rawQuery}" name="rawQuery">
                 <input type="submit" value="apply filter" class="filters-submit-button">
                 <br>
                 <div class="filter-sidebar">
@@ -60,11 +52,11 @@
                     <div class="filter-sidebar">
                         <p>Published Between : </P>
                         <label> Start Date
-                            <input type="date" name="startDate">
+                            <input type="date" name="from" th:value="${from}">
                         </label>
                         <br>
                         <label> End Date
-                            <input type="date" name="endDate">
+                            <input type="date" name="to" th:value="${to}">
                         </label>
                     </div>
                 </div>
@@ -72,12 +64,9 @@
         </aside>
         <section class="blogpost-container">
             <form th:action="@{/orderBy}" class="sort-by">
-                <div th:if="rawQuery!=null">
-                    <input type="hidden" th:value="${rawQuery}" name="rawQuery">
-                </div>
-                <div th:if="tagQuery!=null">
-                    <input type="hidden" th:value="${tagQuery}" name="tagQuery">
-                </div>
+                <input type="hidden" th:value="${rawQuery}" name="rawQuery">
+                <input type="hidden" th:value="${from}" name="from">
+                <input type="hidden" th:value="${to}" name="to">
                 <label for="navbar-orderBy-button"> Order By: </label>
                 <select name="orderBy" id="navbar-orderBy-button" onchange="this.form.submit()" th:value="${sortType}" class="dropdown-content">
                     <option value="dateDesc" th:selected="${sortType == 'dateDesc'}">published (Newest First)</option>
@@ -103,15 +92,15 @@
         <nav aria-label="Pagination">
             <ul class="pagination">
                 <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/home(page=${page - 1}, orderBy=${sortType}, rawQuery=${rawQuery?:null}, tagQuery=${tagQuery?:null}, from=${from?:null}, to=${to?:null})}" aria-label="Previous">
+                    <a class="page-link" th:href="@{/home(page=${page - 1}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == page} ? 'active'">
-                    <a class="page-link" th:href="@{/home(page=${i}, orderBy=${sortType}, rawQuery=${rawQuery?:null}, tagQuery=${tagQuery?:null}, from=${from?:null}, to=${to?:null})}" th:text="${i + 1}"></a>
+                    <a class="page-link" th:href="@{/home(page=${i}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" th:text="${i + 1}"></a>
                 </li>
                 <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/home(page=${page + 1}, orderBy=${sortType}, rawQuery=${rawQuery?:null}, tagQuery=${tagQuery?:null}, from=${from?:null}, to=${to?:null})}" aria-label="Next">
+                    <a class="page-link" th:href="@{/home(page=${page + 1}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

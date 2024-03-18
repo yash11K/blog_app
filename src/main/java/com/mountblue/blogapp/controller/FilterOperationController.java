@@ -27,8 +27,8 @@ public class FilterOperationController extends AbstractBlogControl{
     public String showHomePageWithOrderedPost(@RequestParam("orderBy")String orderBy,
                                               @RequestParam(value = "rawQuery", required = false)String rawQuery,
                                               @RequestParam(value = "tagQuery", required = false)String tagQuery,
-                                              @RequestParam(value = "startDate", required = false)String startDate,
-                                              @RequestParam(value = "endDate", required = false)String endDate,
+                                              @RequestParam(value = "from", required = false)String startDate,
+                                              @RequestParam(value = "to", required = false)String endDate,
                                               RedirectAttributes redirectAttributes){
         addRedirectAttribute("rawQuery", rawQuery, redirectAttributes);
         addRedirectAttribute("from", startDate, redirectAttributes);
@@ -49,11 +49,11 @@ public class FilterOperationController extends AbstractBlogControl{
 
     @GetMapping("/filter")
     public String processFilterQuery(@RequestParam(value = "tagQuery", required = false)String tagQuery,
-                                     @RequestParam(value = "startDate", required = false)String startDate,
-                                     @RequestParam(value = "endDate", required = false)String endDate,
+                                     @RequestParam(value = "from", required = false)String startDate,
+                                     @RequestParam(value = "to", required = false)String endDate,
                                      @RequestParam(value = "rawQuery", required = false)String rawQuery,
                                      RedirectAttributes redirectAttributes){
-
+        System.out.println("#####"+startDate + endDate+"#####");
         addRedirectAttribute("rawQuery", rawQuery, redirectAttributes);
         addRedirectAttribute("from", startDate, redirectAttributes);
         addRedirectAttribute("to", endDate, redirectAttributes);
