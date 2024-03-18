@@ -2,6 +2,8 @@ package com.mountblue.blogapp.service;
 
 import com.mountblue.blogapp.model.Post;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -20,17 +22,17 @@ public interface PostService{
         return content.substring(0,excerptLength) + "....";
     }
 
-    public List<Post> findOrderedCustomPostsByPublished(List<Integer> postIds,boolean isPublished,boolean order);
+    Page<Post> findOrderedCustomPostsByPublished(List<Integer> postIds, boolean isPublished, boolean order, Pageable pageable);
 
-    public List<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order);
+    Page<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order, Pageable pageable);
+
+    Page<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished, Pageable pageable);
 
     List<Integer> findIdByPublished(boolean isPublished);
 
-    List<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished);
+    List<Post> findPostByTitlePattern(String titlePattern);
 
-    public List<Post> findPostByTitlePattern(String titlePattern);
-
-    public List<Post> findPostByContentPattern(String contentPattern);
+    List<Post> findPostByContentPattern(String contentPattern);
 
     Date setDateToday() throws ParseException;
 }

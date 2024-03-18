@@ -13,7 +13,7 @@
         <div class="blog-container">
             <h2 th:text="${post.title}" class="blog-author"></h2>
             <p th:text="${post.author.name}" class="blog-author"></p>
-            <p th:text="${post.createdAt}" class="blog-timestamp"></p>
+            <p th:text="${post.publishedAt.toLocaleString()}" class="blog-timestamp"></p>
             <div th:each="postTag:${postTags}" class="blog-tags-container">
                 <span th:text="${postTag.name}" class="blog-tag"></span>
             </div>

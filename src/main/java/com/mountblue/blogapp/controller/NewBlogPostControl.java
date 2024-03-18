@@ -49,6 +49,7 @@ public class NewBlogPostControl extends AbstractBlogControl{
         User testUser = userService.findUserById(103);
         newPost.setAuthor(testUser);
         newPost.setCreatedAt(postService.setDateToday());
+        newPost.setPublishedAt(postService.setDateToday());
         tagService.findTagSetFromTagString(newPostTagNamesStr, newPost);
         newPost.setPublished(blogAction.equals(blogActionPublish));
         newPost.setExcerpt(createExcerpt(newPost.getContent()));

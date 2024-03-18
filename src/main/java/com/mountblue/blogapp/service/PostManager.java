@@ -3,6 +3,8 @@ package com.mountblue.blogapp.service;
 import com.mountblue.blogapp.dao.PostDao;
 import com.mountblue.blogapp.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -44,19 +46,19 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public List<Post> findOrderedCustomPostsByPublished(List<Integer> postIds,boolean isPublished,boolean order) {
+    public Page<Post> findOrderedCustomPostsByPublished(List<Integer> postIds, boolean isPublished, boolean order, Pageable pageable) {
         if(order){
-            return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtAsc(postIds ,isPublished);
+            return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtAsc(postIds ,isPublished, pageable);
         }
-        else return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtDesc(postIds ,isPublished);
+        else return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtDesc(postIds ,isPublished, pageable);
     }
 
     @Override
-    public List<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order) {
+    public Page<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order, Pageable pageable) {
         if(order){
-            return postDao.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished);
+            return postDao.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished, pageable);
         }
-        else return postDao.findPostByIdInAndIsPublishedOrderByTitleDesc(postIds, isPublished);
+        else return postDao.findPostByIdInAndIsPublishedOrderByTitleDesc(postIds, isPublished, pageable);
     }
 
     @Override
@@ -75,20 +77,20 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public List<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished){
+    public Page<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished, Pageable pageable){
         return switch (sortType) {
-            default -> findOrderedCustomPostsByPublished(postIds, isPublished, false) ;
+            default -> findOrderedCustomPostsByPublished(postIds, isPublished, false, pageable) ;
             case "dateAsc" -> {
-                yield findOrderedCustomPostsByPublished(postIds, isPublished, true);
+                yield findOrderedCustomPostsByPublished(postIds, isPublished, true, pageable);
             }
             case "dateDesc" -> {
-                yield findOrderedCustomPostsByPublished(postIds, isPublished, false);
+                yield findOrderedCustomPostsByPublished(postIds, isPublished, false, pageable);
             }
             case "nameAsc" -> {
-                yield findOrderedCustomPostsByTitle(postIds, isPublished, true);
+                yield findOrderedCustomPostsByTitle(postIds, isPublished, true, pageable);
             }
             case "nameDesc" -> {
-                yield findOrderedCustomPostsByTitle(postIds, isPublished, false);
+                yield findOrderedCustomPostsByTitle(postIds, isPublished, false, pageable);
             }
         };
     }

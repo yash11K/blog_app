@@ -23,9 +23,15 @@
         <aside class="sidebar">
             <p>Filters: </p>
             <form th:action="@{/filter}">
-                <input type="hidden" th:value="${rawQuery}" name="rawQuery">
-<!--                <input type="hidden" th:value="${from}" name="startDate">-->
-<!--                <input type="hidden" th:value="${to}" name="endDate">-->
+                <div th:if="rawQuery!=null">
+                    <input type="hidden" th:value="${rawQuery}" name="rawQuery">
+                </div>
+                <div th:if="from!=null">
+                    <input type="hidden" th:value="${from}" name="startDate">
+                </div>
+                <div th:if="to!=null">
+                    <input type="hidden" th:value="${to}" name="endDate">
+                </div>
                 <input type="submit" value="apply filter" class="filters-submit-button">
                 <br>
                 <div class="filter-sidebar">
@@ -92,6 +98,25 @@
                 </a>
             </div>
         </section>
+    </div>
+    <div th:if="${totalPages > 1}">
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/home(page=${page - 1}, orderBy=${sortType}, rawQuery=${rawQuery?:null}, tagQuery=${tagQuery?:null}, from=${from?:null}, to=${to?:null})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == page} ? 'active'">
+                    <a class="page-link" th:href="@{/home(page=${i}, orderBy=${sortType}, rawQuery=${rawQuery?:null}, tagQuery=${tagQuery?:null}, from=${from?:null}, to=${to?:null})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/home(page=${page + 1}, orderBy=${sortType}, rawQuery=${rawQuery?:null}, tagQuery=${tagQuery?:null}, from=${from?:null}, to=${to?:null})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </body>
 </html>

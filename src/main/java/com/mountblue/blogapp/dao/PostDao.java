@@ -3,6 +3,8 @@ package com.mountblue.blogapp.dao;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
 import com.mountblue.blogapp.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,13 +29,13 @@ public interface PostDao extends JpaRepository<Post, Integer> {
 
     List<Post> findPostsByContentContaining(String contentPattern);
 
-    List<Post> findPostByIdInAndIsPublishedOrderByPublishedAtAsc(List<Integer> ids,boolean isPublished);
+    Page<Post> findPostByIdInAndIsPublishedOrderByPublishedAtAsc(List<Integer> ids, boolean isPublished, Pageable pageable);
 
-    List<Post> findPostByIdInAndIsPublishedOrderByPublishedAtDesc(List<Integer> ids,boolean isPublished);
+    Page<Post> findPostByIdInAndIsPublishedOrderByPublishedAtDesc(List<Integer> ids, boolean isPublished, Pageable pageable);
 
-    List<Post> findPostByIdInAndIsPublishedOrderByTitleDesc(List<Integer> ids, boolean isPublished);
+    Page<Post> findPostByIdInAndIsPublishedOrderByTitleDesc(List<Integer> ids, boolean isPublished, Pageable pageable);
 
-    List<Post> findPostByIdInAndIsPublishedOrderByTitleAsc(List<Integer> ids, boolean isPublished);
+    Page<Post> findPostByIdInAndIsPublishedOrderByTitleAsc(List<Integer> ids, boolean isPublished, Pageable pageable);
 
     List<Post> findPostsByTagsIn(List<Tag> tags);
 

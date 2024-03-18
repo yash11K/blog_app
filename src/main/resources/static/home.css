@@ -131,3 +131,36 @@ body {
 label:hover{
     color: #555555;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .page-item {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.pagination .page-link {
+    padding: 8px 12px;
+    color: #007bff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
