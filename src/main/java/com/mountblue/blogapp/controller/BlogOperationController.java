@@ -37,12 +37,8 @@ public class BlogOperationController extends AbstractBlogControl{
     String showUpdatePostPage(@RequestParam("postId")Integer updatePostId, Model model){
         Post updatePost = postService.findPostById(updatePostId);
         Set<Tag> tags = updatePost.getTags();
-        StringBuilder tagsStr= new StringBuilder();
         model.addAttribute("updatePost",updatePost);
-        for(Tag tag : tags){
-            tagsStr.append(tag.getName()).append(',');
-        }
-        model.addAttribute("tagsStr", tagsStr);
+        model.addAttribute("tagsStr", tagService.getTagNamesAsString(tags));
         return "updateBlogPost";
     }
 

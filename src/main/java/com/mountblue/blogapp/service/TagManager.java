@@ -52,6 +52,11 @@ public class TagManager implements TagService{
     }
 
     @Override
+    public List<Tag> findTagsById(List<Integer> tagIds){
+        return tagService.findTagByIdIn(tagIds);
+    }
+
+    @Override
     public void findTagSetFromTagString(String tagsStr, Post post) {
         int postId = post.getId();
         Set<Tag> postTags = new HashSet<>();
@@ -72,5 +77,14 @@ public class TagManager implements TagService{
             postTags.add(tag);
         }
         post.setTags(postTags);
+    }
+
+    @Override
+    public StringBuilder getTagNamesAsString(Set<Tag> tags){
+        StringBuilder tagsStr = new StringBuilder();
+        for(Tag tag : tags){
+            tagsStr.append(tag.getName()).append(',');
+        }
+        return tagsStr;
     }
 }
