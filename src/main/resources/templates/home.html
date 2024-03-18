@@ -24,6 +24,8 @@
             <p>Filters: </p>
             <form th:action="@{/filter}">
                 <input type="hidden" th:value="${rawQuery}" name="rawQuery">
+<!--                <input type="hidden" th:value="${from}" name="startDate">-->
+<!--                <input type="hidden" th:value="${to}" name="endDate">-->
                 <input type="submit" value="apply filter" class="filters-submit-button">
                 <br>
                 <div class="filter-sidebar">

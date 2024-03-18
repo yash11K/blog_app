@@ -13,47 +13,47 @@ import java.util.Set;
 
 @Service
 public class TagManager implements TagService{
-    private final TagDao tagService;
+    private final TagDao tagDao;
     @Autowired
-    public TagManager(TagDao tagService) {
-        this.tagService = tagService;
+    public TagManager(TagDao tagDao) {
+        this.tagDao = tagDao;
     }
     @Override
     public void saveTag(Tag tag){
-        tagService.save(tag);
+        tagDao.save(tag);
     }
     @Override
     public Tag findTagByName(String name){
-        return tagService.findByName(name);
+        return tagDao.findByName(name);
     }
     @Override
     public List<Tag> findAllTags() {
-        return tagService.findAll();
+        return tagDao.findAll();
     }
 
     @Override
     public Boolean tagExistsByName(String name) {
-        return tagService.existsByName(name);
+        return tagDao.existsByName(name);
     }
 
     @Override
     public List<Tag> findTagByNamePattern(String tagPattern){
-        return tagService.findTagByNameContains(tagPattern);
+        return tagDao.findTagByNameContains(tagPattern);
     }
 
     @Override
     public List<Tag> findALlTags() {
-        return tagService.findAll();
+        return tagDao.findAll();
     }
 
     @Override
     public List<Tag> findTagByTagNames(List<String> tagNames) {
-        return tagService.findTagByNameIn(tagNames);
+        return tagDao.findTagByNameIn(tagNames);
     }
 
     @Override
     public List<Tag> findTagsById(List<Integer> tagIds){
-        return tagService.findTagByIdIn(tagIds);
+        return tagDao.findTagByIdIn(tagIds);
     }
 
     @Override

@@ -9,22 +9,22 @@ import java.util.List;
 
 @Service
 public class UserManager implements UserService{
-    private final UserDao userService;
-    public UserManager(UserDao userService) {
-        this.userService = userService;
+    private final UserDao userDao;
+    public UserManager(UserDao userDao) {
+        this.userDao = userDao;
     }
     @Override
     public void saveUser(User user){
-        userService.save(user);
+        userDao.save(user);
     }
     @Override
     public User findUserByName(String userName) {
-        return userService.findByName(userName);
+        return userDao.findByName(userName);
     }
 
     @Override
     public User findUserById(int id) {
-        return userService.findById(id);
+        return userDao.findById(id);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class UserManager implements UserService{
     }
 
     public List<User> findUsersLike(String userPattern){
-        return userService.findUserByNameLike(userPattern);
+        return userDao.findUserByNameLike(userPattern);
     }
 
     @Override
@@ -57,6 +57,6 @@ public class UserManager implements UserService{
 
     @Override
     public List<User> findAllUsers(){
-        return userService.findAll();
+        return userDao.findAll();
     }
 }

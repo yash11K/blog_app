@@ -16,23 +16,23 @@ import java.util.*;
 
 @Service
 public class FilterManager  implements FilterService{
-    PostDao postService;
-    TagDao tagService;
-    UserDao userService;
-    PostTagDao postTagService;
+    PostDao postDao;
+    TagDao tagDao;
+    UserDao userDao;
+    PostTagDao postTagDao;
 
-    public FilterManager(PostDao postService, TagDao tagService, UserDao userService, PostTagDao postTagService) {
-        this.postService = postService;
-        this.tagService = tagService;
-        this.userService = userService;
-        this.postTagService = postTagService;
+    public FilterManager(PostDao postDao, TagDao tagDao, UserDao userDao, PostTagDao postTagDao) {
+        this.postDao = postDao;
+        this.tagDao = tagDao;
+        this.userDao = userDao;
+        this.postTagDao = postTagDao;
     }
 
     @Override
     public Set<Integer> findPostIdByTagNames(String tagNames){
         Set<Integer> postIds = new HashSet<>();
-        List<Tag> tags  = tagService.findTagByNameIn(List.of(tagNames.split(",")));
-        List<Post> posts = postService.findPostsByTagsIn(tags);
+        List<Tag> tags  = tagDao.findTagByNameIn(List.of(tagNames.split(",")));
+        List<Post> posts = postDao.findPostsByTagsIn(tags);
         for(Post post : posts){
             postIds.add(post.getId());
         }
@@ -42,8 +42,8 @@ public class FilterManager  implements FilterService{
     @Override
     public List<Integer> findPostIdByAuthorNames(String authorNames) {
         List<Integer> postIds = new ArrayList<>();
-        List<User> users = userService.findUserByNameIn(List.of(authorNames.split(",")));
-        List<Post> posts = postService.findPostsByAuthorIn(users);
+        List<User> users = userDao.findUserByNameIn(List.of(authorNames.split(",")));
+        List<Post> posts = postDao.findPostsByAuthorIn(users);
         for(Post post : posts){
             postIds.add(post.getId());
         }
@@ -55,11 +55,11 @@ public class FilterManager  implements FilterService{
         DateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
         Date from = stringToDate.parse(startDate);
         Date end = stringToDate.parse(endDate);
-        return postService.findPostIdsByPublishedAtBetween(from, end);
+        return postDao.findPostIdsByPublishedAtBetween(from, end);
     }
 
     @Override
     public List<Tag> findTagsByPostIds(List<Integer> postIds) {
-        return tagService.findTagByIdIn(postTagService.findTagIdsByPostIds(postIds));
+        return tagDao.findTagByIdIn(postTagDao.findTagIdsByPostIds(postIds));
     }
 }

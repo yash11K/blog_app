@@ -10,34 +10,34 @@ import java.util.Optional;
 
 @Service
 public class CommentManager implements CommentService{
-    private final CommentDao commentService;
+    private final CommentDao commentDao;
 
-    public CommentManager(CommentDao commentService) {
-        this.commentService = commentService;
+    public CommentManager(CommentDao commentDao) {
+        this.commentDao = commentDao;
     }
     @Override
     public void saveComment(Comment comment){
-        commentService.save(comment);
+        commentDao.save(comment);
     }
 
     @Override
     public List<Comment> findAllComments() {
-        return commentService.findAll();
+        return commentDao.findAll();
     }
 
     @Override
     public Optional<Comment> findCommentById(int id) {
-        return commentService.findById(id);
+        return commentDao.findById(id);
     }
 
     @Override
     public void deleteComment(Comment comment){
-        commentService.delete(comment);
+        commentDao.delete(comment);
     }
 
     @Override
     public List<Comment> findAllCommentsOfPost(Post post) {
-        return commentService.findAllByPost(post);
+        return commentDao.findAllByPost(post);
     }
 
     @Override

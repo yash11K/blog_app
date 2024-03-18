@@ -14,29 +14,29 @@ import java.util.Optional;
 
 @Service
 public class PostManager implements PostService{
-    private final PostDao postService;
+    private final PostDao postDao;
     @Autowired
-    public PostManager(PostDao postService) {
-        this.postService = postService;
+    public PostManager(PostDao postDao) {
+        this.postDao = postDao;
     }
     public void savePost(Post post){
-        postService.save(post);
+        postDao.save(post);
     }
 
     @Override
     public List<Post> findPostsByPublished(Boolean isPublished) {
-        return postService.findPostByIsPublished(isPublished);
+        return postDao.findPostByIsPublished(isPublished);
     }
 
     @Override
     public Post findPostById(int postId) {
-        Optional<Post> isPost= postService.findById(postId);
+        Optional<Post> isPost= postDao.findById(postId);
         return isPost.orElseGet(Post::new);
     }
 
     @Override
     public void deletePostById(int postId) {
-        postService.deleteById(postId);
+        postDao.deleteById(postId);
     }
     static String createExcerpt(String content){
         int excerptLength = 80;
@@ -46,32 +46,32 @@ public class PostManager implements PostService{
     @Override
     public List<Post> findOrderedCustomPostsByPublished(List<Integer> postIds,boolean isPublished,boolean order) {
         if(order){
-            return postService.findPostByIdInAndIsPublishedOrderByPublishedAtAsc(postIds ,isPublished);
+            return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtAsc(postIds ,isPublished);
         }
-        else return postService.findPostByIdInAndIsPublishedOrderByPublishedAtDesc(postIds ,isPublished);
+        else return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtDesc(postIds ,isPublished);
     }
 
     @Override
     public List<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order) {
         if(order){
-            return postService.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished);
+            return postDao.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished);
         }
-        else return postService.findPostByIdInAndIsPublishedOrderByTitleDesc(postIds, isPublished);
+        else return postDao.findPostByIdInAndIsPublishedOrderByTitleDesc(postIds, isPublished);
     }
 
     @Override
     public List<Integer> findIdByPublished(boolean isPublished) {
-        return postService.findAllIdsByIsPublished(true);
+        return postDao.findAllIdsByIsPublished(true);
     }
 
     @Override
     public List<Post> findPostByTitlePattern(String titlePattern) {
-        return postService.findPostsByTitleContainingIgnoreCase(titlePattern);
+        return postDao.findPostsByTitleContainingIgnoreCase(titlePattern);
     }
 
     @Override
     public List<Post> findPostByContentPattern(String contentPattern) {
-        return postService.findPostsByContentContaining(contentPattern);
+        return postDao.findPostsByContentContaining(contentPattern);
     }
 
     @Override

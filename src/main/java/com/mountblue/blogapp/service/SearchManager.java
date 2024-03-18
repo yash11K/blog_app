@@ -16,15 +16,15 @@ import java.util.Set;
 
 @Service
 public class SearchManager implements SearchService{
-    private final TagDao tagService;
-    private final PostDao postService;
-    private final UserDao userService;
+    private final TagDao tagDao;
+    private final PostDao postDao;
+    private final UserDao userDao;
 
     @Autowired
-    public SearchManager(TagDao tagService, PostDao postService, UserDao userService) {
-        this.tagService = tagService;
-        this.postService = postService;
-        this.userService = userService;
+    public SearchManager(TagDao tagDao, PostDao postDao, UserDao userDao) {
+        this.tagDao = tagDao;
+        this.postDao = postDao;
+        this.userDao = userDao;
     }
 
     @Override
@@ -33,11 +33,11 @@ public class SearchManager implements SearchService{
         Set<Post> queryMatchingPosts = new HashSet<>();
         for(String query : splitQuery){
             query = query.trim();
-            List<Post> matchingPosts = postService.findPostsByTitleContainingIgnoreCase(query);
-            List<Tag> matchingTags  = tagService.findTagByNameContains(query);
-            List<User> matchingUsers =  userService.findUserByNameLike(query);
+            List<Post> matchingPosts = postDao.findPostsByTitleContainingIgnoreCase(query);
+            List<Tag> matchingTags  = tagDao.findTagByNameContains(query);
+            List<User> matchingUsers =  userDao.findUserByNameLike(query);
 
-            matchingPosts.addAll(postService.findPostsByContentContaining(query));
+            matchingPosts.addAll(postDao.findPostsByContentContaining(query));
             for(Tag matchingTag: matchingTags){
                 Set<Post> postsEachTag = matchingTag.getPosts();
                 queryMatchingPosts.addAll(postsEachTag);

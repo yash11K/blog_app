@@ -9,21 +9,21 @@ import java.util.List;
 
 @Service
 public class PostTagManager implements PostTagService{
-    private final PostTagDao postTagService;
+    private final PostTagDao postTagDao;
 
     @Autowired
-    public PostTagManager(PostTagDao postTagService) {
-        this.postTagService = postTagService;
+    public PostTagManager(PostTagDao postTagDao) {
+        this.postTagDao = postTagDao;
     }
 
     @Override
     @Transactional
     public void deletePostTagRelationByPostId(Integer postId) {
-        postTagService.deleteByPostId(postId);
+        postTagDao.deleteByPostId(postId);
     }
 
     @Override
     public List<Integer> findTagIdsByPostIds(List<Integer> postIds) {
-        return postTagService.findTagIdsByPostIds(postIds);
+        return postTagDao.findTagIdsByPostIds(postIds);
     }
 }
