@@ -24,10 +24,10 @@ public class Tag {
     private int id;
     @Column(name = "tag_name", unique = true)
     private String name;
-    @Column(name = "tag_created_at", columnDefinition = "DATE" ,updatable = false)
+    @Column(name = "tag_created_at", columnDefinition = "datetime" ,updatable = false)
     @CreationTimestamp
     private Date createdAt;
-    @Column(name = "tag_updated_at",columnDefinition = "DATE")
+    @Column(name = "tag_updated_at",columnDefinition = "datetime")
     private Date updatedAt;
     @ManyToMany(mappedBy = "tags",
             cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
