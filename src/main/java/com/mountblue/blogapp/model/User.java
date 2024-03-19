@@ -29,6 +29,11 @@ public class User{
     @OneToMany(mappedBy="author")
     private Set<Post> posts;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+
     public User(){
         this.id=21;
         this.email="yash@gmail.com";
