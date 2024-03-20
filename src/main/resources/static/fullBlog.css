@@ -123,6 +123,8 @@ header {
 
 /* Styles for comment author */
 .comment-author {
+    display: flex;
+
     font-weight: bold;
     margin-bottom: 5px;
 }
@@ -142,8 +144,12 @@ header {
     width: 80%;
 }
 
+
+
 /* Styles for comment actions */
 .comment-actions {
+    display: flex;
+    justify-content: end;
     text-align: right;
     margin-top: 10px;
 }
@@ -164,7 +170,7 @@ header {
 .comment-time {
     font-size: 12px;
     color: #888;
-    text-align: right;
+    justify-content: left;
 }
 
 
@@ -187,4 +193,14 @@ a {
 .blogPosts .blog-container { /* Add margin for spacing between posts */
     margin-right: 1rem;
     margin-bottom: 1rem; /* Add some space at the bottom for better visibility */
+}
+
+.comment-operations{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+p.comment-text{
+    justify-content: left;
 }

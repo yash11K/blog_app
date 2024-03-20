@@ -2,6 +2,7 @@
 <html
         lang="en"
         xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 >
 <head>
     <meta charset="UTF-8">
@@ -26,7 +27,7 @@
         <textarea id="content" name="content" rows="5" cols="40" th:text="*{content}" th:field="*{content}" required></textarea><br>
     </div>
         <input type= "hidden" th:value="*{id}" name="postId">
-        <input type="hidden" name="postAuthor" th:value="${testUser}">
+        <input type="hidden" name="postAuthor" th:value="*{author.name}">
         <input type="submit" value="update">
 </form>
 </body>

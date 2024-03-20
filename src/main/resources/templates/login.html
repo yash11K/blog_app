@@ -5,12 +5,89 @@
     <title>Login</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #f2f2f2; /* light grey background */
+            font-family: Arial, sans-serif; /* use a common sans-serif font */
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+
+            position: absolute;
+            top: 220px;
+            color: black; /* white text */
+            padding: 20px 0; /* top and bottom padding */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #loginbox {
+            background-color: #fff; /* white background */
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* slight shadow effect */
+        }
+
+        .card-header {
+            background-color: #343a40; /* dark grey background */
+            color: #fff; /* white text */
+            padding: 10px 20px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+            border: 1px solid #ccc; /* grey border */
+            border-radius: 3px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-success {
+            background-color: #28a745; /* green button */
+            color: #fff; /* white text */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .btn-success:hover {
+            background-color: #218838; /* slightly darker green on hover */
+        }
+
+        a {
+            color: #007bff; /* blue link */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline; /* underline on hover */
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h1>Write Wise</h1>
+    <header class="header">
+        <h1>Write Wise</h1>
+    </header>
+
     <div id="loginbox" style="margin-top: 50px;"
          class="col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
 
@@ -59,9 +136,9 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div><p>Dont have a Write Wise account yet?</p>
             <a th:href="@{/register/form}">
-                Sign UP!
+                Sign up
             </a>
         </div>
     </div>
