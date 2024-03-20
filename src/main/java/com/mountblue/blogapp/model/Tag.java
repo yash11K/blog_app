@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
@@ -31,5 +32,5 @@ public class Tag {
     private Date updatedAt;
     @ManyToMany(mappedBy = "tags",
             cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
-    private Set<Post> posts;
+    private Collection<Post> posts;
 }

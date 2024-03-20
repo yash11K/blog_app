@@ -39,7 +39,7 @@ public class SearchManager implements SearchService{
 
             matchingPosts.addAll(postDao.findPostsByContentContaining(query));
             for(Tag matchingTag: matchingTags){
-                Set<Post> postsEachTag = matchingTag.getPosts();
+                Set<Post> postsEachTag = (Set<Post>) matchingTag.getPosts();
                 queryMatchingPosts.addAll(postsEachTag);
             }
             for(Post matchingPost : matchingPosts){

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -18,10 +19,10 @@ public class Role {
     @Column(name = "role_id")
     private Long id;
 
-    @Column(name = "role_name")
+    @Column(name = "role_name", unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-    Set<User> user;
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    Collection<User> user;
 
 }
