@@ -47,7 +47,7 @@
                         <h4>Users: </h4>
                         <div class="scrollable">
                             <div th:each="user:${allUsers}" class="filters">
-                                <input type="checkbox" th:value="${user.name}" name="userQuery">
+                                <input type="checkbox" th:value="${user.name}" name="userQuery" th:checked="${userQuery?.contains(user.name) ?: false}">
                                 <label th:for="${user.name}" th:text="${user.name}"></label>
                             </div>
                         </div>
@@ -71,6 +71,8 @@
             <div class="operation">
             <form th:action="@{/orderBy}" class="sort-by">
                 <input type="hidden" th:value="${rawQuery}" name="rawQuery">
+                <input type="hidden" th:value="${tagQuery}" name="tagQuery">
+                <input type="hidden" th:value="${userQuery}" name="userQuery">
                 <input type="hidden" th:value="${from}" name="from">
                 <input type="hidden" th:value="${to}" name="to">
                 <label for="navbar-orderBy-button"> Order By: </label>

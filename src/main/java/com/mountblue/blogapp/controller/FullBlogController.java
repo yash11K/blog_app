@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
+
 @Controller
 public class FullBlogController extends AbstractBlogControl{
     public FullBlogController(PostService postService,
@@ -26,9 +28,10 @@ public class FullBlogController extends AbstractBlogControl{
     }
 
     @GetMapping("/blog")
-    public String showFullBlog(@RequestParam("postId") Integer postId, Model model){
+    public String showFullBlog(@RequestParam("postId") Integer postId, Model model, Principal principal){
         Post post = postService.findPostById(postId);
         addModelAttributeOfFullBlog(model, post, commentService.findAllCommentsOfPost(post));
+        model.addAttribute("principal", principal);
         return "fullBlog";
     }
 }

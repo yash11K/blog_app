@@ -87,7 +87,6 @@ public class BlogHomeController extends AbstractBlogControl{
                 processUserQuery=true;
             }
             else {
-                System.out.println(filterService.findPostIdByAuthorNames(userQuery));
                 processUserQuery = postIdsCollector.addAll(filterService.findPostIdByAuthorNames(userQuery));
             }
         }
@@ -103,7 +102,7 @@ public class BlogHomeController extends AbstractBlogControl{
                 processDateQuery = postIdsCollector.addAll(filterService.findPostIdByStartEndDate(startDate, endDate));
             }
         }
-        if(!processRawQuery && !processTagQuery && !processDateQuery){
+        if(!processRawQuery && !processTagQuery && !processDateQuery && !processUserQuery){
             boolean b = postIdsCollector.addAll(postService.findIdByPublished(true));
         }
         boolean b = postIdsQueryPosts.addAll(postIdsCollector);
