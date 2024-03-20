@@ -1,6 +1,7 @@
 package com.mountblue.blogapp.service;
 
 import com.mountblue.blogapp.model.Post;
+import com.mountblue.blogapp.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,8 @@ public interface PostService{
     List<Post> findPostByTitlePattern(String titlePattern);
 
     List<Post> findPostByContentPattern(String contentPattern);
+
+    List<Post> findPostsCreatedByAuthor(Boolean isPublished, User author);
 
     Date setDateToday() throws ParseException;
 }

@@ -1,7 +1,9 @@
 package com.mountblue.blogapp.service;
 
 import com.mountblue.blogapp.dao.PostDao;
+import com.mountblue.blogapp.dao.UserDao;
 import com.mountblue.blogapp.model.Post;
+import com.mountblue.blogapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +19,14 @@ import java.util.Optional;
 @Service
 public class PostManager implements PostService{
     private final PostDao postDao;
+    private final UserDao userDao;
+
     @Autowired
-    public PostManager(PostDao postDao) {
+    public PostManager(PostDao postDao, UserDao userDao) {
         this.postDao = postDao;
+        this.userDao = userDao;
     }
+
     public void savePost(Post post){
         postDao.save(post);
     }
@@ -93,6 +99,11 @@ public class PostManager implements PostService{
                 yield findOrderedCustomPostsByTitle(postIds, isPublished, false, pageable);
             }
         };
+    }
+
+    @Override
+    public List<Post> findPostsCreatedByAuthor(Boolean isPublished, User author) {
+        return postDao.findPostsByAuthor(author);
     }
 
     @Override

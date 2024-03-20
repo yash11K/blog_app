@@ -29,7 +29,7 @@ public class Post {
     private String content;
     @Column(name = "post_excerpt")
     private String excerpt;
-    @Column(name = "post_published_at", columnDefinition = "datetime")
+    @Column(name = "post_published_at", columnDefinition = "datetime", updatable = false)
     @DateTimeFormat(pattern = "dd-mm-yyyy")
     private Date publishedAt;
     @Column(name = "post_created_at", columnDefinition = "datetime", updatable = false)

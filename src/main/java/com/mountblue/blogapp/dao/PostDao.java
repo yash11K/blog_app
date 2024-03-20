@@ -44,4 +44,5 @@ public interface PostDao extends JpaRepository<Post, Integer> {
     @Query(value = "SELECT posts.post_id FROM posts WHERE post_published_at BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<Integer> findPostIdsByPublishedAtBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+    List<Post> findPostsByAuthor(User user);
 }
