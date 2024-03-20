@@ -91,7 +91,6 @@ public class UserManager implements UserService{
             throw new UsernameNotFoundException("no such username exist");
         }
         User user = maybeUser.get();
-        System.out.println("#####" + user.getRoles());
         Collection<SimpleGrantedAuthority> authorities = mapRolesToAuthorities(user.getRoles());
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
@@ -101,7 +100,6 @@ public class UserManager implements UserService{
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         for (Role tempRole : roles) {
-            System.out.println(tempRole.getName());
             SimpleGrantedAuthority tempAuthority = new SimpleGrantedAuthority(tempRole.getName());
             authorities.add(tempAuthority);
         }

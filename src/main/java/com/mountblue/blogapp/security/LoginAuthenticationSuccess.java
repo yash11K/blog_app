@@ -26,7 +26,6 @@ public class LoginAuthenticationSuccess implements AuthenticationSuccessHandler 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String userName = authentication.getName();
-        System.out.println("username : " + userName);
 
         User user = userService.findUserByUserName(userName).get();
 

@@ -40,12 +40,14 @@ public class BlogHomeController extends AbstractBlogControl{
                                @RequestParam(value = "orderBy", required = false)String orderBy,
                                @RequestParam(value = "rawQuery", required = false)String rawQuery,
                                @RequestParam(value = "tagQuery", required = false)String tagQuery,
+                               @RequestParam(value = "userQuery", required = false)String userQuery,
                                @RequestParam(value = "from", required = false)String startDate,
                                @RequestParam(value = "to", required = false)String endDate,
                                @RequestParam(value = "page", required = false, defaultValue = "0")Integer page,
                                RedirectAttributes redirectAttributes) throws ParseException {
         boolean processRawQuery = false;
         boolean processTagQuery = false;
+        boolean processUserQuery = false;
         boolean processDateQuery = false;
         int pageSize = 8;
 
@@ -59,6 +61,7 @@ public class BlogHomeController extends AbstractBlogControl{
 
         rawQuery = queryNullifier(rawQuery);
         tagQuery = queryNullifier(tagQuery);
+        userQuery = queryNullifier(userQuery);
         startDate = queryNullifier(startDate);
         endDate = queryNullifier(endDate);
 
@@ -66,19 +69,33 @@ public class BlogHomeController extends AbstractBlogControl{
             processRawQuery = postIdsCollector.addAll(searchService.processSearchQuery(rawQuery));
             model.addAttribute("rawQuery", rawQuery);
         }
-        if(tagQuery !=null){
+        if(tagQuery != null){
             model.addAttribute("tagQuery", tagQuery);
             if(processRawQuery){
                 Set<Integer> tagQueryResults = filterService.findPostIdByTagNames(tagQuery);
                 postIdsCollector.retainAll(tagQueryResults);
+                processTagQuery=true;
             } else {
                 processTagQuery = postIdsCollector.addAll(filterService.findPostIdByTagNames(tagQuery));
             }
         }
-        if(startDate!=null || endDate!=null){
+        if(userQuery!= null){
+            model.addAttribute("userQuery", userQuery);
+            if(processRawQuery||processTagQuery){
+                List<Integer> userQueryResults = filterService.findPostIdByAuthorNames(userQuery);
+                postIdsCollector.retainAll(userQueryResults);
+                processUserQuery=true;
+            }
+            else {
+                System.out.println(filterService.findPostIdByAuthorNames(userQuery));
+                processUserQuery = postIdsCollector.addAll(filterService.findPostIdByAuthorNames(userQuery));
+            }
+        }
+
+        if(startDate != null || endDate != null){
             model.addAttribute("from", startDate);
             model.addAttribute("to", endDate);
-            if(processRawQuery || processTagQuery){
+            if(processRawQuery || processTagQuery || processUserQuery){
                 List<Integer> dateQueryResults = filterService.findPostIdByStartEndDate(startDate, endDate);
                 postIdsCollector.retainAll(dateQueryResults);
             }

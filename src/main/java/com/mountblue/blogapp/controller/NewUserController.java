@@ -39,13 +39,11 @@ public class NewUserController {
             return "register/registration-form";
         }
         if(userService.findUserByUserName(webUser.getUsername()).isPresent()){
-            System.out.println("did this for username: " + userService.findUserByUserName(webUser.getUsername()).get().getUsername());
             model.addAttribute("registrationError", "UserName already Exists");
             return "register/registration-form";
         }
 
         userService.saveUser(webUser);
-        System.out.println("created user successfully with username : " + webUser.getUsername());
         return "redirect:/login";
     }
 }
