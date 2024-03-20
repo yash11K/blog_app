@@ -12,7 +12,7 @@
         <header>Write Wise</header>
         <div class="blog-container">
             <h2 th:text="${post.title}" class="blog-author"></h2>
-            <p th:text="${post.author.name}" class="blog-author"></p>
+            <p th:text="${post.author.name} + '  @' + ${post.author.username}" class="blog-author"> <span style="color: cornflowerblue" th:text="'@' + ${post.author.username}" class="blog-author"></span></p>
             <p th:text="${post.publishedAt.toLocaleString()}" class="blog-timestamp"></p>
             <div th:each="postTag:${postTags}" class="blog-tags-container">
                 <span th:text="${postTag.name}" class="blog-tag"></span>
@@ -35,43 +35,39 @@
         </div>
         <br><br>
         <div class="comment">
-            <table class="comment-table" th:each="postedComment:${postedComments}">
-                <tr>
-                    <td class="comment-author">
+            <div class="comment-container" th:each="postedComment:${postedComments}">
+                <div class="comment">
+                    <div class="comment-author">
                         <span th:text="${postedComment.author.name}" class="comment-author"></span>
-                    </td>
-                    <td th:if="${commentIdToUpdate==postedComment.id}" class="comment-comment">
+                    </div>
+                    <div th:if="${commentIdToUpdate==postedComment.id}" class="comment-content">
                         <form method="post" th:action="@{/blog/updateCommentSubmit}">
                             <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
-                            <input type="text" th:value="${postedComment.comment}" name="updatedComment">
+                            <input type="text" th:value="${postedComment.comment}" name="updatedComment" class="comment-content-update">
                             <input type="submit" value="save">
                         </form>
-                    </td>
-
-                    <td th:unless="${commentIdToUpdate==postedComment.id}" class="comment-comment">
-                        <p th:text="${postedComment.comment}"></p>
-                    </td>
-                    <td class="comment-action">
+                    </div>
+                    <div th:unless="${commentIdToUpdate==postedComment.id}" class="comment-content">
+                        <p th:text="${postedComment.comment}" class="comment-text"></p>
+                    </div>
+                    <div class="comment-actions">
                         <form th:action="@{/blog/deleteComment}">
                             <input type="hidden" name="commentIdToDelete" th:value="${postedComment.id}">
-                            <input type="submit" value="delete" name="deleteComment">
+                            <input type="submit" value="delete" name="deleteComment" class="comment-delete-button">
                         </form>
-                    </td>
-                    <td th:unless="${commentIdToUpdate==postedComment.id}" class="comment-action">
-                        <form th:action="@{/blog/updateComment}">
+                        <form th:unless="${commentIdToUpdate==postedComment.id}" th:action="@{/blog/updateComment}">
                             <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
-                            <input type="submit" value="update">
+                            <input type="submit" value="update" class="comment-update-button">
                         </form>
-                    </td>
-                    <td th:text="'posted at : ' + ${postedComment.updated_at}">
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                    <div class="comment-time" th:text="'posted at : ' + ${postedComment.created_at.toLocaleString()}"></div>
+                </div>
+            </div>
             <br>
             <form th:object="${comments}" th:action="@{/blog/newComment(postId=${post.id})}" method="post" class="new-comment">
                 <label>Comment:
-                    <input type="text" th:field="*{comment}" placeholder="post a comment">
-                    <input type="submit" value="comment">
+                    <input type="text" th:field="*{comment}" placeholder="post a comment" class="comment-content-update">
+                    <input type="submit" value="comment" class="comment-update-button">
                 </label>
             </form>
         </div>
