@@ -107,15 +107,16 @@
         <nav aria-label="Pagination">
             <ul class="pagination">
                 <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/home(page=${page - 1}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" aria-label="Previous">
+                    <a class="page-link" th:href="@{/page(page=${page - 1}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == page} ? 'active'">
-                    <a class="page-link" th:href="@{/home(page=${i}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" th:text="${i + 1}"></a>
+                    <a class="page-link"
+                       th:href="@{/page(page=${i}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" th:text="${i + 1}"></a>
                 </li>
                 <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/home(page=${page + 1}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" aria-label="Next">
+                    <a class="page-link" th:href="@{/page(page=${page + 1}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

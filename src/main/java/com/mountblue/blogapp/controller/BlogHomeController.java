@@ -118,6 +118,25 @@ public class BlogHomeController extends AbstractBlogControl{
         return "home";
     }
 
+    @GetMapping("/page")
+    public String homeUriCleaner(@RequestParam(value = "orderBy", required = false)String orderBy,
+                                 @RequestParam(value = "rawQuery", required = false)String rawQuery,
+                                 @RequestParam(value = "tagQuery", required = false)String tagQuery,
+                                 @RequestParam(value = "userQuery", required = false)String userQuery,
+                                 @RequestParam(value = "from", required = false)String startDate,
+                                 @RequestParam(value = "to", required = false)String endDate,
+                                 @RequestParam(value = "page", required = false, defaultValue = "0")Integer page,
+                                 RedirectAttributes redirectAttributes){
+        addRedirectAttribute("rawQuery", rawQuery, redirectAttributes);
+        addRedirectAttribute("userQuery",userQuery, redirectAttributes);
+        addRedirectAttribute("tagQuery", tagQuery, redirectAttributes);
+        addRedirectAttribute("from", startDate, redirectAttributes);
+        addRedirectAttribute("to", endDate, redirectAttributes);
+        addRedirectAttribute("page", page.toString(), redirectAttributes);
+        redirectAttributes.addAttribute("orderBy", orderBy);
+        return "redirect:/home";
+    }
+
     public String queryNullifier(String query){
         if(query==null || query.isEmpty()){
             return null;

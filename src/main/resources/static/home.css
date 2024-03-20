@@ -128,3 +128,6 @@ a {
     }
 }
 
+*.disabled{
+    display: none;
+}
