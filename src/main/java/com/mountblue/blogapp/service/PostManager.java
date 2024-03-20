@@ -97,7 +97,7 @@ public class PostManager implements PostService{
 
     @Override
     public Date setDateToday() throws ParseException {
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Date today = new Date();
         return  formatter.parse(formatter.format(today));
     }

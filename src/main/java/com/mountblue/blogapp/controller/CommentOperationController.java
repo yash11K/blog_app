@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -30,11 +32,9 @@ public class CommentOperationController extends AbstractBlogControl{
     }
 
     @PostMapping("/blog/newComment")
-    public String postComment(@RequestParam("postId") Integer postId, @ModelAttribute("comments")Comment comment){
-        User testUser = userService.findUserById(103);
-        comment.setAuthor(testUser);
-        comment.setCreated_at(new Date());
-        comment.setUpdated_at(new Date());
+    public String postComment(@RequestParam("postId") Integer postId, @ModelAttribute("comments")Comment comment, Principal principal) throws ParseException {
+        comment.setAuthor(userService.findUserByUserName(principal.getName()).get());
+        comment.setCreated_at(postService.setDateToday());
         comment.setPost(postService.findPostById(postId));
         commentService.saveComment(comment);
         String redirectURI = "/blog?postId=" + postId;
@@ -45,7 +45,7 @@ public class CommentOperationController extends AbstractBlogControl{
     public String deleteComment(@RequestParam("commentIdToDelete")Integer commentId){
         int postId = commentService.getPostIdFromCommentId(commentId);
         commentService.deleteComment(commentService.findCommentById(commentId).get());
-        String redirectURI = "/blog?postId=" + Integer.toString(postId);
+        String redirectURI = "/blog?postId=" + postId;
         return "redirect:" + redirectURI;
     }
 
@@ -70,7 +70,7 @@ public class CommentOperationController extends AbstractBlogControl{
             commentToUpdate.setUpdated_at(new Date());
             commentService.saveComment(commentToUpdate);
         }
-        String redirectURI = "/blog?postId=" + Integer.toString(postId);
+        String redirectURI = "/blog?postId=" + postId;
         return "redirect:" + redirectURI;
     }
 }

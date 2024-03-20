@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.text.ParseException;
-import java.util.Date;
 
 import static com.mountblue.blogapp.service.PostService.createExcerpt;
 
@@ -34,7 +34,7 @@ public class NewBlogPostControl extends AbstractBlogControl{
     private final String blogActionDraft = "SaveAsDraft";
 
     @GetMapping("/blog-new")
-    public String showHome(Model model){
+    public String showHome(Model model, Principal principal){
         String tags = "";
         model.addAttribute("tags", tags);
         model.addAttribute("newPost", new Post());
@@ -45,9 +45,9 @@ public class NewBlogPostControl extends AbstractBlogControl{
     @PostMapping("/blog-publish")
     public String publishBlog(@ModelAttribute("newPost") Post newPost,
                               @RequestParam(value = "newPostTagNames")String newPostTagNamesStr,
-                              @RequestParam("blogAction")String blogAction) throws ParseException {
-        User testUser = userService.findUserById(103);
-        newPost.setAuthor(testUser);
+                              @RequestParam("blogAction")String blogAction, Principal principal) throws ParseException {
+        User author = userService.findUserByUserName(principal.getName()).get();
+        newPost.setAuthor(author);
         newPost.setCreatedAt(postService.setDateToday());
         newPost.setPublishedAt(postService.setDateToday());
         tagService.findTagSetFromTagString(newPostTagNamesStr, newPost);

@@ -47,7 +47,7 @@ public class BlogHomeController extends AbstractBlogControl{
         boolean processRawQuery = false;
         boolean processTagQuery = false;
         boolean processDateQuery = false;
-        int pageSize = 6;
+        int pageSize = 8;
 
         Page<Post> publishedPosts;
         List<Integer> postIdsQueryPosts = new ArrayList<>();
@@ -57,10 +57,11 @@ public class BlogHomeController extends AbstractBlogControl{
             return "redirect:/home";
         }
 
-        rawQuery = (rawQuery != null && !rawQuery.isEmpty()) ? rawQuery : null;
-        tagQuery = (tagQuery != null && !tagQuery.isEmpty()) ? tagQuery : null;
-        startDate = (startDate!=null && !startDate.isEmpty()? startDate : null);
-        endDate = (endDate!=null && !endDate.isEmpty()? endDate : null);
+        rawQuery = queryNullifier(rawQuery);
+        tagQuery = queryNullifier(tagQuery);
+        startDate = queryNullifier(startDate);
+        endDate = queryNullifier(endDate);
+
         if (rawQuery != null) {
             processRawQuery = postIdsCollector.addAll(searchService.processSearchQuery(rawQuery));
             model.addAttribute("rawQuery", rawQuery);
@@ -99,5 +100,12 @@ public class BlogHomeController extends AbstractBlogControl{
         model.addAttribute("page", page);
         model.addAttribute("totalPages", publishedPosts.getTotalPages());
         return "home";
+    }
+
+    public String queryNullifier(String query){
+        if(query==null || query.isEmpty()){
+            return null;
+        }
+        else return query;
     }
 }
