@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title}">Blog</title>
+    <link rel="stylesheet" href="/fullBlog.css">
+</head>
+    <body>
+    <div class="header">
+        <header><a th:href="@{/home}" class="company-name">Write Wise</a></header>
+        <div class="user-profile">
+            <a href="#" class="user-profile-link">
+                <span class="user-profile-name" sec:authentication="name">Yash</span>
+                <span class="dropdown-arrow">&#9660;</span>
+            </a>
+            <div class="dropdown-content">
+                <a href="/user/profile">Profile</a>
+                <a th:href="@{/home/blog-new}">Publish new Blog</a>
+                <form action="#" th:action="@{/logout}" method="POST">
+                    <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+        <div class="blog-container">
+            <h2 th:text="${post.title}" class="blog-author"></h2>
+            <p th:text="${post.author.name} + '  @' + ${post.author.username}" class="blog-author"> <span style="color: cornflowerblue" th:text="'@' + ${post.author.username}" class="blog-author"></span></p>
+            <p th:text="${post.publishedAt.toLocaleString()}" class="blog-timestamp"></p>
+            <div th:each="postTag:${postTags}" class="blog-tags-container">
+                <span th:text="${postTag.name}" class="blog-tag"></span>
+            </div>
+            <p th:text="${post.content}" class="blog-content"></p>
+            <div th:if="${#authentication.principal.username == post.author.username}" class="blog-actions">
+                <form th:action="@{/home/update}">
+                    <input type="hidden" th:value="${post.id}" name="postId">
+                    <input type="submit" value="Update" class="action-button">
+                </form>
+                <form th:action="@{/home/archive}">
+                    <input type="hidden" th:value="${post.id}" name="postId">
+                    <input type="submit" value="Archive" class="action-button">
+                </form>
+                <form th:action="@{/home/delete}">
+                    <input type="hidden" th:value="${post.id}" name="postId">
+                    <input type="submit" value="Delete" class="action-button">
+                </form>
+            </div>
+        </div>
+        <br><br>
+        <div class="comment">
+            <div class="comment-container" th:each="postedComment:${postedComments}">
+                <div class="comment">
+                    <div class="comment-author">
+                        <span th:text="${postedComment.author.name} + ' @' + ${postedComment.author.username}" class="comment-author"></span>
+                        <div class="comment-time" th:text="${postedComment.created_at.toLocaleString()}"></div>
+                    </div>
+                    <div th:if="${commentIdToUpdate==postedComment.id}" class="comment-content">
+                        <form method="post" th:action="@{/blog/updateCommentSubmit}">
+                            <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
+                            <input type="text" th:value="${postedComment.comment}" name="updatedComment" class="comment-content-update">
+                            <input type="submit" value="save">
+                        </form>
+                    </div>
+                    <div class="comment-actions">
+                        <div th:unless="${commentIdToUpdate==postedComment.id}" class="comment-content">
+                            <p th:text="${postedComment.comment}" class="comment-text"></p>
+                        </div>
+                        <div th:if="${#authentication.principal.username == postedComment.author.username}" class="comment-actions-buttons">
+                            <form th:action="@{/blog/deleteComment}">
+                                <input type="hidden" name="commentIdToDelete" th:value="${postedComment.id}">
+                                <input type="submit" value="delete" name="deleteComment" class="comment-delete-button">
+                            </form>
+                            <form th:unless="${commentIdToUpdate==postedComment.id}" th:action="@{/blog/updateComment}">
+                                <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
+                                <input type="submit" value="update" class="comment-update-button">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <form th:object="${comments}" th:action="@{/blog/newComment(postId=${post.id})}" method="post" class="new-comment">
+                <label>Comment:
+                    <input type="text" th:field="*{comment}" placeholder="post a comment" class="comment-content-update">
+                    <input type="submit" value="comment" class="comment-update-button">
+                </label>
+            </form>
+        </div>
+    </body>
+</html>

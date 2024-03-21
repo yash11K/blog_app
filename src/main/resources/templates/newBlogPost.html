@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog Post</title>
+    <link rel="stylesheet" href="/newBlogPost.css">
+</head>
+<body>
+<header>Write Wise</header>
+<h1>Create a New Blog Post</h1>
+<h3>Choose the appropriate Topics for the blog</h3>
+    <form th:action="@{/home/blog-publish}" method="post" th:object="${newPost}">
+        <label> Tags: ( `,` seperated values)
+            <input type="text" id="tags" name="newPostTagNames">
+        </label>
+        <div>
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title" th:field="*{title}" required ><br>
+        </div>
+        <div>
+            <label for="content">Content:</label><br>
+            <textarea id="content" name="content" rows="5" cols="40" th:content="*{content}" required></textarea><br>
+        </div>
+        <div>
+            <input type="submit" value="Publish" name="blogAction">
+            <input type="submit" value="SaveAsDraft" name="blogAction">
+        </div>
+    </form>
+</body>
+</html>

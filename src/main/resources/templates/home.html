@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/home.css">
+</head>
+<body>
+    <div class="header">
+        <header><a th:href="@{/home}" class="company-name">Write Wise</a></header>
+        <div class="user-profile">
+            <a href="#" class="user-profile-link">
+                <span class="user-profile-name" sec:authentication="name">Yash</span>
+                <span class="dropdown-arrow">&#9660;</span>
+            </a>
+            <div class="dropdown-content">
+                <a href="/user/profile">Profile</a>
+                <a th:href="@{/home/blog-new}">Publish new Blog</a>
+                <form action="#" th:action="@{/logout}" method="POST">
+                    <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="main-contents">
+        <aside class="sidebar">
+            <p>Filters: </p>
+            <form th:action="@{/page}">
+                <input type="hidden" th:value="${rawQuery}" name="rawQuery">
+                <input type="submit" value="apply filter" class="filters-submit-button">
+                <br>
+                <h4>Tags : </h4>
+                <div class="filter-sidebar tag-filter">
+                    <div class="scrollable">
+                        <div th:each="tag:${allTags}" class="filters">
+                            <input type="checkbox" th:value="${tag.name}" name="tagQuery" th:checked="${tagQuery?.contains(tag.name) ?: false}">
+                            <label th:for="${tag.name}" th:text="${tag.name}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="filter-sidebar user-filter">
+                        <h4>Users: </h4>
+                        <div class="scrollable">
+                            <div th:each="user:${allUsers}" class="filters">
+                                <input type="checkbox" th:value="${user.name}" name="userQuery" th:checked="${userQuery?.contains(user.name) ?: false}">
+                                <label th:for="${user.name}" th:text="${user.name}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="filter-sidebar">
+                        <p>Published Between : </P>
+                        <label> Start Date
+                            <input type="date" name="from" th:value="${from}">
+                        </label>
+                        <br>
+                        <label> End Date
+                            <input type="date" name="to" th:value="${to}">
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </aside>
+        <section class="blogpost-container">
+            <div class="operation">
+            <form th:action="@{/page}" class="sort-by">
+                <input type="hidden" th:value="${rawQuery}" name="rawQuery">
+                <input type="hidden" th:value="${tagQuery}" name="tagQuery">
+                <input type="hidden" th:value="${userQuery}" name="userQuery">
+                <input type="hidden" th:value="${from}" name="from">
+                <input type="hidden" th:value="${to}" name="to">
+                <div class="operation-orderby">
+                    <select name="orderBy" id="navbar-orderBy-button" onchange="this.form.submit()" th:value="${sortType}" class="dropdown-content-filter">
+                        <option value="dateDesc" th:selected="${sortType == 'dateDesc'}">published (Newest First)</option>
+                        <option value="dateAsc" th:selected="${sortType == 'dateAsc'}">published (Oldest First)</option>
+                        <option value="nameAsc" th:selected="${sortType == 'nameAsc'}">Name (A~Z)</option>
+                        <option value="nameDesc" th:selected="${sortType == 'nameDesc'}">Name (Z~A)</option>
+                    </select>
+                </div>
+            </form>
+            <form th:action="@{/page}" class="search-form">
+                <label class="search-label">Search:
+                    <input type="text" name="rawQuery" th:value="${rawQuery}">
+                    <input type="submit">
+                </label>
+            </form>
+            </div>
+            <div class="blogpost-grid">
+                <a th:each="publishedPost:${publishedPosts}" th:href="@{/blog(postId=${publishedPost.id})}" class="blogpost">
+                    <div class = blogPosts>
+                        <h2 th:text="${publishedPost.title}" class="post-title"></h2>
+                        <h4 th:text="'Author: '+${publishedPost.author.name}" class="post-author"></h4>
+                        <p th:text="${publishedPost.publishedAt.toLocaleString()}" class="post-createdat"></p>
+                        <p th:text="${publishedPost.excerpt}" class="post-excerpt"></p>
+                        <br>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </div>
+    <div th:if="${totalPages > 1}">
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/page(page=${page - 1}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == page} ? 'active'">
+                    <a class="page-link"
+                       th:href="@{/page(page=${i}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/page(page=${page + 1}, orderBy=${sortType}, rawQuery=${rawQuery}, tagQuery=${tagQuery}, from=${from}, to=${to})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

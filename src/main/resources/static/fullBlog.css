@@ -1,0 +1,252 @@
+/* No need to repeat general styles, they are likely defined elsewhere */
+
+/* Header styles */
+body {
+    margin: 0 100px;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+.header {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 25px;
+}
+.company-name{
+    color: white;
+}
+
+.user-profile-link{
+    color: white;
+}
+.user-profile {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    right: -30px;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 10;
+    text-align: center;
+    padding:15px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 18px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.user-profile:hover .dropdown-content {
+    display: block;
+}
+
+
+.blog-container {
+    max-width: 1400px;
+    margin: 100px auto 30px;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light grey background */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.blog-author {
+    font-size: 1.5rem;
+    margin: 0 0 10px;
+}
+
+.blog-timestamp {
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.blog-tags-container {
+    margin-bottom: 10px;
+}
+
+.blog-tag {
+    display: inline-block;
+    background-color: #007bff; /* Blue tag background */
+    color: white;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 3px;
+}
+
+.blog-content {
+    line-height: 1.6;
+}
+
+.blog-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+/* Blog actions styles */
+.blog-actions {
+    display: flex;
+    justify-content: flex-end; /* Move buttons to the right */
+    margin-top: 1rem; /* Add some space after the post content */
+}
+
+.blog-actions form { /* Style action forms */
+    margin-right: 0.5rem;
+}
+
+/* Fixed width for blog actions to prevent resizing issues */
+.blog-actions {
+    width: fit-content; /* Adjust width as needed */
+}
+
+/* Comments styles */
+.comment {
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1400px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 0.3rem 1rem; /* Reduced padding for less height */
+}
+
+/*.comment-author {*/
+/*    font-weight: bold;*/
+/*}*/
+
+/*.comment-table { !* Style comment table *!*/
+/*    width: 100%; !* Stretch the table to full width *!*/
+/*}*/
+
+/*.comment-comment { !* Style comment text area *!*/
+/*    width: 50% !* Stretch comment text area to full width *!*/
+/*}*/
+
+/*.comment-comment form { !* Style forms within comments *!*/
+/*    display: inline-block;*/
+/*    margin-right: 0.5rem;*/
+/*}*/
+
+/*.comment-action { !* Style action forms within comments *!*/
+/*    display: inline-block;*/
+/*    margin-right: 0.5rem;*/
+/*}*/
+
+/*!* New comment form styles *!*/
+/*.new-comment {*/
+/*    margin-top: 1rem; !* Add some space above the new comment form *!*/
+/*}*/
+
+/* Styles for the comment container */
+.comment-container {
+    margin-bottom: 20px;
+}
+
+/* Styles for each comment */
+.comment {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Styles for comment author */
+.comment-author {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Styles for comment content */
+.comment-content {
+    margin-bottom: 10px;
+}
+
+/* Styles for comment text */
+.comment-text {
+    margin: 0;
+}
+
+/* Styles for comment content update input */
+.comment-content-update {
+    width: 80%;
+}
+
+
+
+/* Styles for comment actions */
+.comment-actions {
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.comment-actions-buttons{
+    display: flex;
+}
+
+/* Styles for comment delete button */
+.comment-delete-button,
+.comment-update-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 3px;
+}
+
+/* Styles for comment time */
+.comment-time {
+    font-size: 12px;
+    color: #888;
+}
+
+
+/* Links */
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+.postTitle:hover {
+    text-decoration: underline;
+}
+
+/* Style blog posts to appear in a single line */
+.blogPosts {
+    display: flex; /* Change display to flex for single line layout */
+    flex-wrap: wrap; /* Allow posts to wrap if they overflow the container */
+}
+
+.blogPosts .blog-container { /* Add margin for spacing between posts */
+    margin-right: 1rem;
+    margin-bottom: 1rem; /* Add some space at the bottom for better visibility */
+}
+
+.comment-operations{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+p.comment-text{
+    justify-content: left;
+}
