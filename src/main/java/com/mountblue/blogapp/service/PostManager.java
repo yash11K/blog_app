@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public Page<Post> findOrderedCustomPostsByPublished(List<Integer> postIds, boolean isPublished, boolean order, Pageable pageable) {
+    public Page<Post> findOrderedCustomPostsByPublished(Collection<Integer> postIds, boolean isPublished, boolean order, Pageable pageable) {
         if(order){
             return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtAsc(postIds ,isPublished, pageable);
         }
@@ -60,7 +61,7 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public Page<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order, Pageable pageable) {
+    public Page<Post> findOrderedCustomPostsByTitle(Collection<Integer> postIds, boolean isPublished,boolean order, Pageable pageable) {
         if(order){
             return postDao.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished, pageable);
         }
@@ -83,7 +84,7 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public Page<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished, Pageable pageable){
+    public Page<Post> findPostsBySortType(String sortType, Collection<Integer> postIds, boolean isPublished, Pageable pageable){
         return switch (sortType) {
             default -> findOrderedCustomPostsByPublished(postIds, isPublished, false, pageable) ;
             case "dateAsc" -> {

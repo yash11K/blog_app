@@ -45,8 +45,8 @@ public class BlogHomeController extends AbstractBlogControl{
                                @RequestParam(value = "userQuery", required = false)String userQuery,
                                @RequestParam(value = "from", required = false)String startDate,
                                @RequestParam(value = "to", required = false)String endDate,
-                               @RequestParam(value = "page", required = false, defaultValue = "0")Integer page,
-                               RedirectAttributes redirectAttributes) throws ParseException {
+                               @RequestParam(value = "page", required = false, defaultValue = "0")Integer page)
+            throws ParseException {
 
         boolean processRawQuery = false;
         boolean processTagQuery = false;
@@ -57,8 +57,6 @@ public class BlogHomeController extends AbstractBlogControl{
         Set<Integer> postIdsCollector = new HashSet<>();
 
         if (orderBy==null){
-//            redirectAttributes.addAttribute("orderBy", "dateDesc");
-//            return "redirect:/home";
             orderBy = "dateDesc";
         }
 

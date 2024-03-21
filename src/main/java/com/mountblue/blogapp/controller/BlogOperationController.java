@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.ServiceConfigurationError;
 import java.util.Set;
 
 import static com.mountblue.blogapp.service.PostService.createExcerpt;

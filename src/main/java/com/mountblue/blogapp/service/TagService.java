@@ -21,11 +21,11 @@ public interface TagService{
 
     List<Tag> findTagByNamePattern(String tagPatter);
 
-    List<Tag> findTagsById(List<Integer> tagIds);
+    Set<Tag> findTagsById(List<Integer> tagIds);
 
     void findTagSetFromTagString(String tagsStr, Post post);
 
-    List<Tag> findTagByTagNames(List<String> tagNames);
+    Set<Tag> findTagByTagNames(List<String> tagNames);
 
     StringBuilder getTagNamesAsString(Set<Tag> tags);
 }

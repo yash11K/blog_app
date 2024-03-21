@@ -4,6 +4,7 @@ import com.mountblue.blogapp.model.Tag;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -15,5 +16,5 @@ public interface FilterService {
 
     List<Integer> findPostIdByStartEndDate(String startDate, String endDate) throws ParseException;
 
-    List<Tag> findTagsByPostIds(List<Integer> postIds);
+    Set<Tag> findTagsByPostIds(Collection<Integer> postIds);
 }

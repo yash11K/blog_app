@@ -31,7 +31,7 @@ public class FilterManager  implements FilterService{
     @Override
     public Set<Integer> findPostIdByTagNames(String tagNames){
         Set<Integer> postIds = new HashSet<>();
-        List<Tag> tags  = tagDao.findTagByNameIn(List.of(tagNames.split(",")));
+        Set<Tag> tags  = tagDao.findTagByNameIn(List.of(tagNames.split(",")));
         List<Post> posts = postDao.findPostsByTagsIn(tags);
         for(Post post : posts){
             postIds.add(post.getId());
@@ -59,7 +59,7 @@ public class FilterManager  implements FilterService{
     }
 
     @Override
-    public List<Tag> findTagsByPostIds(List<Integer> postIds) {
-        return tagDao.findTagByIdIn(postTagDao.findTagIdsByPostIds(postIds));
+    public Set<Tag> findTagsByPostIds(Collection<Integer> postIds) {
+        return tagDao.findTagByIdInOrderByName(postTagDao.findTagIdsByPostIds(postIds));
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -23,11 +24,11 @@ public interface PostService{
         return content.substring(0,excerptLength) + "....";
     }
 
-    Page<Post> findOrderedCustomPostsByPublished(List<Integer> postIds, boolean isPublished, boolean order, Pageable pageable);
+    Page<Post> findOrderedCustomPostsByPublished(Collection<Integer> postIds, boolean isPublished, boolean order, Pageable pageable);
 
-    Page<Post> findOrderedCustomPostsByTitle(List<Integer> postIds, boolean isPublished,boolean order, Pageable pageable);
+    Page<Post> findOrderedCustomPostsByTitle(Collection<Integer> postIds, boolean isPublished,boolean order, Pageable pageable);
 
-    Page<Post> findPostsBySortType(String sortType, List<Integer> postIds, boolean isPublished, Pageable pageable);
+    Page<Post> findPostsBySortType(String sortType, Collection<Integer> postIds, boolean isPublished, Pageable pageable);
 
     List<Integer> findIdByPublished(boolean isPublished);
 

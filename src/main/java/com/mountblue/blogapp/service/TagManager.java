@@ -47,13 +47,13 @@ public class TagManager implements TagService{
     }
 
     @Override
-    public List<Tag> findTagByTagNames(List<String> tagNames) {
+    public Set<Tag> findTagByTagNames(List<String> tagNames) {
         return tagDao.findTagByNameIn(tagNames);
     }
 
     @Override
-    public List<Tag> findTagsById(List<Integer> tagIds){
-        return tagDao.findTagByIdIn(tagIds);
+    public Set<Tag> findTagsById(List<Integer> tagIds){
+        return tagDao.findTagByIdInOrderByName(tagIds);
     }
 
     @Override
