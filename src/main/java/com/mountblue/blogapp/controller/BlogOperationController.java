@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.ServiceConfigurationError;
 import java.util.Set;
 
 import static com.mountblue.blogapp.service.PostService.createExcerpt;
@@ -16,25 +17,26 @@ import static com.mountblue.blogapp.service.PostService.createExcerpt;
 @Controller
 @RequestMapping("/home")
 public class BlogOperationController extends AbstractBlogControl{
+    private final ServiceFactory serviceFactory;
+    private PostService postService;
+    private TagService tagService;
+    private PostTagService postTagService;
+
     @Autowired
-    public BlogOperationController(PostService postService,
-                                   TagService tagService,
-                                   PostTagService postTagService,
-                                   CommentService commentService,
-                                   UserService userService,
-                                   SearchService searchService,
-                                   FilterService filterService) {
-        super(postService,
-                tagService,
-                postTagService,
-                commentService,
-                userService,
-                searchService,
-                filterService);
+    public BlogOperationController(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
+    @ModelAttribute
+    public void initService(){
+        postService = serviceFactory.getPostService();
+        tagService = serviceFactory.getTagService();
+        postTagService = serviceFactory.getPostTagService();
     }
 
     @GetMapping("/update")
     String showUpdatePostPage(@RequestParam("postId")Integer updatePostId, Model model){
+
         Post updatePost = postService.findPostById(updatePostId);
         Set<Tag> tags = updatePost.getTags();
         model.addAttribute("updatePost",updatePost);
@@ -45,6 +47,10 @@ public class BlogOperationController extends AbstractBlogControl{
     @PostMapping("/submit-updates")
     String submitPostUpdates(@ModelAttribute(name = "updatePost")Post updatedPost,
                              @RequestParam("tagsStr")String tagsStr){
+        PostService postService = serviceFactory.getPostService();
+        PostTagService postTagService = serviceFactory.getPostTagService();
+        TagService tagService = serviceFactory.getTagService();
+
         postTagService.deletePostTagRelationByPostId(updatedPost.getId());
         tagService.findTagSetFromTagString(tagsStr, updatedPost);
         updatedPost.setExcerpt(createExcerpt(updatedPost.getContent()));

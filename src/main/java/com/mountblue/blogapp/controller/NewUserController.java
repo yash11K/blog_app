@@ -2,8 +2,10 @@ package com.mountblue.blogapp.controller;
 
 import com.mountblue.blogapp.model.User;
 import com.mountblue.blogapp.security.WebUser;
+import com.mountblue.blogapp.service.ServiceFactory;
 import com.mountblue.blogapp.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/register")
 public class NewUserController {
+    private final ServiceFactory serviceFactory;
     private UserService userService;
-
-    public NewUserController(UserService userService) {
-        this.userService = userService;
+    @Autowired
+    public NewUserController(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+    @ModelAttribute
+    public void initService(){
+        this.userService = serviceFactory.getUserService();
     }
 
     @InitBinder

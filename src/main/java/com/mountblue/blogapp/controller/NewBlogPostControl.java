@@ -3,6 +3,7 @@ package com.mountblue.blogapp.controller;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.User;
 import com.mountblue.blogapp.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +16,23 @@ import static com.mountblue.blogapp.service.PostService.createExcerpt;
 @Controller
 @RequestMapping("/home")
 public class NewBlogPostControl extends AbstractBlogControl{
-    public NewBlogPostControl(PostService postService,
-                              TagService tagService,
-                              PostTagService postTagService,
-                              CommentService commentService,
-                              UserService userService,
-                              SearchService searchService,
-                              FilterService filterService) {
-        super(postService,
-                tagService,
-                postTagService,
-                commentService,
-                userService,
-                searchService,
-                filterService);
-    }
+    private final ServiceFactory serviceFactory;
+    private PostService postService;
+    private TagService tagService;
+    private UserService userService;
     private final String blogActionPublish = "Publish";
     private final String blogActionDraft = "SaveAsDraft";
+    @Autowired
+    public NewBlogPostControl(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
+    @ModelAttribute
+    public void initService(){
+        this.postService = serviceFactory.getPostService();
+        this.tagService = serviceFactory.getTagService();
+        this.userService = serviceFactory.getUserService();
+    }
 
     @GetMapping("/blog-new")
     public String showHome(Model model, Principal principal){

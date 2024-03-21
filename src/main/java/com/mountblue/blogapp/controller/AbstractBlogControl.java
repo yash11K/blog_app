@@ -14,31 +14,6 @@ import java.util.Set;
 
 @Controller
 public abstract class AbstractBlogControl {
-    final PostService postService;
-    final TagService tagService;
-    final PostTagService postTagService;
-    final CommentService commentService;
-    final UserService userService;
-    final SearchService searchService;
-    final FilterService filterService;
-
-    @Autowired
-    public AbstractBlogControl(PostService postService,
-                               TagService tagService,
-                               PostTagService postTagService,
-                               CommentService commentService,
-                               UserService userService,
-                               SearchService searchService,
-                               FilterService filterService) {
-        this.postService = postService;
-        this.tagService = tagService;
-        this.postTagService = postTagService;
-        this.commentService = commentService;
-        this.userService = userService;
-        this.searchService = searchService;
-        this.filterService = filterService;
-    }
-
     static void addModelAttributeOfFullBlog(Model model, Post post, List<Comment> allCommentsOfPost) {
         Set<Tag> tags = post.getTags();
         Comment comment = new Comment();

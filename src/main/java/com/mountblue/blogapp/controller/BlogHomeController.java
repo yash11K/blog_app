@@ -10,29 +10,31 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.logging.Filter;
 
 @Controller
 public class BlogHomeController extends AbstractBlogControl{
+    private final ServiceFactory serviceFactory;
+    private PostService postService;
+    private FilterService filterService;
+    private SearchService searchService;
+    private UserService userService;
     @Autowired
-    public BlogHomeController(PostService postService,
-                              TagService tagService,
-                              PostTagService postTagService,
-                              CommentService commentService,
-                              UserService userService,
-                              SearchService searchService,
-                              FilterService filterService) {
-        super(postService,
-                tagService,
-                postTagService,
-                commentService,
-                userService,
-                searchService,
-                filterService);
+    public BlogHomeController(ServiceFactory serviceFactory){
+        this.serviceFactory=serviceFactory;
+    }
+    @ModelAttribute
+    public void initService(){
+        postService = serviceFactory.getPostService();
+        filterService = serviceFactory.getFilterService();
+        searchService = serviceFactory.getSearchService();
+        userService = serviceFactory.getUserService();
     }
 
     @GetMapping("/home")
@@ -45,15 +47,17 @@ public class BlogHomeController extends AbstractBlogControl{
                                @RequestParam(value = "to", required = false)String endDate,
                                @RequestParam(value = "page", required = false, defaultValue = "0")Integer page,
                                RedirectAttributes redirectAttributes) throws ParseException {
+
         boolean processRawQuery = false;
         boolean processTagQuery = false;
         boolean processUserQuery = false;
         boolean processDateQuery = false;
-        int pageSize = 8;
+        int pageSize = 12;
 
         Page<Post> publishedPosts;
         List<Integer> postIdsQueryPosts = new ArrayList<>();
         Set<Integer> postIdsCollector = new HashSet<>();
+
         if (orderBy==null){
             redirectAttributes.addAttribute("orderBy", "dateDesc");
             return "redirect:/home";
@@ -64,7 +68,6 @@ public class BlogHomeController extends AbstractBlogControl{
         userQuery = queryNullifier(userQuery);
         startDate = queryNullifier(startDate);
         endDate = queryNullifier(endDate);
-
         if (rawQuery != null) {
             processRawQuery = postIdsCollector.addAll(searchService.processSearchQuery(rawQuery));
             model.addAttribute("rawQuery", rawQuery);
@@ -72,7 +75,7 @@ public class BlogHomeController extends AbstractBlogControl{
         if(tagQuery != null){
             model.addAttribute("tagQuery", tagQuery);
             if(processRawQuery){
-                Set<Integer> tagQueryResults = filterService.findPostIdByTagNames(tagQuery);
+                Collection<Integer> tagQueryResults = filterService.findPostIdByTagNames(tagQuery);
                 postIdsCollector.retainAll(tagQueryResults);
                 processTagQuery=true;
             } else {
@@ -82,7 +85,7 @@ public class BlogHomeController extends AbstractBlogControl{
         if(userQuery!= null){
             model.addAttribute("userQuery", userQuery);
             if(processRawQuery||processTagQuery){
-                List<Integer> userQueryResults = filterService.findPostIdByAuthorNames(userQuery);
+                Collection<Integer> userQueryResults = filterService.findPostIdByAuthorNames(userQuery);
                 postIdsCollector.retainAll(userQueryResults);
                 processUserQuery=true;
             }
@@ -95,7 +98,7 @@ public class BlogHomeController extends AbstractBlogControl{
             model.addAttribute("from", startDate);
             model.addAttribute("to", endDate);
             if(processRawQuery || processTagQuery || processUserQuery){
-                List<Integer> dateQueryResults = filterService.findPostIdByStartEndDate(startDate, endDate);
+                Collection<Integer> dateQueryResults = filterService.findPostIdByStartEndDate(startDate, endDate);
                 postIdsCollector.retainAll(dateQueryResults);
             }
             else {
@@ -106,7 +109,7 @@ public class BlogHomeController extends AbstractBlogControl{
             boolean b = postIdsCollector.addAll(postService.findIdByPublished(true));
         }
         boolean b = postIdsQueryPosts.addAll(postIdsCollector);
-        List<Tag> relativeTags = filterService.findTagsByPostIds(postIdsQueryPosts);
+        Collection<Tag> relativeTags = filterService.findTagsByPostIds(postIdsQueryPosts);
         Pageable pageable = PageRequest.of(page, pageSize);
         publishedPosts = postService.findPostsBySortType(orderBy, postIdsQueryPosts, true, pageable);
         model.addAttribute("publishedPosts", publishedPosts);

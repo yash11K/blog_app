@@ -1,30 +1,30 @@
 package com.mountblue.blogapp.controller;
 
+import com.mountblue.blogapp.model.Comment;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
 @Controller
 public class FullBlogController extends AbstractBlogControl{
-    public FullBlogController(PostService postService,
-                              TagService tagService,
-                              PostTagService postTagService,
-                              CommentService commentService,
-                              UserService userService,
-                              SearchService searchService,
-                              FilterService filterService) {
-        super(postService,
-                tagService,
-                postTagService,
-                commentService,
-                userService,
-                searchService,
-                filterService);
+    private final ServiceFactory serviceFactory;
+    private CommentService commentService;
+    private PostService postService;
+    @Autowired
+    public FullBlogController(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+    @ModelAttribute
+    public void initService(){
+        this.commentService = serviceFactory.getCommentService();
+        this.postService = serviceFactory.getPostService();
     }
 
     @GetMapping("/blog")

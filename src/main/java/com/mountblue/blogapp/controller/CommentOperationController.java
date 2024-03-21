@@ -4,6 +4,7 @@ import com.mountblue.blogapp.model.Comment;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.User;
 import com.mountblue.blogapp.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,20 +16,20 @@ import java.util.Optional;
 
 @Controller
 public class CommentOperationController extends AbstractBlogControl{
-    public CommentOperationController(PostService postService,
-                                      TagService tagService,
-                                      PostTagService postTagService,
-                                      CommentService commentService,
-                                      UserService userService,
-                                      SearchService searchService,
-                                      FilterService filterService) {
-        super(postService,
-                tagService,
-                postTagService,
-                commentService,
-                userService,
-                searchService,
-                filterService);
+    private final ServiceFactory serviceFactory;
+    private PostService postService;
+    private CommentService commentService;
+    private UserService userService;
+    @Autowired
+    public CommentOperationController(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
+    @ModelAttribute
+    public void initService(){
+        this.postService = serviceFactory.getPostService();
+        this.commentService = serviceFactory.getCommentService();
+        this.userService = serviceFactory.getUserService();
     }
 
     @PostMapping("/blog/newComment")
