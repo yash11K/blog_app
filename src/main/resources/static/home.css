@@ -43,13 +43,6 @@ a {
     padding:15px;
 }
 
-.dropdown-content-filter{
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 120px;
-    z-index: 1;
-}
-
 .dropdown-content a {
     color: black;
     padding: 12px 16px;
@@ -64,6 +57,42 @@ a {
 
 .user-profile:hover .dropdown-content {
     display: block;
+}
+
+/*.dropdown-content-filter {*/
+/*    position: absolute;*/
+/*    background-color: #f9f9f9;*/
+/*    min-width: 120px;*/
+/*    z-index: 1;*/
+/*    margin-left: 9px;*/
+/*}*/
+
+.dropdown-content-filter {
+    position: absolute;
+    background-color: #ffffff; /* Changed background color to white */
+    border: 1px solid #dddddd; /* Added border for better visibility */
+    min-width: 150px; /* Increased minimum width for better spacing */
+    z-index: 1;
+    margin-left: 9px;
+    padding: 8px 0; /* Added padding for better spacing */
+}
+
+.dropdown-content-filter option {
+    padding: 8px 15px; /* Added padding for better spacing */
+    cursor: pointer; /* Changed cursor to pointer for better interaction */
+}
+
+.dropdown-content-filter option:hover {
+    background-color: #f0f0f0; /* Added hover effect for better feedback */
+}
+
+/* Added transition for smoother hover effect */
+.dropdown-content-filter option {
+    transition: background-color 0.3s ease;
+}
+
+.operation-orderby{
+    display: flex;
 }
 
 .main-contents {
@@ -86,7 +115,7 @@ a {
 
 .blogpost-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     grid-gap: 20px;
 }
 
@@ -102,11 +131,14 @@ a {
     list-style-type: none;
     padding: 0;
 }
-.operation{
+
+.operation {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
+
 .pagination li {
     margin-right: 10px;
 }
@@ -123,11 +155,12 @@ a {
     .main-contents {
         flex-direction: column;
     }
+
     .sidebar, .blogpost-container {
         width: 100%;
     }
 }
 
-*.disabled{
+*.disabled {
     display: none;
 }

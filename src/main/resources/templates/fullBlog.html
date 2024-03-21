@@ -9,7 +9,23 @@
     <link rel="stylesheet" href="/fullBlog.css">
 </head>
     <body>
-    <header>Write Wise</header>
+    <div class="header">
+        <header><a th:href="@{/home}" class="company-name">Write Wise</a></header>
+        <div class="user-profile">
+            <a href="#" class="user-profile-link">
+                <span class="user-profile-name" sec:authentication="name">Yash</span>
+                <span class="dropdown-arrow">&#9660;</span>
+            </a>
+            <div class="dropdown-content">
+                <a href="/user/profile">Profile</a>
+                <a th:href="@{/home/blog-new}">Publish new Blog</a>
+                <form action="#" th:action="@{/logout}" method="POST">
+                    <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+                </form>
+
+            </div>
+        </div>
+    </div>
         <div class="blog-container">
             <h2 th:text="${post.title}" class="blog-author"></h2>
             <p th:text="${post.author.name} + '  @' + ${post.author.username}" class="blog-author"> <span style="color: cornflowerblue" th:text="'@' + ${post.author.username}" class="blog-author"></span></p>
@@ -48,18 +64,20 @@
                             <input type="submit" value="save">
                         </form>
                     </div>
-                    <div th:if="${#authentication.principal.username == postedComment.author.username}" class="comment-actions">
-                        <form th:action="@{/blog/deleteComment}">
-                            <input type="hidden" name="commentIdToDelete" th:value="${postedComment.id}">
-                            <input type="submit" value="delete" name="deleteComment" class="comment-delete-button">
-                        </form>
-                        <form th:unless="${commentIdToUpdate==postedComment.id}" th:action="@{/blog/updateComment}">
-                            <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
-                            <input type="submit" value="update" class="comment-update-button">
-                        </form>
-                    </div>
-                    <div th:unless="${commentIdToUpdate==postedComment.id}" class="comment-content">
-                        <p th:text="${postedComment.comment}" class="comment-text"></p>
+                    <div class="comment-actions">
+                        <div th:unless="${commentIdToUpdate==postedComment.id}" class="comment-content">
+                            <p th:text="${postedComment.comment}" class="comment-text"></p>
+                        </div>
+                        <div th:if="${#authentication.principal.username == postedComment.author.username}" class="comment-actions-buttons">
+                            <form th:action="@{/blog/deleteComment}">
+                                <input type="hidden" name="commentIdToDelete" th:value="${postedComment.id}">
+                                <input type="submit" value="delete" name="deleteComment" class="comment-delete-button">
+                            </form>
+                            <form th:unless="${commentIdToUpdate==postedComment.id}" th:action="@{/blog/updateComment}">
+                                <input type="hidden" name="commentIdToUpdate" th:value="${postedComment.id}">
+                                <input type="submit" value="update" class="comment-update-button">
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

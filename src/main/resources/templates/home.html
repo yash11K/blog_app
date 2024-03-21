@@ -75,16 +75,17 @@
                 <input type="hidden" th:value="${userQuery}" name="userQuery">
                 <input type="hidden" th:value="${from}" name="from">
                 <input type="hidden" th:value="${to}" name="to">
-                <label for="navbar-orderBy-button"> Order By: </label>
-                <select name="orderBy" id="navbar-orderBy-button" onchange="this.form.submit()" th:value="${sortType}" class="dropdown-content-filter">
-                    <option value="dateDesc" th:selected="${sortType == 'dateDesc'}">published (Newest First)</option>
-                    <option value="dateAsc" th:selected="${sortType == 'dateAsc'}">published (Oldest First)</option>
-                    <option value="nameAsc" th:selected="${sortType == 'nameAsc'}">Name (A~Z)</option>
-                    <option value="nameDesc" th:selected="${sortType == 'nameDesc'}">Name (Z~A)</option>
-                </select>
+                <div class="operation-orderby">
+                    <select name="orderBy" id="navbar-orderBy-button" onchange="this.form.submit()" th:value="${sortType}" class="dropdown-content-filter">
+                        <option value="dateDesc" th:selected="${sortType == 'dateDesc'}">published (Newest First)</option>
+                        <option value="dateAsc" th:selected="${sortType == 'dateAsc'}">published (Oldest First)</option>
+                        <option value="nameAsc" th:selected="${sortType == 'nameAsc'}">Name (A~Z)</option>
+                        <option value="nameDesc" th:selected="${sortType == 'nameDesc'}">Name (Z~A)</option>
+                    </select>
+                </div>
             </form>
             <form th:action="@{/search}" class="search-form">
-                <label>Search:
+                <label class="search-label">Search:
                     <input type="text" name="rawQuery" th:value="${rawQuery}">
                     <input type="submit">
                 </label>

@@ -26,6 +26,12 @@
 </div>
 
 <section class="blogpost-container">
+    <div class="profileDetails">
+        <p>Name : <span th:text="${user.get().name}"></span></p>
+        <p>UserName : <span th:text="${user.get().username}"></span></p>
+        <p> : <span ></span></p>
+    </div>
+
     <h2>Your Published Posts: </h2>
     <div class="blogpost-grid">
         <a th:each="publishedPost:${publishedPosts}" th:href="@{/blog(postId=${publishedPost.id})}" class="blogpost">
