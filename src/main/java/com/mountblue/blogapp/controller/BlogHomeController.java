@@ -52,15 +52,14 @@ public class BlogHomeController extends AbstractBlogControl{
         boolean processTagQuery = false;
         boolean processUserQuery = false;
         boolean processDateQuery = false;
-        int pageSize = 12;
+        int pageSize = 8;
 
-        Page<Post> publishedPosts;
-        List<Integer> postIdsQueryPosts = new ArrayList<>();
         Set<Integer> postIdsCollector = new HashSet<>();
 
         if (orderBy==null){
-            redirectAttributes.addAttribute("orderBy", "dateDesc");
-            return "redirect:/home";
+//            redirectAttributes.addAttribute("orderBy", "dateDesc");
+//            return "redirect:/home";
+            orderBy = "dateDesc";
         }
 
         rawQuery = queryNullifier(rawQuery);
@@ -74,44 +73,31 @@ public class BlogHomeController extends AbstractBlogControl{
         }
         if(tagQuery != null){
             model.addAttribute("tagQuery", tagQuery);
-            if(processRawQuery){
-                Collection<Integer> tagQueryResults = filterService.findPostIdByTagNames(tagQuery);
-                postIdsCollector.retainAll(tagQueryResults);
-                processTagQuery=true;
-            } else {
-                processTagQuery = postIdsCollector.addAll(filterService.findPostIdByTagNames(tagQuery));
-            }
+            Collection<Integer> tagQueryResults = filterService.findPostIdByTagNames(tagQuery);
+            processTagQuery = processRawQuery ?
+                    postIdsCollector.retainAll(tagQueryResults) : postIdsCollector.addAll(tagQueryResults);
         }
         if(userQuery!= null){
             model.addAttribute("userQuery", userQuery);
-            if(processRawQuery||processTagQuery){
-                Collection<Integer> userQueryResults = filterService.findPostIdByAuthorNames(userQuery);
-                postIdsCollector.retainAll(userQueryResults);
-                processUserQuery=true;
-            }
-            else {
-                processUserQuery = postIdsCollector.addAll(filterService.findPostIdByAuthorNames(userQuery));
-            }
+            Collection<Integer> userQueryResults = filterService.findPostIdByAuthorNames(userQuery);
+            processUserQuery = processRawQuery || processTagQuery ?
+                    postIdsCollector.retainAll(userQueryResults) : postIdsCollector.addAll(userQueryResults);
         }
 
         if(startDate != null || endDate != null){
             model.addAttribute("from", startDate);
             model.addAttribute("to", endDate);
-            if(processRawQuery || processTagQuery || processUserQuery){
-                Collection<Integer> dateQueryResults = filterService.findPostIdByStartEndDate(startDate, endDate);
-                postIdsCollector.retainAll(dateQueryResults);
-            }
-            else {
-                processDateQuery = postIdsCollector.addAll(filterService.findPostIdByStartEndDate(startDate, endDate));
-            }
+            Collection<Integer> dateQueryResults = filterService.findPostIdByStartEndDate(startDate, endDate);
+            processDateQuery = processRawQuery || processTagQuery || processUserQuery ?
+                    postIdsCollector.retainAll(dateQueryResults) : postIdsCollector.addAll(dateQueryResults);
         }
         if(!processRawQuery && !processTagQuery && !processDateQuery && !processUserQuery){
             boolean b = postIdsCollector.addAll(postService.findIdByPublished(true));
         }
-        boolean b = postIdsQueryPosts.addAll(postIdsCollector);
-        Collection<Tag> relativeTags = filterService.findTagsByPostIds(postIdsQueryPosts);
+
+        Collection<Tag> relativeTags = filterService.findTagsByPostIds(postIdsCollector);
         Pageable pageable = PageRequest.of(page, pageSize);
-        publishedPosts = postService.findPostsBySortType(orderBy, postIdsQueryPosts, true, pageable);
+        Page<Post> publishedPosts = postService.findPostsBySortType(orderBy, postIdsCollector, true, pageable);
         model.addAttribute("publishedPosts", publishedPosts);
         model.addAttribute("allUsers", userService.findAllUsers());
         model.addAttribute("allTags", relativeTags);

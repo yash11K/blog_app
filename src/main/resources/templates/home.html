@@ -29,7 +29,7 @@
     <div class="main-contents">
         <aside class="sidebar">
             <p>Filters: </p>
-            <form th:action="@{/filter}">
+            <form th:action="@{/page}">
                 <input type="hidden" th:value="${rawQuery}" name="rawQuery">
                 <input type="submit" value="apply filter" class="filters-submit-button">
                 <br>
@@ -69,7 +69,7 @@
         </aside>
         <section class="blogpost-container">
             <div class="operation">
-            <form th:action="@{/orderBy}" class="sort-by">
+            <form th:action="@{/page}" class="sort-by">
                 <input type="hidden" th:value="${rawQuery}" name="rawQuery">
                 <input type="hidden" th:value="${tagQuery}" name="tagQuery">
                 <input type="hidden" th:value="${userQuery}" name="userQuery">
@@ -84,7 +84,7 @@
                     </select>
                 </div>
             </form>
-            <form th:action="@{/search}" class="search-form">
+            <form th:action="@{/page}" class="search-form">
                 <label class="search-label">Search:
                     <input type="text" name="rawQuery" th:value="${rawQuery}">
                     <input type="submit">
