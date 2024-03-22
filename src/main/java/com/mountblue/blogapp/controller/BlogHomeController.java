@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.util.*;
-import java.util.logging.Filter;
 
 @Controller
 public class BlogHomeController extends AbstractBlogControl{
@@ -52,7 +51,7 @@ public class BlogHomeController extends AbstractBlogControl{
         boolean processTagQuery = false;
         boolean processUserQuery = false;
         boolean processDateQuery = false;
-        int pageSize = 8;
+        int pageSize = 12;
 
         Set<Integer> postIdsCollector = new HashSet<>();
 

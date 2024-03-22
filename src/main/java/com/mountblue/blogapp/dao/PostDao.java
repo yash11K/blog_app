@@ -23,9 +23,6 @@ public interface PostDao extends JpaRepository<Post, Integer> {
     @Query(value = "SELECT post_id FROM posts WHERE post_is_published = :isPublished", nativeQuery = true)
     List<Integer> findAllIdsByIsPublished(@Param("isPublished")boolean isPublished);
 
-    @Query(value = "SELECT author_id FROM  posts WHERE post_is_published = :isPublished", nativeQuery = true)
-    List<String> findAllPostsByPublished(@Param("isPublished")boolean isPublished);
-
     List<Post> findPostsByTitleContainingIgnoreCase(String titlePattern);
 
     List<Post> findPostsByContentContaining(String contentPattern);

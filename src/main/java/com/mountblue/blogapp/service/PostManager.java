@@ -103,7 +103,7 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public List<Post> findPostsCreatedByAuthor(Boolean isPublished, User author) {
+    public List<Post> findPostsCreatedByAuthorByPublished(Boolean isPublished, User author) {
         return postDao.findPostsByAuthor(author);
     }
 

@@ -3,15 +3,29 @@
         lang="en"
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Blog Post</title>
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="/updatePost.css">
 </head>
 <body>
-<header>Write Wise</header>
+<div class="header">
+    <header><a th:href="@{/home}" class="company-name">Write Wise</a></header>
+    <div class="user-profile">
+        <a href="#" class="user-profile-link">
+            <span class="user-profile-name" sec:authentication="name">Yash</span>
+            <span class="dropdown-arrow">&#9660;</span>
+        </a>
+        <div class="dropdown-content">
+            <a href="/user/profile">Profile</a>
+            <a th:href="@{/home/blog-new}">Publish new Blog</a>
+            <form action="#" th:action="@{/logout}" method="POST">
+                <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+            </form>
+        </div>
+    </div>
+</div>
 <h1>Update Blog Post</h1>
 <form th:action="@{/home/submit-updates}" method="post" th:object="${updatePost}">
     <input type="hidden" th:field="*{id}">

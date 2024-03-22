@@ -65,4 +65,12 @@ public class BlogOperationController extends AbstractBlogControl{
         postService.deletePostById(postId);
         return "redirect:/home";
     }
+
+    @GetMapping("/archive")
+    String archivePost(@ModelAttribute(name = "archivePost")Post archivePost, @RequestParam("postId")Integer postId){
+        Post post = postService.findPostById(postId);
+        post.setPublished(false);
+        postService.savePost(post);
+        return "redirect:/home";
+    }
 }

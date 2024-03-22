@@ -29,7 +29,6 @@
     <div class="profileDetails">
         <p>Name : <span th:text="${user.get().name}"></span></p>
         <p>UserName : <span th:text="${user.get().username}"></span></p>
-        <p> : <span ></span></p>
     </div>
 
     <h2>Your Published Posts: </h2>
@@ -41,6 +40,20 @@
                 <p th:text="${publishedPost.publishedAt.toLocaleString()}" class="post-createdat"></p>
                 <p th:text="${publishedPost.excerpt}" class="post-excerpt"></p>
                 <br>
+            </div>
+        </a>
+    </div>
+    <h2>Your Archived Posts</h2>
+    <div class="blogpost-grid">
+        <a th:each="archivedPost:${archivedPosts}" th:href="@{/blog(postId=${archivedPost.id})}" class="blogpost">
+            <div class = blogPosts>
+                <div class = blogPosts>
+                    <h2 th:text="${archivedPost.title}" class="post-title"></h2>
+                    <h4 th:text="'Author: '+${archivedPost.author.name}" class="post-author"></h4>
+                    <p th:text="${archivedPost.publishedAt.toLocaleString()}" class="post-createdat"></p>
+                    <p th:text="${archivedPost.author.email}" class="post-excerpt"></p>
+                    <br>
+                </div>
             </div>
         </a>
     </div>

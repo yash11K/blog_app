@@ -36,7 +36,7 @@ public interface PostService{
 
     List<Post> findPostByContentPattern(String contentPattern);
 
-    List<Post> findPostsCreatedByAuthor(Boolean isPublished, User author);
+    List<Post> findPostsCreatedByAuthorByPublished(Boolean isPublished, User author);
 
     Date setDateToday() throws ParseException;
 }

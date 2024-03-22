@@ -1,0 +1,64 @@
+header {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 25px;
+}
+.company-name{
+    color: white;
+}
+
+.user-profile-link{
+    color: white;
+}
+.user-profile {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    right: -30px;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 10;
+    text-align: center;
+    padding:15px;
+}
+body {
+    background-color: #f2f2f2; /* Light grey background */
+    color: #333; /* Blackish text color */
+}
+
+form {
+    margin-top: 20px; /* Add some space between the header and the form */
+}
+
+label {
+    color: #333; /* Blackish label text color */
+}
+
+input[type="text"],
+textarea {
+    background-color: #fff; /* White background for text input fields */
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #333; /* Dark grey background for submit button */
+    color: white; /* White text color for submit button */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #555; /* Darker grey background on hover */
+}
