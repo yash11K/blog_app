@@ -1,5 +1,6 @@
 package com.mountblue.blogapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,5 +33,6 @@ public class Tag {
     private Date updatedAt;
     @ManyToMany(mappedBy = "tags",
             cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @JsonBackReference
     private Collection<Post> posts;
 }

@@ -53,7 +53,7 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public Page<Post> findOrderedCustomPostsByPublished(Collection<Integer> postIds, boolean isPublished, boolean order, Pageable pageable) {
+    public Page<Post> findOrderedCustomPostsByPublishedAt(Collection<Integer> postIds, boolean isPublished, boolean order, Pageable pageable) {
         if(order){
             return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtAsc(postIds ,isPublished, pageable);
         }
@@ -61,11 +61,44 @@ public class PostManager implements PostService{
     }
 
     @Override
+    public List<Post> findOrderedCustomPostsByPublishedAt(Collection<Integer> postIds, boolean isPublished, boolean order) {
+        if(order){
+            return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtAsc(postIds ,isPublished);
+        }
+        else return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtDesc(postIds ,isPublished);
+    }
+
+    @Override
+    public List<Post> findOrderedCustomPostsByPublishedAt(Collection<Integer> postIds, boolean order) {
+        if(order){
+            return postDao.findPostsByIdInOrderByPublishedAtAsc(postIds);
+        }
+        else return postDao.findPostsByIdInOrderByPublishedAtDesc(postIds);
+    }
+
+
+    @Override
     public Page<Post> findOrderedCustomPostsByTitle(Collection<Integer> postIds, boolean isPublished,boolean order, Pageable pageable) {
         if(order){
             return postDao.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished, pageable);
         }
         else return postDao.findPostByIdInAndIsPublishedOrderByTitleDesc(postIds, isPublished, pageable);
+    }
+
+    @Override
+    public List<Post> findOrderedCustomPostsByTitle(Collection<Integer> postIds, boolean isPublished,boolean order) {
+        if(order){
+            return postDao.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished);
+        }
+        else return postDao.findPostByIdInAndIsPublishedOrderByTitleDesc(postIds, isPublished);
+    }
+
+    @Override
+    public List<Post> findOrderedCustomPostsByTitle(Collection<Integer> postIds, boolean order) {
+        if(order){
+            return postDao.findPostsByIdInOrderByTitleAsc(postIds);
+        }
+        else return postDao.findPostsByIdInOrderByTitleDesc(postIds);
     }
 
     @Override
@@ -86,12 +119,12 @@ public class PostManager implements PostService{
     @Override
     public Page<Post> findPostsBySortType(String sortType, Collection<Integer> postIds, boolean isPublished, Pageable pageable){
         return switch (sortType) {
-            default -> findOrderedCustomPostsByPublished(postIds, isPublished, false, pageable) ;
+            default -> findOrderedCustomPostsByPublishedAt(postIds, isPublished, false, pageable) ;
             case "dateAsc" -> {
-                yield findOrderedCustomPostsByPublished(postIds, isPublished, true, pageable);
+                yield findOrderedCustomPostsByPublishedAt(postIds, isPublished, true, pageable);
             }
             case "dateDesc" -> {
-                yield findOrderedCustomPostsByPublished(postIds, isPublished, false, pageable);
+                yield findOrderedCustomPostsByPublishedAt(postIds, isPublished, false, pageable);
             }
             case "nameAsc" -> {
                 yield findOrderedCustomPostsByTitle(postIds, isPublished, true, pageable);
@@ -103,8 +136,46 @@ public class PostManager implements PostService{
     }
 
     @Override
+    public List<Post> findPostsBySortType(String sortType, Collection<Integer> postIds, boolean isPublished){
+        return switch (sortType) {
+            default -> findOrderedCustomPostsByPublishedAt(postIds, isPublished, false) ;
+            case "dateAsc" -> {
+                yield findOrderedCustomPostsByPublishedAt(postIds, isPublished, true);
+            }
+            case "dateDesc" -> {
+                yield findOrderedCustomPostsByPublishedAt(postIds, isPublished, false);
+            }
+            case "nameAsc" -> {
+                yield findOrderedCustomPostsByTitle(postIds, isPublished, true);
+            }
+            case "nameDesc" -> {
+                yield findOrderedCustomPostsByTitle(postIds, isPublished, false);
+            }
+        };
+    }
+    @Override
+    public List<Post> findPostsBySortType(String sortType, Collection<Integer> postIds){
+        return switch (sortType) {
+            default -> findOrderedCustomPostsByPublishedAt(postIds, false) ;
+            case "dateAsc" -> {
+                yield findOrderedCustomPostsByPublishedAt(postIds, true);
+            }
+            case "dateDesc" -> {
+                yield findOrderedCustomPostsByPublishedAt(postIds, false);
+            }
+            case "nameAsc" -> {
+                yield findOrderedCustomPostsByTitle(postIds, true);
+            }
+            case "nameDesc" -> {
+                yield findOrderedCustomPostsByTitle(postIds, false);
+            }
+        };
+    }
+
+
+    @Override
     public List<Post> findPostsCreatedByAuthorByPublished(Boolean isPublished, User author) {
-        return postDao.findPostsByAuthor(author);
+        return postDao.findPostsByAuthorAndIsPublished(author, isPublished);
     }
 
     @Override
@@ -112,5 +183,20 @@ public class PostManager implements PostService{
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Date today = new Date();
         return  formatter.parse(formatter.format(today));
+    }
+
+    @Override
+    public List<Post> findPostsOrderBy(String orderBy) {
+        return postDao.findPostsOrderBy(orderBy);
+    }
+
+    @Override
+    public List<Integer> findAllIds(){
+        return postDao.findAllIds();
+    }
+
+    @Override
+    public List<Post> findAllPosts(){
+        return postDao.findAll();
     }
 }

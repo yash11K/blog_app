@@ -23,17 +23,36 @@ public interface PostDao extends JpaRepository<Post, Integer> {
     @Query(value = "SELECT post_id FROM posts WHERE post_is_published = :isPublished", nativeQuery = true)
     List<Integer> findAllIdsByIsPublished(@Param("isPublished")boolean isPublished);
 
+    @Query(value = "SELECT posts.post_id FROM posts", nativeQuery = true)
+    List<Integer> findAllIds();
+
     List<Post> findPostsByTitleContainingIgnoreCase(String titlePattern);
 
     List<Post> findPostsByContentContaining(String contentPattern);
 
     Page<Post> findPostByIdInAndIsPublishedOrderByPublishedAtAsc(Collection<Integer> ids, boolean isPublished, Pageable pageable);
 
+    List<Post> findPostByIdInAndIsPublishedOrderByPublishedAtAsc(Collection<Integer> ids, boolean isPublished);
+
+    List<Post> findPostsByIdInOrderByPublishedAtAsc(Collection<Integer> ids);
+
     Page<Post> findPostByIdInAndIsPublishedOrderByPublishedAtDesc(Collection<Integer> ids, boolean isPublished, Pageable pageable);
+
+    List<Post> findPostByIdInAndIsPublishedOrderByPublishedAtDesc(Collection<Integer> ids, boolean isPublished);
+
+    List<Post> findPostsByIdInOrderByPublishedAtDesc(Collection <Integer> ids);
 
     Page<Post> findPostByIdInAndIsPublishedOrderByTitleDesc(Collection<Integer> ids, boolean isPublished, Pageable pageable);
 
+    List<Post> findPostByIdInAndIsPublishedOrderByTitleDesc(Collection<Integer> ids, boolean isPublished);
+
+    List<Post> findPostsByIdInOrderByTitleDesc(Collection <Integer> ids);
+
     Page<Post> findPostByIdInAndIsPublishedOrderByTitleAsc(Collection<Integer> ids, boolean isPublished, Pageable pageable);
+
+    List<Post> findPostByIdInAndIsPublishedOrderByTitleAsc(Collection<Integer> ids, boolean isPublished);
+
+    List<Post> findPostsByIdInOrderByTitleAsc(Collection <Integer> ids);
 
     List<Post> findPostsByTagsIn(Collection<Tag> tags);
 
@@ -42,5 +61,8 @@ public interface PostDao extends JpaRepository<Post, Integer> {
     @Query(value = "SELECT posts.post_id FROM posts WHERE post_published_at BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<Integer> findPostIdsByPublishedAtBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    List<Post> findPostsByAuthor(User user);
+    List<Post> findPostsByAuthorAndIsPublished(User user, boolean isPublished);
+
+    @Query(value = "FROM Post ORDER BY :orderBy", nativeQuery = false)
+    List<Post> findPostsOrderBy(String orderBy);
 }

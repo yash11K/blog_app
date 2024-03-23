@@ -1,6 +1,7 @@
 package com.mountblue.blogapp.security;
 
 import com.mountblue.blogapp.service.UserService;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,6 +33,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(customizer ->
                 customizer.requestMatchers("/home").hasRole("WEBUSER")
                         .requestMatchers("/register/**").permitAll()
+                        .requestMatchers("/writewise/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form ->{
                     form.loginPage("/loginPage")

@@ -1,5 +1,6 @@
 package com.mountblue.blogapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Role {
     @Column(name = "role_name", unique = true)
     private String name;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     Collection<User> user;
 
