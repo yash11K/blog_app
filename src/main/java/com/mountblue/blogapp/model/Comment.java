@@ -1,5 +1,6 @@
 package com.mountblue.blogapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,5 +34,6 @@ public class Comment {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "comment_post_id", referencedColumnName = "post_id", updatable = false)
+    @JsonBackReference
     private Post post;
 }

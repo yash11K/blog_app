@@ -3,9 +3,12 @@ package com.mountblue.blogapp.controller;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.User;
 import com.mountblue.blogapp.service.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -46,7 +49,11 @@ public class NewBlogPostControl extends AbstractBlogControl{
     @PostMapping("/blog-publish")
     public String publishBlog(@ModelAttribute("newPost") Post newPost,
                               @RequestParam(value = "newPostTagNames")String newPostTagNamesStr,
-                              @RequestParam("blogAction")String blogAction, Principal principal) throws ParseException {
+                              @RequestParam("blogAction")String blogAction, Principal principal,
+                              BindingResult bindingResult) throws ParseException {
+        if(bindingResult.hasErrors()){
+            return "newBlogPost";
+        }
         User author = userService.findUserByUserName(principal.getName()).get();
         newPost.setAuthor(author);
         newPost.setCreatedAt(postService.setDateToday());
