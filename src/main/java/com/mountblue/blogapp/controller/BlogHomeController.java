@@ -54,6 +54,7 @@ public class BlogHomeController extends AbstractBlogControl{
         int pageSize = 12;
 
         Set<Integer> postIdsCollector = new HashSet<>();
+        Collection<Tag> relativeTags = null;
 
         if (orderBy==null){
             orderBy = "dateDesc";
@@ -67,6 +68,7 @@ public class BlogHomeController extends AbstractBlogControl{
         if (rawQuery != null) {
             processRawQuery = postIdsCollector.addAll(searchService.processSearchQuery(rawQuery));
             model.addAttribute("rawQuery", rawQuery);
+            relativeTags = filterService.findTagsByPostIds(postIdsCollector);
         }
         if(tagQuery != null){
             model.addAttribute("tagQuery", tagQuery);
@@ -91,8 +93,10 @@ public class BlogHomeController extends AbstractBlogControl{
         if(!processRawQuery && !processTagQuery && !processDateQuery && !processUserQuery){
             boolean b = postIdsCollector.addAll(postService.findIdByPublished(true));
         }
+        if(relativeTags==null){
+            relativeTags = filterService.findTagsByPostIds(postService.findIdByPublished(true));
+        }
 
-        Collection<Tag> relativeTags = filterService.findTagsByPostIds(postIdsCollector);
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Post> publishedPosts = postService.findPostsBySortType(orderBy, postIdsCollector, true, pageable);
         model.addAttribute("publishedPosts", publishedPosts);

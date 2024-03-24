@@ -36,7 +36,7 @@ public class BlogOperationController extends AbstractBlogControl{
     @GetMapping("/update")
     String showUpdatePostPage(@RequestParam("postId")Integer updatePostId, Model model){
 
-        Post updatePost = postService.findPostById(updatePostId);
+        Post updatePost = postService.findPostById(updatePostId).get();
         Set<Tag> tags = updatePost.getTags();
         model.addAttribute("updatePost",updatePost);
         model.addAttribute("tagsStr", tagService.getTagNamesAsString(tags));
@@ -51,7 +51,7 @@ public class BlogOperationController extends AbstractBlogControl{
         TagService tagService = serviceFactory.getTagService();
 
         postTagService.deletePostTagRelationByPostId(updatedPost.getId());
-        tagService.findTagSetFromTagString(tagsStr, updatedPost);
+        tagService.saveTagFromTagString(tagsStr, updatedPost);
         updatedPost.setExcerpt(createExcerpt(updatedPost.getContent()));
         updatedPost.setUpdatedAt(new Date());
         updatedPost.setPublished(true);
@@ -68,7 +68,7 @@ public class BlogOperationController extends AbstractBlogControl{
 
     @GetMapping("/archive")
     String archivePost(@ModelAttribute(name = "archivePost")Post archivePost, @RequestParam("postId")Integer postId){
-        Post post = postService.findPostById(postId);
+        Post post = postService.findPostById(postId).get();
         post.setPublished(false);
         postService.savePost(post);
         return "redirect:/home";
