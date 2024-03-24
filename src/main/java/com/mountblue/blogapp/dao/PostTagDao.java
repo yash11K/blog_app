@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface PostTagDao extends JpaRepository<PostTag, PostTag.PostTagId> {
@@ -17,5 +17,5 @@ public interface PostTagDao extends JpaRepository<PostTag, PostTag.PostTagId> {
     void deleteByPostId(@Param("postId")int postId);
 
     @Query(value = "SELECT post_tags.tag_id FROM post_tags WHERE post_id IN :postIds", nativeQuery = true)
-    List<Integer> findTagIdsByPostIds(Collection<Integer> postIds);
+    Set<Integer> findTagIdsByPostIds(Collection<Integer> postIds);
 }

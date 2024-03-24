@@ -19,8 +19,6 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    @Column(name = "comment_author_name")
-    private String authorName;
     @Column(name = "comment_created_at",columnDefinition = "datetime",updatable = false)
     private Date created_at;
     @Column(name = "comment_updated_at", columnDefinition = "datetime")

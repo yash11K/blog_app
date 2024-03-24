@@ -3,9 +3,7 @@ package com.mountblue.blogapp.controller;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.User;
 import com.mountblue.blogapp.service.*;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +22,6 @@ public class NewBlogPostControl extends AbstractBlogControl{
     private TagService tagService;
     private UserService userService;
     private final String blogActionPublish = "Publish";
-    private final String blogActionDraft = "SaveAsDraft";
     @Autowired
     public NewBlogPostControl(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
@@ -38,7 +35,7 @@ public class NewBlogPostControl extends AbstractBlogControl{
     }
 
     @GetMapping("/blog-new")
-    public String showHome(Model model, Principal principal){
+    public String showHome(Model model){
         String tags = "";
         model.addAttribute("tags", tags);
         model.addAttribute("newPost", new Post());
@@ -58,7 +55,7 @@ public class NewBlogPostControl extends AbstractBlogControl{
         newPost.setAuthor(author);
         newPost.setCreatedAt(postService.setDateToday());
         newPost.setPublishedAt(postService.setDateToday());
-        tagService.findTagSetFromTagString(newPostTagNamesStr, newPost);
+        tagService.saveTagFromTagString(newPostTagNamesStr, newPost);
         newPost.setPublished(blogAction.equals(blogActionPublish));
         newPost.setExcerpt(createExcerpt(newPost.getContent()));
         postService.savePost(newPost);

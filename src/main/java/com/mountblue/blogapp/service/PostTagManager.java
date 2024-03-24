@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PostTagManager implements PostTagService{
@@ -23,7 +24,7 @@ public class PostTagManager implements PostTagService{
     }
 
     @Override
-    public List<Integer> findTagIdsByPostIds(List<Integer> postIds) {
+    public Set<Integer> findTagIdsByPostIds(List<Integer> postIds) {
         return postTagDao.findTagIdsByPostIds(postIds);
     }
 }

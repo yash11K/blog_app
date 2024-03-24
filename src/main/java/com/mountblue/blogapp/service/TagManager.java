@@ -52,12 +52,12 @@ public class TagManager implements TagService{
     }
 
     @Override
-    public Set<Tag> findTagsById(List<Integer> tagIds){
+    public Set<Tag> findTagsById(Set<Integer> tagIds){
         return tagDao.findTagByIdInOrderByName(tagIds);
     }
 
     @Override
-    public void findTagSetFromTagString(String tagsStr, Post post) {
+    public void saveTagFromTagString(String tagsStr, Post post) {
         int postId = post.getId();
         Set<Tag> postTags = new HashSet<>();
         List<String> tagStr = Arrays.stream(tagsStr.split(",")).toList();

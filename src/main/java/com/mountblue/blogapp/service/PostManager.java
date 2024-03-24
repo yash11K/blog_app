@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,12 +21,10 @@ import java.util.Optional;
 @Service
 public class PostManager implements PostService{
     private final PostDao postDao;
-    private final UserDao userDao;
 
     @Autowired
-    public PostManager(PostDao postDao, UserDao userDao) {
+    public PostManager(PostDao postDao) {
         this.postDao = postDao;
-        this.userDao = userDao;
     }
 
     public void savePost(Post post){
@@ -38,9 +37,9 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public Post findPostById(int postId) {
+    public Optional<Post> findPostById(int postId) {
         Optional<Post> isPost= postDao.findById(postId);
-        return isPost.orElseGet(Post::new);
+        return isPost;
     }
 
     @Override
@@ -191,7 +190,7 @@ public class PostManager implements PostService{
     }
 
     @Override
-    public List<Integer> findAllIds(){
+    public Collection<Integer> findAllIds(){
         return postDao.findAllIds();
     }
 

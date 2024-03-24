@@ -29,7 +29,7 @@ public class FullBlogController extends AbstractBlogControl{
 
     @GetMapping("/blog")
     public String showFullBlog(@RequestParam("postId") Integer postId, Model model, Principal principal){
-        Post post = postService.findPostById(postId);
+        Post post = postService.findPostById(postId).get();
         addModelAttributeOfFullBlog(model, post, commentService.findAllCommentsOfPost(post));
         model.addAttribute("principal", principal);
         return "fullBlog";

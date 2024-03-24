@@ -16,20 +16,17 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+//@ToString
 public class Post {
 
     @Column(name = "post_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     @Column(name = "post_title")
-//    @Min(value = 3, message = "should be more than 3 characters")
-//    @Max(value = 124, message = "Should be less than 125 characters")
     private String title;
     @Column(name = "post_content", columnDefinition = "TEXT")
     @Lob
-//    @Min(value = 30, message = "Should Be more than 30 characters")
     private String content;
     @Column(name = "post_excerpt")
     private String excerpt;

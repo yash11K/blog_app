@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class FilterManager  implements FilterService{
+public class FilterManager  implements FilterService {
     PostDao postDao;
     TagDao tagDao;
     UserDao userDao;
@@ -29,11 +29,11 @@ public class FilterManager  implements FilterService{
     }
 
     @Override
-    public Set<Integer> findPostIdByTagNames(String tagNames){
+    public Set<Integer> findPostIdByTagNames(String tagNames) {
         Set<Integer> postIds = new HashSet<>();
-        Set<Tag> tags  = tagDao.findTagByNameIn(List.of(tagNames.split(",")));
+        Set<Tag> tags = tagDao.findTagByNameIn(List.of(tagNames.split(",")));
         List<Post> posts = postDao.findPostsByTagsIn(tags);
-        for(Post post : posts){
+        for (Post post : posts) {
             postIds.add(post.getId());
         }
         return postIds;
@@ -44,7 +44,7 @@ public class FilterManager  implements FilterService{
         List<Integer> postIds = new ArrayList<>();
         List<User> users = userDao.findUserByNameIn(List.of(authorNames.split(",")));
         List<Post> posts = postDao.findPostsByAuthorIn(users);
-        for(Post post : posts){
+        for (Post post : posts) {
             postIds.add(post.getId());
         }
         return postIds;
@@ -61,5 +61,22 @@ public class FilterManager  implements FilterService{
     @Override
     public Set<Tag> findTagsByPostIds(Collection<Integer> postIds) {
         return tagDao.findTagByIdInOrderByName(postTagDao.findTagIdsByPostIds(postIds));
+    }
+
+    @Override
+    public Collection<Integer> findPostIdFromCustomFilterQuery(Collection<Integer> postIdCollector, String tagFilterQuery,
+                                                        String authorFilterQuery,
+                                                        String fromDateFilterQuery,
+                                                        String toDateFilterQuery) throws ParseException {
+        if(tagFilterQuery!=null){
+            postIdCollector.retainAll(findPostIdByTagNames(tagFilterQuery));
+        }
+        if(authorFilterQuery!=null){
+            postIdCollector.retainAll(findPostIdByAuthorNames(authorFilterQuery));
+        }
+        if(fromDateFilterQuery!=null || toDateFilterQuery!=null){
+            postIdCollector.retainAll(findPostIdByStartEndDate(fromDateFilterQuery, toDateFilterQuery));
+        }
+        return postIdCollector;
     }
 }

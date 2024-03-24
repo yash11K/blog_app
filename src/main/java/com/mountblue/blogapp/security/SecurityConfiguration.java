@@ -1,12 +1,14 @@
 package com.mountblue.blogapp.security;
 
 import com.mountblue.blogapp.service.UserService;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,24 +31,31 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationSuccessHandler authenticationSuccessHandler) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           AuthenticationSuccessHandler authenticationSuccessHandler,
+                                           AuthenticationProvider authenticationProvider) throws Exception {
         http.authorizeHttpRequests(customizer ->
-                customizer.requestMatchers("/home").hasRole("WEBUSER")
+                customizer
+                        .requestMatchers("/home").hasRole("WEBUSER")
                         .requestMatchers("/register/**").permitAll()
-                        .requestMatchers("/writewise/**").permitAll()
+                        .requestMatchers("/writewise/api/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/writewise/api/new/**").hasRole("WEBUSER")
                         .requestMatchers("/error").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .formLogin(form ->{
                     form.loginPage("/loginPage")
                             .loginProcessingUrl("/authenticate")
                             .successHandler(authenticationSuccessHandler)
                             .permitAll();
 
-                }).logout(LogoutConfigurer::permitAll)
-
+                })
+                .logout(LogoutConfigurer::permitAll)
                 .exceptionHandling(configurer ->
                         configurer.accessDeniedPage("/access-denied")
-                );
+                )
+                .httpBasic(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authenticationProvider(authenticationProvider);
         return http.build();
-    }
+        }
 }

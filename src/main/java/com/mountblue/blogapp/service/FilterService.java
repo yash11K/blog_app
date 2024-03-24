@@ -17,4 +17,9 @@ public interface FilterService {
     List<Integer> findPostIdByStartEndDate(String startDate, String endDate) throws ParseException;
 
     Set<Tag> findTagsByPostIds(Collection<Integer> postIds);
+
+    Collection<Integer> findPostIdFromCustomFilterQuery(Collection<Integer> postIdCollector, String tagFilterQuery,
+                                                 String authorFilterQuery,
+                                                 String fromDateFilterQuery,
+                                                 String toDateFilterQuery) throws ParseException;
 }

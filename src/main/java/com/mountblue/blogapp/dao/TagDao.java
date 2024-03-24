@@ -18,5 +18,5 @@ public interface TagDao extends JpaRepository<Tag, Integer> {
 
     Set<Tag> findTagByNameIn(List<String> tagNames);
 
-    Set<Tag> findTagByIdInOrderByName(List<Integer> tagIds);
+    Set<Tag> findTagByIdInOrderByName(Set<Integer> tagIds);
 }

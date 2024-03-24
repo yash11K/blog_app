@@ -11,12 +11,13 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface PostService{
     void savePost(Post post);
     List<Post> findPostsByPublished(Boolean isPublished);
-    Post findPostById(int postId);
+    Optional<Post> findPostById(int postId);
     @Transactional
     void deletePostById(int postId);
     static String createExcerpt(String content){
@@ -54,7 +55,7 @@ public interface PostService{
 
     List<Post> findPostsOrderBy(String orderBy);
 
-    List<Integer> findAllIds();
+    Collection<Integer> findAllIds();
 
     List<Post> findAllPosts();
 }

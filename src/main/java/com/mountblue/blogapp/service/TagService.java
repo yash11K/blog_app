@@ -21,9 +21,9 @@ public interface TagService{
 
     List<Tag> findTagByNamePattern(String tagPatter);
 
-    Set<Tag> findTagsById(List<Integer> tagIds);
+    Set<Tag> findTagsById(Set<Integer> tagIds);
 
-    void findTagSetFromTagString(String tagsStr, Post post);
+    void saveTagFromTagString(String tagsStr, Post post);
 
     Set<Tag> findTagByTagNames(List<String> tagNames);
 
