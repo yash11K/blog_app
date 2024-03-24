@@ -36,7 +36,7 @@ public class CommentOperationController extends AbstractBlogControl{
     public String postComment(@RequestParam("postId") Integer postId, @ModelAttribute("comments")Comment comment, Principal principal) throws ParseException {
         comment.setAuthor(userService.findUserByUserName(principal.getName()).get());
         comment.setCreated_at(postService.setDateToday());
-        comment.setPost(postService.findPostById(postId));
+        comment.setPost(postService.findPostById(postId).get());
         commentService.saveComment(comment);
         String redirectURI = "/blog?postId=" + postId;
         return "redirect:" + redirectURI;
@@ -56,7 +56,7 @@ public class CommentOperationController extends AbstractBlogControl{
         int postId = commentService.getPostIdFromCommentId(commentId);
         Optional<Comment> maybeComment = commentService.findCommentById(commentId);
         maybeComment.ifPresent(comment -> model.addAttribute("commentIdToUpdate", commentId));
-        Post post = postService.findPostById(postId);
+        Post post = postService.findPostById(postId).get();
         addModelAttributeOfFullBlog(model, post, commentService.findAllCommentsOfPost(post));
         return "fullBlog";
     }
