@@ -1,6 +1,7 @@
 package com.mountblue.blogapp.service;
 
 import com.mountblue.blogapp.model.Tag;
+import com.mountblue.blogapp.model.User;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -22,4 +23,6 @@ public interface FilterService {
                                                  String authorFilterQuery,
                                                  String fromDateFilterQuery,
                                                  String toDateFilterQuery) throws ParseException;
+
+    Collection<User> findUserByPostId(Collection<Integer> postId);
 }

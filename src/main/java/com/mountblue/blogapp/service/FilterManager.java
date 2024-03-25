@@ -79,4 +79,8 @@ public class FilterManager  implements FilterService {
         }
         return postIdCollector;
     }
+    @Override
+    public Collection<User> findUserByPostId(Collection<Integer> postId){
+        return null;
+    }
 }

@@ -51,7 +51,7 @@ public class Post {
     @JsonManagedReference
     private Set<Tag> tags;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "author_id", referencedColumnName = "user_id", updatable = false)
     @JsonManagedReference
     private User author;

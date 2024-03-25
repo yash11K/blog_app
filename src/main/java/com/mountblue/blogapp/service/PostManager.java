@@ -1,7 +1,6 @@
 package com.mountblue.blogapp.service;
 
 import com.mountblue.blogapp.dao.PostDao;
-import com.mountblue.blogapp.dao.UserDao;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,10 +19,12 @@ import java.util.Optional;
 @Service
 public class PostManager implements PostService{
     private final PostDao postDao;
+    private final TagService tagService;
 
     @Autowired
-    public PostManager(PostDao postDao) {
+    public PostManager(PostDao postDao, TagService tagService) {
         this.postDao = postDao;
+        this.tagService = tagService;
     }
 
     public void savePost(Post post){
@@ -58,6 +58,13 @@ public class PostManager implements PostService{
         }
         else return postDao.findPostByIdInAndIsPublishedOrderByPublishedAtDesc(postIds ,isPublished, pageable);
     }
+    @Override
+    public Page<Post> findOrderedCustomPostsByPublishedAt(Collection<Integer> postIds, boolean order, Pageable pageable) {
+        if(order){
+            return postDao.findPostByIdInOrderByPublishedAtAsc(postIds ,  pageable);
+        }
+        else return postDao.findPostByIdInOrderByPublishedAtDesc(postIds , pageable);
+    }
 
     @Override
     public List<Post> findOrderedCustomPostsByPublishedAt(Collection<Integer> postIds, boolean isPublished, boolean order) {
@@ -90,6 +97,14 @@ public class PostManager implements PostService{
             return postDao.findPostByIdInAndIsPublishedOrderByTitleAsc(postIds, isPublished);
         }
         else return postDao.findPostByIdInAndIsPublishedOrderByTitleDesc(postIds, isPublished);
+    }
+
+    @Override
+    public Page<Post> findOrderedCustomPostsByTitle(Collection<Integer> postIds, Pageable pageable, boolean order) {
+        if(order){
+            return postDao.findPostByIdInOrderByTitleAsc(postIds, pageable);
+        }
+        else return postDao.findPostByIdInOrderByTitleDesc(postIds, pageable);
     }
 
     @Override
@@ -133,6 +148,26 @@ public class PostManager implements PostService{
             }
         };
     }
+
+    @Override
+    public Page<Post> findPostsBySortType(String sortType, Collection<Integer> postIds, Pageable pageable){
+        return switch (sortType) {
+            default -> findOrderedCustomPostsByPublishedAt(postIds, false, pageable) ;
+            case "dateAsc" -> {
+                yield findOrderedCustomPostsByPublishedAt(postIds,true, pageable);
+            }
+            case "dateDesc" -> {
+                yield findOrderedCustomPostsByPublishedAt(postIds,false, pageable);
+            }
+            case "nameAsc" -> {
+                yield findOrderedCustomPostsByTitle(postIds, pageable, true);
+            }
+            case "nameDesc" -> {
+                yield findOrderedCustomPostsByTitle(postIds, pageable, false);
+            }
+        };
+    }
+
 
     @Override
     public List<Post> findPostsBySortType(String sortType, Collection<Integer> postIds, boolean isPublished){
@@ -198,4 +233,5 @@ public class PostManager implements PostService{
     public List<Post> findAllPosts(){
         return postDao.findAll();
     }
+
 }

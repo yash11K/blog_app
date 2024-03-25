@@ -10,5 +10,4 @@ public class ErrorPageController implements ErrorController {
     public String handleError() {
         return "errorPage";
     }
-
 }

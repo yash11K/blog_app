@@ -13,7 +13,7 @@
 <header>Write Wise</header>
 <h1>Create a New Blog Post</h1>
 <h3>Choose the appropriate Topics for the blog</h3>
-    <form th:action="@{/home/blog-publish}" method="post" th:object="${newPost}">
+    <form th:action="@{/home/new/blog-publish}" method="post" th:object="${newPost}">
         <label> Tags: ( `,` seperated values)
             <input type="text" id="tags" name="newPostTagNames">
         </label>

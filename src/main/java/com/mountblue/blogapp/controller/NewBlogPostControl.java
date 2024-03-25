@@ -15,7 +15,7 @@ import java.text.ParseException;
 import static com.mountblue.blogapp.service.PostService.createExcerpt;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/home/new")
 public class NewBlogPostControl extends AbstractBlogControl{
     private final ServiceFactory serviceFactory;
     private PostService postService;
@@ -34,7 +34,7 @@ public class NewBlogPostControl extends AbstractBlogControl{
         this.userService = serviceFactory.getUserService();
     }
 
-    @GetMapping("/blog-new")
+    @GetMapping("/blog")
     public String showHome(Model model){
         String tags = "";
         model.addAttribute("tags", tags);
@@ -59,6 +59,6 @@ public class NewBlogPostControl extends AbstractBlogControl{
         newPost.setPublished(blogAction.equals(blogActionPublish));
         newPost.setExcerpt(createExcerpt(newPost.getContent()));
         postService.savePost(newPost);
-        return "redirect:/home/blog-new";
+        return "redirect:/home/new/blog";
     }
 }

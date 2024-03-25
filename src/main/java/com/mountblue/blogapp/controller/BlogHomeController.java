@@ -1,7 +1,9 @@
 package com.mountblue.blogapp.controller;
 
+import com.mountblue.blogapp.exception.NoSearchResults;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.model.Tag;
+import com.mountblue.blogapp.model.User;
 import com.mountblue.blogapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,7 +47,7 @@ public class BlogHomeController extends AbstractBlogControl{
                                @RequestParam(value = "from", required = false)String startDate,
                                @RequestParam(value = "to", required = false)String endDate,
                                @RequestParam(value = "page", required = false, defaultValue = "0")Integer page)
-            throws ParseException {
+            throws ParseException, NoSearchResults{
 
         boolean processRawQuery = false;
         boolean processTagQuery = false;
@@ -55,6 +57,7 @@ public class BlogHomeController extends AbstractBlogControl{
 
         Set<Integer> postIdsCollector = new HashSet<>();
         Collection<Tag> relativeTags = null;
+        Collection<User> relativeUsers = null;
 
         if (orderBy==null){
             orderBy = "dateDesc";
@@ -69,6 +72,9 @@ public class BlogHomeController extends AbstractBlogControl{
             processRawQuery = postIdsCollector.addAll(searchService.processSearchQuery(rawQuery));
             model.addAttribute("rawQuery", rawQuery);
             relativeTags = filterService.findTagsByPostIds(postIdsCollector);
+            if(!processRawQuery){
+                throw new NoSearchResults("no results for query : " + rawQuery);
+            }
         }
         if(tagQuery != null){
             model.addAttribute("tagQuery", tagQuery);

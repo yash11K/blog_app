@@ -36,11 +36,16 @@ public class SecurityConfiguration {
                                            AuthenticationProvider authenticationProvider) throws Exception {
         http.authorizeHttpRequests(customizer ->
                 customizer
-                        .requestMatchers("/home").hasRole("WEBUSER")
+                        .requestMatchers("/home").permitAll()
                         .requestMatchers("/register/**").permitAll()
-                        .requestMatchers("/writewise/api/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/writewise/api/new/**").hasRole("WEBUSER")
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/user/**").hasRole("WEBUSER")
+                        .requestMatchers("/home/new/**").hasRole("WEBUSER")
+                        .requestMatchers("/writewise/api/post/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/writewise/api/new/**").hasRole("WEBUSER")
+                        .requestMatchers(HttpMethod.POST, "/writewise/api/update/**").hasRole("WEBUSER")
+                        .requestMatchers(HttpMethod.POST, "/writewise/api/delete/**").hasRole("WEBUSER")
+
                         .anyRequest().permitAll())
                 .formLogin(form ->{
                     form.loginPage("/loginPage")

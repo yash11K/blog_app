@@ -35,7 +35,7 @@ public class User{
     @Column(name = "user_is_enabled")
     private boolean isEnabled;
 
-    @OneToMany(mappedBy="author")
+    @OneToMany(mappedBy="author", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JsonBackReference
     private Set<Post> posts;
 

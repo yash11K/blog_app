@@ -1,16 +1,24 @@
 package com.mountblue.blogapp.restcontroller;
 
+import com.mountblue.blogapp.exception.IdNotFoundException;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.service.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -24,11 +32,8 @@ public class FetchContentEndpoint {
     private PostService postService;
     private SearchService searchService;
     private FilterService filterService;
-    private UserService userService;
-    private TagService tagService;
 
     private final String blogActionPublish = "publish";
-
     @Autowired
     public FetchContentEndpoint(ServiceFactory serviceFactory, PostAssembler postAssembler) {
         this.serviceFactory = serviceFactory;
@@ -40,8 +45,6 @@ public class FetchContentEndpoint {
         this.postService = serviceFactory.getPostService();
         this.searchService = serviceFactory.getSearchService();
         this.filterService = serviceFactory.getFilterService();
-        this.userService = serviceFactory.getUserService();
-        this.tagService = serviceFactory.getTagService();
     }
 
     @GetMapping("/all")
@@ -56,8 +59,11 @@ public class FetchContentEndpoint {
 
     @GetMapping("/{postId}")
     public EntityModel<Post> fetchPost(@PathVariable int postId){
-        Post post = postService.findPostById(postId).get();
-        return postAssembler.toModel(post);
+        Optional<Post> maybePost = postService.findPostById(postId);
+        if(maybePost.isPresent()){
+            return postAssembler.toModel(maybePost.get());
+        }
+        else throw new IdNotFoundException(Integer.toString(postId));
     }
 
     @GetMapping("/all/{isPublished}")
@@ -69,25 +75,43 @@ public class FetchContentEndpoint {
                 ).collect(Collectors.toList());
         return  CollectionModel.of(posts, linkTo(methodOn(FetchContentEndpoint.class).fetchAllPostsByIsPublished(isPublished)).withSelfRel());
     }
+
+    @GetMapping("/all/paged/{isPublished}")
+    public PagedModel<EntityModel<Post>> fetchAllPostsByIsPublished(@PathVariable("isPublished") boolean isPublished, Pageable pageable) {
+        Page<Post> postPage = postService.findPostsBySortType("default", postService.findAllIds(), isPublished, pageable);
+        List<EntityModel<Post>> posts = postPage.getContent().stream()
+                .map(postAssembler::toModel)
+                .collect(Collectors.toList());
+        return PagedModel.of(posts,
+                postAssembler.getPageMetaData(postPage),
+                linkTo(methodOn(FetchContentEndpoint.class).fetchAllPostsByIsPublished(isPublished, pageable)).withSelfRel());
+    }
+
     @GetMapping("/all/order/{sort}")
-    public CollectionModel<EntityModel<Post>> fetchAllPostsBySortType(@PathVariable String sort){
-        List<EntityModel<Post>> posts = postService.findPostsBySortType
-                        (sort,postService.findAllIds())
+    public PagedModel<EntityModel<Post>> fetchAllPostsBySortType(@PathVariable String sort, Pageable pageable){
+        Page<Post> postPage = postService.findPostsBySortType(sort,postService.findAllIds(), pageable);
+        List<EntityModel<Post>> posts = postPage.getContent()
                 .stream()
                 .map(
                         postAssembler::toModel).collect(Collectors.toList());
-        return CollectionModel.of(posts, linkTo(methodOn(FetchContentEndpoint.class).fetchAllPostsBySortType(sort)).withSelfRel());
+        return PagedModel.of(posts,
+                postAssembler.getPageMetaData(postPage),
+                linkTo(methodOn(FetchContentEndpoint.class).fetchAllPostsBySortType(sort, pageable)).withSelfRel());
     }
 
     @GetMapping("/all/search")
-    public CollectionModel<EntityModel<Post>> fetchAllPostsBySearch(@RequestParam String rawQuery,
-                                                                    @RequestParam(value = "sortType", defaultValue = "dateDesc")String sortType){
-        List<EntityModel<Post>> posts = postService.findPostsBySortType( sortType, searchService.processSearchQuery(rawQuery))
+    public PagedModel<EntityModel<Post>> fetchAllPostsBySearch(@RequestParam String rawQuery,
+                                                               @RequestParam(value = "sortType", defaultValue = "dateDesc")String sortType,
+                                                               Pageable pageable){
+        Page<Post> postPage = postService.findPostsBySortType( sortType, searchService.processSearchQuery(rawQuery), pageable);
+        List<EntityModel<Post>> posts = postPage.getContent()
                 .stream()
                 .map(
                         postAssembler::toModel
                 ).collect(Collectors.toList());
-        return CollectionModel.of(posts, linkTo(methodOn(FetchContentEndpoint.class).fetchAllPostsBySearch(rawQuery, sortType)).withSelfRel());
+        return PagedModel.of(posts,
+                postAssembler.getPageMetaData(postPage),
+                linkTo(methodOn(FetchContentEndpoint.class).fetchAllPostsBySearch(rawQuery, sortType, pageable)).withSelfRel());
     }
 
     @GetMapping("/all/filter/tags")
@@ -114,29 +138,25 @@ public class FetchContentEndpoint {
     @GetMapping("/all/filter/dates")
     public CollectionModel<EntityModel<Post>> fetchAllPostsByAuthorFilter(@RequestParam String fromDate,
                                                                           @RequestParam String toDate,
-                                                                          @RequestParam(defaultValue = "dateDesc") String sortType){
-        try{
-            List<EntityModel<Post>> posts = postService.findPostsBySortType(sortType, filterService.findPostIdByStartEndDate(fromDate, toDate))
+                                                                          @RequestParam(defaultValue = "dateDesc") String sortType) throws ParseException {
+        List<EntityModel<Post>> posts = postService.findPostsBySortType(sortType, filterService.findPostIdByStartEndDate(fromDate, toDate))
                     .stream()
                     .map(
                             postAssembler::toModel
                     ).collect(Collectors.toList());
-            return CollectionModel.of(posts, linkTo(methodOn(FetchContentEndpoint.class).fetchAllPostsByAuthorFilter(fromDate, toDate, sortType)).withSelfRel());
-        }catch (ParseException dateParseException){
-            System.out.println("Create Custom Exception with message -  invalid date");
-        }
-        return null;
+        return CollectionModel.of(posts, linkTo(methodOn(FetchContentEndpoint.class).fetchAllPostsByAuthorFilter(fromDate, toDate, sortType)).withSelfRel());
     }
 
     @GetMapping("/all/query")
-    public CollectionModel<EntityModel<Post>> fetchAllPostsByQuery(
+    public PagedModel<EntityModel<Post>> fetchAllPostsByQuery(
             @RequestParam(required = false) String rawQuery,
             @RequestParam(required = false) String tagFilterQuery,
             @RequestParam(required = false) String authorFilterQuery,
             @RequestParam(required = false) String fromDateFilterQuery,
             @RequestParam(required = false) String toDateFilterQuery,
             @RequestParam(defaultValue = "dateDesc") String sortType,
-            @RequestParam(defaultValue = "true")Boolean isPublished
+            @RequestParam(defaultValue = "true")Boolean isPublished,
+            Pageable pageable
 
     ) throws ParseException {
         Collection<Integer> postIdCollector = postService.findAllIds();
@@ -146,14 +166,16 @@ public class FetchContentEndpoint {
                 fromDateFilterQuery,
                 toDateFilterQuery));
         postIdCollector.retainAll(searchService.processSearchQuery(rawQuery));
-        List<EntityModel<Post>> posts = postService.findPostsBySortType(sortType,postIdCollector,isPublished)
+        Page<Post> postpage = postService.findPostsBySortType(sortType,postIdCollector,isPublished, pageable);
+        List<EntityModel<Post>> posts = postpage.getContent()
                 .stream()
                 .map(
                         postAssembler::toModel
                 ).collect(Collectors.toList());
-        return CollectionModel.of(posts, linkTo(methodOn(FetchContentEndpoint.class)
-                .fetchAllPostsByQuery(rawQuery, tagFilterQuery, authorFilterQuery, fromDateFilterQuery, toDateFilterQuery, sortType, isPublished
+        return PagedModel.of(posts,
+                postAssembler.getPageMetaData(postpage)
+                ,linkTo(methodOn(FetchContentEndpoint.class)
+                .fetchAllPostsByQuery(rawQuery, tagFilterQuery, authorFilterQuery, fromDateFilterQuery, toDateFilterQuery, sortType, isPublished, pageable
         )).withSelfRel());
     }
-
 }

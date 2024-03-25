@@ -14,5 +14,4 @@ public interface ServiceFactory {
     SearchService getSearchService();
 
     FilterService getFilterService();
-
 }

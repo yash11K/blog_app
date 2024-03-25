@@ -14,9 +14,9 @@
         }
 
         .header {
-
+            font-size: 35px;
             position: absolute;
-            top: 220px;
+            top: 100px;
             color: black; /* white text */
             padding: 20px 0; /* top and bottom padding */
         }
@@ -136,10 +136,15 @@
                 </div>
             </div>
         </div>
-        <div><p>Dont have a Write Wise account yet?</p>
+        <div>
+            <p>Dont have a Write Wise account yet?</p>
             <a th:href="@{/register/form}">
                 Sign up
             </a>
+        </div>
+        <br>
+        <div>
+            <a href="/home"> continue without logging in &rArr;</a>
         </div>
     </div>
 </div>

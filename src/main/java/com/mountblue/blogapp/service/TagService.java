@@ -5,6 +5,7 @@ import com.mountblue.blogapp.model.Tag;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -13,7 +14,7 @@ public interface TagService{
     List<Tag> findALlTags();
     void saveTag(Tag tag);
 
-    Tag findTagByName(String name);
+    Optional<Tag> findTagByName(String name);
 
     List<Tag> findAllTags();
 

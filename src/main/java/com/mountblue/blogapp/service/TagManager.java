@@ -6,10 +6,7 @@ import com.mountblue.blogapp.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TagManager implements TagService{
@@ -23,7 +20,7 @@ public class TagManager implements TagService{
         tagDao.save(tag);
     }
     @Override
-    public Tag findTagByName(String name){
+    public Optional<Tag> findTagByName(String name){
         return tagDao.findByName(name);
     }
     @Override
@@ -60,8 +57,8 @@ public class TagManager implements TagService{
     public void saveTagFromTagString(String tagsStr, Post post) {
         int postId = post.getId();
         Set<Tag> postTags = new HashSet<>();
-        List<String> tagStr = Arrays.stream(tagsStr.split(",")).toList();
-        for (String PostTagName : tagStr) {
+        List<String> tags = Arrays.stream(tagsStr.split(",")).toList();
+        for (String PostTagName : tags) {
             PostTagName = PostTagName.trim();
             PostTagName = PostTagName.toUpperCase();
             Boolean tagExists = tagExistsByName(PostTagName);
@@ -72,7 +69,7 @@ public class TagManager implements TagService{
                 newPostTag.setPosts(emptyPost);
                 saveTag(newPostTag);
             }
-            Tag tag = findTagByName(PostTagName);
+            Tag tag = findTagByName(PostTagName).get();
             tag.getPosts().add(post);
             postTags.add(tag);
         }

@@ -12,17 +12,21 @@
     <div class="header">
         <header><a th:href="@{/home}" class="company-name">Write Wise</a></header>
         <div class="user-profile">
-            <a href="#" class="user-profile-link">
-                <span class="user-profile-name" sec:authentication="name">Yash</span>
-                <span class="dropdown-arrow">&#9660;</span>
-            </a>
-            <div class="dropdown-content">
-                <a href="/user/profile">Profile</a>
-                <a th:href="@{/home/blog-new}">Publish new Blog</a>
-                <form action="#" th:action="@{/logout}" method="POST">
-                    <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
-                </form>
-
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <a href="#" class="user-profile-link">
+                    <span class="user-profile-name" sec:authentication="name"></span>
+                    <span class="dropdown-arrow">&#9660;</span>
+                </a>
+                <div class="dropdown-content">
+                    <a href="/user/profile">Profile</a>
+                    <a th:href="@{/home/new/blog}">Publish new Blog</a>
+                    <form action="#" th:action="@{/logout}" method="POST">
+                        <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+                    </form>
+                </div>
+            </div>
+            <div th:unless="${#authorization.expression('isAuthenticated()')}">
+                <a href="/loginPage" class="login-link">login</a>
             </div>
         </div>
     </div>

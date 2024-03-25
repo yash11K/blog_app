@@ -32,11 +32,15 @@ public interface PostDao extends JpaRepository<Post, Integer> {
 
     Page<Post> findPostByIdInAndIsPublishedOrderByPublishedAtAsc(Collection<Integer> ids, boolean isPublished, Pageable pageable);
 
+    Page<Post> findPostByIdInOrderByPublishedAtAsc(Collection<Integer> ids, Pageable pageable);
+
     List<Post> findPostByIdInAndIsPublishedOrderByPublishedAtAsc(Collection<Integer> ids, boolean isPublished);
 
     List<Post> findPostsByIdInOrderByPublishedAtAsc(Collection<Integer> ids);
 
     Page<Post> findPostByIdInAndIsPublishedOrderByPublishedAtDesc(Collection<Integer> ids, boolean isPublished, Pageable pageable);
+
+    Page<Post> findPostByIdInOrderByPublishedAtDesc(Collection<Integer> ids, Pageable pageable);
 
     List<Post> findPostByIdInAndIsPublishedOrderByPublishedAtDesc(Collection<Integer> ids, boolean isPublished);
 
@@ -44,11 +48,15 @@ public interface PostDao extends JpaRepository<Post, Integer> {
 
     Page<Post> findPostByIdInAndIsPublishedOrderByTitleDesc(Collection<Integer> ids, boolean isPublished, Pageable pageable);
 
+    Page<Post> findPostByIdInOrderByTitleDesc(Collection<Integer> ids, Pageable pageable);
+
     List<Post> findPostByIdInAndIsPublishedOrderByTitleDesc(Collection<Integer> ids, boolean isPublished);
 
     List<Post> findPostsByIdInOrderByTitleDesc(Collection <Integer> ids);
 
     Page<Post> findPostByIdInAndIsPublishedOrderByTitleAsc(Collection<Integer> ids, boolean isPublished, Pageable pageable);
+
+    Page<Post> findPostByIdInOrderByTitleAsc(Collection<Integer> ids, Pageable pageable);
 
     List<Post> findPostByIdInAndIsPublishedOrderByTitleAsc(Collection<Integer> ids, boolean isPublished);
 
