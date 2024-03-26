@@ -133,6 +133,11 @@ public class BlogHomeController extends AbstractBlogControl{
         return "redirect:/home";
     }
 
+    @GetMapping("/")
+    public String redirectToLogin(){
+        return "redirect:/loginPage";
+    }
+
     public String queryNullifier(String query){
         if(query==null || query.isEmpty()){
             return null;

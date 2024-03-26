@@ -59,6 +59,6 @@ public class NewBlogPostControl extends AbstractBlogControl{
         newPost.setPublished(blogAction.equals(blogActionPublish));
         newPost.setExcerpt(createExcerpt(newPost.getContent()));
         postService.savePost(newPost);
-        return "redirect:/home/new/blog";
+        return "redirect:/home";
     }
 }

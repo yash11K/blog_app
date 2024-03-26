@@ -51,6 +51,6 @@ public class NewUserController {
         }
 
         userService.saveUser(webUser);
-        return "redirect:/login";
+        return "redirect:/loginPage";
     }
 }

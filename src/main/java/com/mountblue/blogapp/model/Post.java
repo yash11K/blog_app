@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -26,7 +27,6 @@ public class Post {
     @Column(name = "post_title")
     private String title;
     @Column(name = "post_content", columnDefinition = "TEXT")
-    @Lob
     private String content;
     @Column(name = "post_excerpt")
     private String excerpt;
