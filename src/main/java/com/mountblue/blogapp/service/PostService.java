@@ -23,7 +23,8 @@ public interface PostService{
     @Transactional
     void deletePostById(int postId);
     static String createExcerpt(String content){
-        int excerptLength = 50;
+        int length = content.length();
+        int excerptLength = Math.min(length, 50);
         return content.substring(0,excerptLength) + "....";
     }
 

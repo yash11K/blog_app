@@ -1,6 +1,7 @@
 package com.mountblue.blogapp.restcontroller;
 
 import com.mountblue.blogapp.exception.IdNotFoundException;
+import com.mountblue.blogapp.exception.NotAuthorisedException;
 import com.mountblue.blogapp.model.Comment;
 import com.mountblue.blogapp.model.Post;
 import com.mountblue.blogapp.service.*;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -37,23 +40,30 @@ public class ContentDeleteEndpoint {
     }
 
     @DeleteMapping("/post/{postId}")
-    public String deletePost(@PathVariable int postId){
-        if(postService.findPostById(postId).isPresent()){
-            postTagService.deletePostTagRelationByPostId(postId);
-            postService.deletePostById(postId);
-            return "successfully deleted post id : " + postId;
+    public String deletePost(@PathVariable int postId, Principal principal){
+        Optional<Post> maybePost = postService.findPostById(postId);
+        if(maybePost.isPresent()){
+            if(Objects.equals(principal.getName(), maybePost.get().getAuthor().getUsername())){
+                postTagService.deletePostTagRelationByPostId(postId);
+                postService.deletePostById(postId);
+                return "successfully deleted post id : " + postId;
+            }
+            else throw new NotAuthorisedException("not your post to delete!");
         }
         else throw new IdNotFoundException(Integer.toString(postId));
     }
 
     @DeleteMapping("/comment/{commentId}")
-    public EntityModel<Post> deleteComment(@PathVariable int commentId){
+    public EntityModel<Post> deleteComment(@PathVariable int commentId, Principal principal){
         Optional<Comment> maybeRelevantComment =  commentService.findCommentById(commentId);
         if(maybeRelevantComment.isPresent()){
-            int requestPostId = commentService.getPostIdFromCommentId(commentId);
-            Optional<Post> maybeRelevantPost = postService.findPostById(requestPostId);
-            commentService.deleteComment(maybeRelevantComment.get());
-            return postAssembler.toModel(maybeRelevantPost.get());
+            if(Objects.equals(principal.getName(), maybeRelevantComment.get().getAuthor().getName())){
+                int requestPostId = commentService.getPostIdFromCommentId(commentId);
+                Optional<Post> maybeRelevantPost = postService.findPostById(requestPostId);
+                commentService.deleteComment(maybeRelevantComment.get());
+                return postAssembler.toModel(maybeRelevantPost.get());
+            }
+            else throw new  NotAuthorisedException("not your comment to delete");
         }
         else throw new IdNotFoundException(Integer.toString(commentId));
     }
