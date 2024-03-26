@@ -30,13 +30,13 @@ public class Post {
     private String content;
     @Column(name = "post_excerpt")
     private String excerpt;
-    @Column(name = "post_published_at", columnDefinition = "datetime", updatable = false)
+    @Column(name = "post_published_at", updatable = false)
     @DateTimeFormat(pattern = "dd-mm-yyyy")
     private Date publishedAt;
-    @Column(name = "post_created_at", columnDefinition = "datetime", updatable = false)
+    @Column(name = "post_created_at", updatable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date createdAt;
-    @Column(name = "post_updated_at", columnDefinition = "datetime")
+    @Column(name = "post_updated_at")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date updatedAt;
     @Column(name = "post_is_published")

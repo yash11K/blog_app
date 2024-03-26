@@ -22,10 +22,10 @@ public class PostTag {
 
     @EmbeddedId
     private PostTagId postTagId;
-    @Column(name = "created_at", columnDefinition = "datetime",updatable = false)
+    @Column(name = "created_at",updatable = false)
     private Date createdAt;
     @UpdateTimestamp
-    @Column(name = "updated_at",columnDefinition = "datetime")
+    @Column(name = "updated_at")
     private Date updatedAT;
 
     @Embeddable
