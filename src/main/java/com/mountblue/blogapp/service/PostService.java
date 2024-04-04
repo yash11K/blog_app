@@ -1,8 +1,6 @@
 package com.mountblue.blogapp.service;
 
-import com.mountblue.blogapp.exception.IdNotFoundException;
 import com.mountblue.blogapp.model.Post;
-import com.mountblue.blogapp.model.PostDto;
 import com.mountblue.blogapp.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;

@@ -32,7 +32,7 @@
     </div>
         <div class="blog-container">
             <h2 th:text="${post.title}" class="blog-author"></h2>
-            <p th:text="${post.author.name} + '  @' + ${post.author.username}" class="blog-author"> <span style="color: cornflowerblue" th:text="'@' + ${post.author.username}" class="blog-author"></span></p>
+            <p th:text="${post.author.name} + '@' + ${post.author.username}" class="blog-author"> <span style="color: cornflowerblue" th:text="'@' + ${post.author.username}" class="blog-author"></span></p>
             <p th:text="${post.publishedAt.toLocaleString()}" class="blog-timestamp"></p>
             <div th:each="postTag:${postTags}" class="blog-tags-container">
                 <span th:text="${postTag.name}" class="blog-tag"></span>
